@@ -1,0 +1,170 @@
+body {
+  font: var(--unnamed-font-style-normal) normal
+    var(--unnamed-font-weight-medium) var(--unnamed-font-size-18) /
+    var(--unnamed-line-spacing-21) var(--unnamed-font-family-sf-pro-display);
+  width: 100vw;
+}
+
+.root {
+  background-color: white;
+  height: 93vh;
+  min-width: 1275px;
+  padding: 25px;
+  overflow-x: scroll;
+}
+
+.container {
+  height: 100%;
+  margin: 0px;
+}
+
+.section {
+  background-color: white;
+  border-radius: 15px;
+  padding: 15px;
+}
+
+.main {
+  margin-top: 10px;
+  height: 85%;
+  overflow: scroll;
+}
+
+.topBtn {
+  background-color: #E7404A;
+  border-radius: 10px;
+  border: none;
+  color: white;
+  padding: 12px;
+  height: 45px;
+}
+
+.datebutton {
+  height: 80px;
+  width: 50px;
+  font-size: 15px;
+  border: solid;
+  border-color: #E7404A;
+  border-radius: 25px;
+  text-align: center;
+}
+
+.datebuttonNotSelected {
+  box-shadow: 0 0 7px #838383;
+  background-color: white;
+}
+
+.datebuttonSelected {
+  background-color: #E7404A;
+  border: 4px solid #E7404A;
+  color: white;
+}
+
+.verticallyCenter {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.carouselSlider {
+  text-align: center;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.dateCarouselArrowBtn {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.modalBtn {
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 15px;
+  padding-left: 25px;
+  padding-right: 25px;
+  background-color: #E7404A;
+  font-weight: bold;
+}
+
+.modalCloseBtnContainer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px;
+}
+
+.modalFormLabel {
+  width: 130px;
+  color: #E7404A;
+  font-weight: bold;
+}
+
+.hidden {
+  display: none;
+}
+
+.modalFormInput {
+  width: 230px;
+}
+
+.modalWidth {
+  width: auto;
+}
+
+.deleteBtn {
+  fill: black !important;
+}
+.deleteBtn:hover {
+  fill: red !important;
+}
+
+.saveBtn_saved {
+  fill: green !important;
+}
+
+.saveBtn_unsaved {
+  fill: red !important;
+}
+
+.invalidDate {
+  color: red;
+  font-weight: bold;
+}
+
+.greyedOutBtn {
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 15px;
+  padding-left: 25px;
+  padding-right: 25px;
+  background-color: grey;
+  font-weight: bold;
+  cursor: not-allowed !important;
+}
+
+.restaurantImg {
+  height: 70px;
+  width: 70px;
+}
+
+.dropdown {
+  border: none;
+  padding: 0px;
+  padding-right: 20px;
+  color: black;
+  background-color: white;
+  width: 13vw;
+  outline: none;
+  display: inline-block;
+  appearance: none;
+  cursor: pointer;
+  background: url("./static/Polygon\ 10.svg") no-repeat;
+  background-position: right 5px top 50%;
+}

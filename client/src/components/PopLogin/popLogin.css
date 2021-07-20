@@ -1,0 +1,149 @@
+.close {
+  color: Black;
+  width:36px;
+  height:36px;
+  opacity: 1;
+  margin:15px;
+  text-align: center;
+  border-radius: 50%;
+  background-image: url('../../images/closeIcon.png');
+  background-size: cover;
+  background-position: center;
+}
+
+.pop_content {
+  position: absolute;
+  top: 85px;
+  /* left: 50%; */
+  right:1%;
+  width: 549px;
+  height: 732px;
+  background: white;
+  border:3px solid #FF8500;
+  opacity: 1;
+}
+
+.loginSectionItem {
+  margin-left: 60px;
+  width: 428px;
+  height: 50px;
+  border-radius: 10px;
+  border: 2px solid #FF8500;
+  margin-bottom: 14px;
+  outline: none;
+}
+
+.signInBtn {
+  border-radius: 8px;
+  background-color: #FF8500;
+  border:1px solid black;
+  margin-left:49px;
+  margin-top:10px;
+  width: 452px;
+  height: 71px;
+  border-color: #FF8500;
+} 
+
+.inputContainer i {
+  position: absolute;
+
+}
+.inputContainer {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+/*--------- pop up stuf ---*/
+.errorTotal {
+  display: flex;
+  border: solid;
+  border-radius: 25px;
+  border-color: #ff6505;
+  height: 80px;
+  justify-content: center;
+}
+.errorText {
+  font-size: 20px;
+  padding-top: 20px;
+}
+.errorAmount {
+  font-size: 40px;
+  font-weight: bold;
+  padding-top: 5px;
+  padding-left: 20px;
+}
+.errorHeader {
+  font-size: 40px;
+  font-weight: bold;
+  padding-top: 5px;
+  padding-left: 20px;
+  margin-top: 50px;
+}
+
+.errorModalPopUpHide {
+  z-index: 1;
+  display: none;
+}
+
+.errorModalPopUpShow {
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  overflow: auto;
+  position: fixed;
+  display: grid;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.errorModalContainer {
+  position: relative;
+  justify-self: center;
+  align-self: center;
+  display: block;
+  border:#ff6505 solid;
+  background-color: white;
+  height: 350px;
+  width: 450px;
+  z-index: 2;
+}
+
+.errorModalButtonMenu {
+  text-decoration: none;
+  color: black;
+  font-weight: 450;
+  height: fit-content;
+  text-align: center;
+  margin-left: 50px;
+  margin-top: 54px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.errorModalButtonMenu:hover{
+  text-decoration: none;
+  color: #FF9400;
+}
+
+.errorContainer {
+  display: block;
+  width: 370px;
+  /*margin: 80px auto 0px;*/
+  margin: 0px auto 0px;
+  text-align: center;
+}
+
+.errorCancelButton{
+  background-image: url('../../images/x_button.png');
+  z-index: 2; 
+  float: right;
+  position: absolute; 
+  top: 0px;
+  left: 370px;
+  background-size: 100%;
+  width: 40px;
+  height: 40px;
+  margin-top: 20px;
+  cursor: pointer;
+}

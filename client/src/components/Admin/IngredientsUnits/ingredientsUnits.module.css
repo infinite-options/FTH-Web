@@ -1,0 +1,453 @@
+.cellOuterWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  /* border: dashed; */
+  /* border-top: solid; */
+  /* border-color: #f26522; */
+  /* border-width: 1px; */
+  /* width: 25%; */
+  width: 23%;
+  /* margin-right: 100px; */
+  height: 100%;
+}
+.cellOuterWrapper2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* border: dashed; */
+  /* border-top: solid; */
+  /* border-color: #f26522; */
+  /* border-width: 1px; */
+  /* width: 25%; */
+  /* width: 80%; */
+  /* max-width: 80%; */
+  margin-right: 40px;
+  height: 100%;
+}
+.cellOuterWrapper3 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  /* border: dashed; */
+  /* border-top: solid; */
+  /* border-color: #f26522; */
+  /* border-width: 1px; */
+  /* width: 25%; */
+  width: 25%;
+  /* margin-right: 100px; */
+  height: 100%;
+}
+
+.cellInnerWrapper {
+  align-self: flex-start;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 5px 5px;    
+  height: 100%;
+}
+.cellInnerWrapper2 {
+  align-self: flex-start;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+  box-sizing: border-box;
+  padding: 5px 5px;    
+  height: 100%;
+}
+
+.cellContent {
+  /* text-align: center; */
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 600;
+  /* border: solid; */
+  /* border-top: solid;
+  border-color: #f26522;
+  border-width: 1px; */
+  /* height: 70px; */
+  width: 100%;
+}
+.cellContent2 {
+  /* text-align: center; */
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-size: 26px;
+  font-weight: bold;
+  padding-left: 20px;
+  /* border: solid; */
+  /* border-top: solid;
+  border-color: #f26522;
+  border-width: 1px; */
+  /* height: 70px; */
+  width: 100%;
+}
+.cellContentOrange {
+  /* text-align: center; */
+  color: #f26522;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 600;
+  /* border: solid; */
+  /* border-top: solid;
+  border-color: #f26522;
+  border-width: 1px; */
+  /* height: 70px; */
+  width: 100%;
+}
+
+.CML_OuterWrapper {
+  /* border: dashed; */
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+  width: 50%;
+  max-width: 152px;
+  height: 100%;
+}
+.CML_OuterWrapper2 {
+  /* border: dashed; */
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+  width: 50%;
+  max-width: 171px;
+  height: 100%;
+}
+.CML_InnerWrapper {
+  align-self: flex-start;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  /* padding: 5px 5px;     */
+  margin-left: 20px;
+  margin-right: 20px;
+  height: 100%;
+}
+.createModalLabel {
+  width: 100%;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  /* border: inset; */
+  color: #f26522;
+  /* padding-left: 20px; */
+}
+/* .createModalLabel {
+  width: 50%;
+  border: inset;
+  color: #f26522;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+} */
+.createModalDropdownWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-right: 20px;
+  width: 50%;
+  flex-grow: 1;
+  /* border: inset; */
+}
+.createModalInputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-right: 20px;
+  width: 50%;
+  flex-grow: 1;
+  /* border: inset; */
+}
+.createModalInput {
+  font-weight: 600;
+  height: 40px;
+  border: solid;
+  border-width: 2px;
+  width: 100%;
+  border-color: #ADADAD;
+  text-align: center;
+}
+.createModalInput:disabled {
+  font-weight: 600;
+  height: 40px;
+  border: solid;
+  border-width: 2px;
+  width: 100%;
+  border-color: #ADADAD;
+  background-color: #ccc9c9;
+  text-align: center;
+}
+.createModalDropdown {
+  position: relative;
+  font-weight: 600;
+  height: 40px;
+  border: solid;
+  border-width: 2px;
+  width: 100%;
+  border-color: #ADADAD;
+  text-align: center;
+  cursor: pointer;
+}
+.createModalDropdown_disabled {
+  position: relative;
+  font-weight: 600;
+  height: 40px;
+  border: solid;
+  border-width: 2px;
+  width: 100%;
+  border-color: #ADADAD;
+  text-align: center;
+  /* cursor: pointer; */
+  background-color: #ccc9c9;
+}
+
+.createModalDropdownButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background-color: white;
+  height: 40px;
+  border-bottom: solid;
+  border-width: 2px;
+  border-color: #ADADAD;
+}
+
+.createModalDropdownButton:hover {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background-color: #F8BB17;
+  height: 40px;
+  border-bottom: solid;
+  border-width: 2px;
+  border-color: #ADADAD;
+}
+
+.createModalSection {
+  /* border: solid; */
+  width: 100%;
+  height: 60px;
+  display: inline-flex;
+}
+
+.grayArrowDown {
+  /* border: solid 1px; */
+  position: absolute;
+  right: 5px;
+  background-image: url('../../../images/gray_arrow_down.png');
+  background-size: 100%;
+  width: 16px;
+  height: 16px;
+  margin-top: 8px;
+  /* cursor: pointer; */
+}
+.grayArrowUp {
+  /* border: solid 1px; */
+  position: absolute;
+  right: 9px;
+  background-image: url('../../../images/gray_arrow_down.png');
+  background-size: 100%;
+  width: 16px;
+  height: 16px;
+  margin-top: 12px;
+  transform: rotate(180deg);
+  /* cursor: pointer; */
+}
+
+.centeringWrapper {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* .headerWhiteSpace {
+  border: solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 40px;
+} */
+.buttonWrapper {
+  /* border: solid; */
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+  height: 100%;
+  /* width: 40px; */
+  width: 8%;
+}
+.deleteButton {
+  /* border: solid 1px; */
+  /* position: absolute;
+  right: 5px; */
+  background-image: url('../../../images/trash_icon.png');
+  background-size: 100%;
+  width: 16px;
+  height: 20px;
+  /* margin-top: 8px; */
+  cursor: pointer;
+}
+.editButton {
+  /* border: solid 1px; */
+  /* position: absolute;
+  right: 5px; */
+  background-image: url('../../../images/edit_icon.png');
+  background-size: 100%;
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  min-height: 20px;
+  /* margin-top: 8px; */
+  cursor: pointer;
+}
+
+.saveButton {
+  border-radius: 15px;
+  border-width: 0;
+  height: 40px;
+  color: white;
+  background-color: #f26522;
+  margin-top: 20px;
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+}
+
+.saveButton:disabled {
+  border-radius: 15px;
+  border-width: 0;
+  height: 40px;
+  color: white;
+  background-color: #ccc9c9;
+  margin-top: 20px;
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  /* cursor: pointer; */
+}
+
+/* .errorModalPopUpShow {
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  overflow: auto;
+  position: fixed;
+  display: grid;
+  background-color: rgba(255, 255, 255, 0.5);
+} */
+.popupBackground {
+  height: 100vh;
+  width: 100vw;
+  max-width: 100%;
+  max-height: 100%;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  overflow: auto;
+  position: fixed;
+  /* display: grid; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.popupContainer{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* align-self: center; */
+  border: solid;
+  border-color: #FF9400;
+  border-width: thick;
+  /* border: #FF9400 solid thick; */
+  background-color: white;
+  border-radius: 20px;
+  /* height: 300px; */
+  width: 400px;
+  z-index: 2;
+}
+
+.popupHeaderWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* text-align: center; */
+  position: absolute;
+  width: 80%;
+  /* border: dashed; */
+  top: 20px;
+  font-weight: bold;
+  font-size: 26px;
+}
+
+.popupMessageWrapper {
+  /* border: dashed; */
+  margin-top: 80px;
+  margin-bottom: 100px;
+  width: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  /* display: block; */
+  /* width: 370px; */
+  /* margin: 80px auto 0px; */
+  /* text-align: center; */
+}
+
+.popupBtnWrapper {
+  position: absolute;
+  /* border: dashed; */
+  bottom: 20px;
+}
+
+.popupBtn {
+  text-align: center;
+  /* padding: 5px !important; */
+  color: #ffffff;
+  font-size: 16px;
+  border-radius: 10px;
+  border-width: 0;
+  min-width: 100px;
+  background-color: #ff6505;
+  /* margin-top: 10px; */
+  width: 90%;
+  height: 50px;
+  width: 200px;
+}
+/* .popupBtn:hover {
+  text-align: center;
+  color: #ffffff;
+  font-size: 16px;
+  border-radius: 10px;
+  border-width: 0;
+  min-width: 100px;
+  background-color: #ff6505;
+  width: 90%;
+  height: 50px;
+  width: 200px;
+} */

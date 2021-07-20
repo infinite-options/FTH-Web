@@ -1,0 +1,211 @@
+.menu {
+  width: 90%;
+  display: flex;
+  position:relative;
+  height:100px;
+
+}
+
+.menu1 {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+  margin-left:20px;
+}
+
+.logo {
+  display: flex;
+  width: 50%;
+  flex-direction: row;
+  margin-top: 1rem;
+  padding: 10px;
+  text-align: left;
+}
+.logo img {
+  max-width: 40px;
+  max-height: 40px;
+  margin-left: 10px;
+}
+.logo > p {
+  display: block;
+  padding: 10px;
+  margin-bottom: 0px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.selectBtn {
+  width: 50%;
+  display: flex;
+  margin-top: 1rem;
+  padding: 1.5rem;
+  justify-content: space-evenly;
+  text-align: center;
+
+  float: right;
+}
+.selectBtn a {
+  text-decoration: none;
+  padding: 10px;
+  color: black;
+  font-weight: 450;
+  vertical-align: center;
+}
+.selectBtn a:hover {
+  /* background-color: #7fa4dd; */
+  color: #FF9400;
+  border-radius: 20px;
+  outline-offset: 5px;
+}
+.selectBtn a:active {
+  transform: translateY(2px);
+}
+a {
+  display: flex;
+  justify-content: space-between;
+}
+a img {
+  width: 30px;
+  height: 30px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.w7 {
+  width: 50%;
+}
+.selectBtn div img,
+.selectBtn div p {
+  display: inline;
+  margin-bottom: 0px;
+}
+.selectBtn div img {
+  width: 40px;
+  height: 40px;
+}
+.selectBtn div p {
+  padding: 10px;
+  color: black;
+  font-size: 14px;
+  font-weight: bold;
+}
+.navMessage {
+  width: 400px;
+  color: black !important;
+  font-size: 24px !important;
+  font-weight: 600 !important;
+  margin-bottom: 0px;
+
+
+  padding-left: 0px;
+  text-align: center;
+  margin-left: 120px;
+  margin-top: 79px;
+  
+}
+
+.subscribe {
+  height: 40px;
+  width: 450px;
+  border-radius: 30px;
+  background-color: #ff9e19;
+  border:1px solid black;
+  position:relative;
+  text-align: center;
+} 
+
+select.pickers {
+
+
+  background-image:
+    linear-gradient(45deg, transparent 50%, white 50%),
+    linear-gradient(135deg, white 50%, transparent 50%);
+  background-position:
+    calc(100% - 30px) calc(15px),
+    calc(100% - 15px) calc(15px),
+    100% 0;
+  background-size:
+    15px 15px,
+    15px 15px;
+    /* 2.6em 2.6em */
+  background-repeat: no-repeat;
+
+
+
+
+
+
+
+
+
+
+
+}
+
+
+
+
+select {
+  display: inline-block;
+  font: inherit;
+  line-height: 1.5em;
+  padding: 0.5em 3.5em 0.5em 1em;
+
+
+  margin: 0;      
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+
+  -moz-appearance: none;
+
+  text-align-last: left !important;
+  -webkit-appearance: menulist;
+  height: 40px;
+  width: 350px;
+  position: relative;
+
+  border-radius: 20px;
+  color: white;
+  font-weight: 500;
+  border: 1px solid #ffba00;
+
+  font-size: 18px;
+
+  background-color: #f26522;
+
+
+
+
+}
+
+
+.pickers:focus {
+  outline: none;
+}
+
+.dropdownSelection {
+  color: white;
+  border-radius: 15px;
+  background-color: #f26522;
+  font-size: 20px;
+  height: 40px;
+  padding-top: 5px;
+  box-shadow: 0px 5px 10px gray;
+  margin-bottom: 10px;
+  display: flex;
+  width: 40%;
+  min-width: 300px;
+  z-index: 2;
+  position: absolute;
+  cursor: pointer;
+}
+
+.whiteArrowDown {
+  background-image: url('./static/white_arrow_down.png');
+  background-size: 100%;
+  width: 24px;
+  height: 16px;
+  margin-top: 6px;
+  float: right;
+}

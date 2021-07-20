@@ -1,0 +1,722 @@
+.mealMain {
+  display: flex;
+  flex-direction: column;
+
+  overflow: visible;
+  position: relative;
+}
+
+.mealHeader {
+  background-color: #ff9e19;
+  border-radius: 0px 0px 30px 30px;
+  display: flex;
+  flex-direction: row;
+  background-color: #ff9e19;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: black;
+  box-sizing: border-box;
+  height: 6rem;
+  padding: 1rem;
+  align-items: center;
+}
+.avatar {
+  flex: 1;
+  box-sizing: border-box;
+  display: inline-block;
+  width: 20px;
+  height: 45px;
+  border-radius: 50%;
+  background-image: url("https://images.unsplash.com/photo-1554126807-6b10f6f6692a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  margin-right: 0.6rem;
+  margin-left: 0.7rem;
+}
+
+#local {
+  font-size: 15px;
+  font-weight: 700;
+  color: #727272;
+  margin: 0px;
+}
+
+.mealselectmenu {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#mealdays {
+  font-weight: bold;
+  color: black;
+  font-size: 15px;
+  margin: 1rem 0rem;
+}
+
+.mealNumber {
+  font-weight: bold;
+  color: black;
+  font-size: 15px;
+  margin: 1rem 0rem;
+  text-align: center;
+}
+
+.mealButton {
+  color: #5a5a5a;
+  border: 2px solid #727272;
+  background-color: #ffffff;
+  border-radius: 25px;
+  padding: 1rem 2rem;
+  margin: 5px;
+  align-content: center;
+  flex: 1;
+}
+.buttonWrapper {
+  align-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.mealButton:hover {
+  /* background-color: #eeeeee; */
+  flex: 1;
+}
+
+.internalTitles {
+  font-weight: 600;
+  color: black;
+  font-size: 17px;
+  margin: 0.5rem 0rem;
+}
+
+.paymentWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.paymentButton {
+  color: #5a5a5a;
+  border: 2px solid #727272;
+  background-color: #ffffff;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  margin: 10px;
+  padding: 20px;
+}
+.paymentButton:hover {
+  background-color: #eeeeee;
+}
+.flexclass {
+  display: flex;
+}
+
+#totalamount {
+  font-size: 1rem;
+  font-weight: 600;
+  flex: 2;
+  border: 2px solid #727272;
+  border-radius: 25px;
+  padding: 5px;
+  text-align: center;
+  margin-right: 2rem;
+  color: #5a5a5a;
+}
+
+#doneButton {
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  flex: 1;
+  color: #ffffff;
+  border: 2px solid #a1a1a1;
+  background-color: #a1a1a1;
+  border-radius: 25px;
+  padding: 10px;
+}
+
+.mealFooter {
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: #ebebeb;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 2;
+}
+
+.mealFooter p {
+  font-size: 10px;
+  margin: 0px;
+  padding: 0px 10px 0px 10px;
+}
+
+.footerIconTray {
+  display: block;
+  color: #727272;
+  padding: 5px;
+}
+
+/* Select Meal Page */
+
+.selectionStyles {
+  color: black;
+  font-weight: 500;
+  height: 60px;
+  width: 500px;
+  flex: 1;
+  text-align: center;
+  border: 1px solid #ff9e19;
+  background-color: #ffffff;
+  border-radius: 0px;
+  align-content: center;
+  margin-top: 19px;
+  margin-right: 3px;
+  font-size: large;
+}
+
+.selectedDays {
+  font-weight: 500;
+  height: 60px;
+  width: 500px;
+  flex: 1;
+  text-align: center;
+  border: 1px solid#e0d19e;
+  border-radius: 0px;
+  align-content: center;
+  margin-top: 19px;
+  margin-right: 3px;
+  color: white;
+  color: "#d3872f";
+  background-color: #f08e1f;
+  font-size: large;
+}
+
+.indicatorWrapper {
+  padding: 10px 10px;
+  display: flex;
+  justify-content: flex-start;
+  text-align: center;
+  flex-direction: row;
+  /* height: 3rem; */
+  width: 100%;
+  margin-left: 130px;
+}
+.dishicon {
+  position: relative;
+  height: 20px;
+  width: 20px;
+  top: 5px;
+  padding-left: 10px;
+  margin-right: 20px;
+}
+
+.mealSelectionIndicator {
+  flex: 1;
+  padding: 0px 10px;
+  background-color: #ebebeb;
+}
+
+#leftIndicator {
+  border-radius: 50px 0px 0px 0px;
+  padding-left: 15px;
+}
+#rightIndicator {
+  border-radius: 0px 0px 50px 0px;
+  padding-right: 15px;
+}
+
+.menuItemsWrapper {
+  display: flex;
+  justify-content: left;
+  flex-wrap: wrap;
+  padding: 1rem 200px 1rem 200px;
+  /* background-image: linear-gradient(#000000, #ff9300); */
+  /* overflow: scroll; */
+  /* height: 650px; */
+  /* overflow: hidden; */
+  height: max-content;
+  width: 100%;
+}
+
+.menuItem {
+  position: relative;
+  border: none;
+  width: 183px;
+  height: 170px;
+  box-shadow: 1px 1px #888888;
+
+}
+.menuitemIndividual {
+  height: 271px;
+  width: 190px;
+  margin-left: 0px;
+  margin-right: 24px;
+  background-color: white;
+  margin-top: 23px;
+  border: #f26522;
+
+  border-style: solid;
+}
+.menuitemIndividual p {
+  text-align: left;
+}
+#menuItemTitle {
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin: 0px;
+  padding-left: 5px;
+  color: black;
+  padding-right: 0px;
+}
+#menuItemDesc {
+  margin: 0px;
+  padding-left: 5px;
+  font-size: 0.7rem;
+  color: black;
+  margin-top: 0px;
+  padding-top: 0px;
+}
+#favorite {
+  position: absolute;
+  color: #f58a8a;
+  top: 0;
+  left: 0;
+  padding: 0.5rem;
+  font-size: 30px;
+}
+
+.menuElements {
+  color: #000000;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-align: center !important;
+  position: absolute;
+  margin: 0.5rem;
+  background-color: white;
+  border-radius: 50%;
+  border: none;
+  white-space: nowrap;
+  vertical-align: baseline;
+  height: 3rem;
+  width: 3rem;
+  padding: 0rem;
+}
+
+.numElements {
+  color: #000000;
+  font-size: 1.7rem;
+  font-weight: 600;
+  text-align: center !important;
+  position: absolute;
+  background-color: white;
+  border: none;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-top:tomato 2px solid;
+}
+
+.plusElements {
+  color: #000000;
+  font-size: 1.7rem;
+  font-weight: 600;
+  text-align: center !important;
+  position: absolute;
+  background-color:white;
+  border: 1px;
+  white-space: nowrap;
+  vertical-align: baseline;
+  top:222px;
+
+  border-top:tomato 2px solid;
+  border-left:tomato 2px solid;
+  outline:none;
+
+}
+
+.plusElements:focus{
+  outline: none;
+}
+
+.minusElements {
+  color: #000000;
+  font-size: 1.7rem;
+  font-weight: 600;
+  text-align: center !important;
+  position: absolute;
+  background-color:white;
+  border: 1px;
+  white-space: nowrap;
+  vertical-align: baseline;
+  height: 3rem;
+  width: 3rem;
+  left:0px;
+  bottom: 0px;
+
+  border-top:tomato 2px solid;
+  border-right:tomato 2px solid;
+  outline:none;
+}
+/* .minusElements {
+  color: #000000;
+  font-size: 1.7rem;
+  font-weight: 600;
+  text-align: center !important;
+  background-color:white;
+  border: 1px;
+  white-space: nowrap;
+  vertical-align: baseline;
+  height: 50px;
+  width: 50px;
+  border-top:tomato 2px solid;
+  border-right:tomato 2px solid;
+  outline:none;
+} */
+
+.minusElements:focus{
+  outline: none;
+}
+
+
+
+.heartButton {
+  position:relative;
+  left:0;
+  color: #000000;
+  position: absolute;
+  background-color: white;
+  border: none;
+  white-space: nowrap;
+  vertical-align: baseline;
+  padding: 0rem;
+  outline: none;
+
+  width: 37px;
+  height: 37px;
+  background: white;
+  border-radius: 0 0 100px 0;
+  -moz-border-radius: 0 0 100px 0;
+  -webkit-border-radius: 0 0 100px 0;
+}
+
+.heartButton:focus {
+  outline: none;
+}
+
+.infoButton {
+  position:relative;
+  right:0px;
+  position: absolute;
+  color: #000000;
+  font-size: 1.0rem;
+  font-weight: 600;
+  text-align: center !important;
+  background-color: white;
+  border-radius: 50%;
+  border: none;
+  left:147px;
+
+  width: 37px;
+  height: 37px;
+  border-radius: 0 0 0 100px;
+  -moz-border-radius: 0 0 0 100px;
+  -webkit-border-radius: 0 0 0 100px;
+}
+
+.infoButton:focus{
+  outline:none;
+}
+
+.datebutton {
+  width: 134px;
+  height:134px;
+  border:none;
+  margin-right: 20px;
+  margin-left: 3px;
+  margin-top: 3px;
+  background-color: white;
+  box-shadow: 0 0 7px #838383;
+  margin-top: 10px;
+
+}
+
+.datebutton:focus {
+  width: 134px;
+  height:134px;
+  border: 4px solid #f08e1f; 
+  outline:none;
+}
+
+.datebuttonSkip {
+  width: 134px;
+  height:134px;
+  border: none; 
+  margin-right: 20px;
+  margin-top: 3px;
+  margin-left: 3px;
+  background-color: #D9D9D9;
+  box-shadow: 0 0 7px #838383;
+
+}
+
+.datebuttonSkip:focus {
+  width: 134px;
+  height:134px;
+  border: 4px solid #f08e1f; 
+  outline:none;
+}
+
+.datebuttonSurprise {
+  width: 134px;
+  height:134px;
+  border:none;
+  margin-right: 20px;
+  margin-left: 3px;
+  margin-top: 3px;
+  background-color: white;
+  box-shadow: 0 0 7px #838383;
+}
+
+.datebuttonSurprise:focus {
+  width: 134px;
+  height:134px;
+  border: 4px solid #f08e1f; 
+  outline:none;
+}
+
+.datebuttonSave {
+  width: 134px;
+  height:134px;
+  border:none;
+  margin-right: 20px;
+  margin-left: 3px;
+  margin-top: 3px;
+  background-color: #F8BB17;
+  box-shadow: 0 0 7px #838383;
+}
+.datebuttonSave:focus {
+  width: 134px;
+  height:134px;
+  border: 4px solid #f08e1f; 
+  outline:none;
+}
+
+.divider{
+  width:200px;
+  height: 100px;
+  display:inline-block;
+}
+
+#mealCounter {
+  color: #000000;
+  top: 0;
+  right: 0;
+  z-index: 2;
+}
+
+#numButton {
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  font-size: 25px;
+}
+
+#minusButton {
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  font-size: 25px;
+}
+
+#plusButton {
+  bottom: 0;
+  right: 0;
+  z-index: 2;
+  font-size: 25px;
+}
+#eyeBtn {
+  top: 0;
+  left: 0;
+  z-index: 2;
+  background-image: url("./images/eye.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 35px 35px;
+}
+.footerIcons {
+  height: 1.5em;
+  width: 1.5rem;
+}
+
+.pickers {
+  text-align-last: right !important;
+  -webkit-appearance: menulist;
+  height: 32px;
+  width: 329px;
+  position: relative;
+  border: none;
+  border-radius: 20px;
+  color: #000000;
+  font-weight: 500;
+  border: 1px solid #ffba00;
+  padding: 0.2rem 1rem 0.2rem 1rem;
+  margin: 0.3rem 0.3rem;
+  font-size: 15px;
+}
+
+.pickers:focus {
+  outline: none;
+}
+
+#mealPlanPicker {
+  background-image: url("../Menu/static/lunch.svg");
+  background-origin: content-box;
+  background-position: left;
+  background-repeat: no-repeat;
+  background-size: 20px 20px;
+  background-clip: content-box;
+}
+
+#date {
+  background-image: url("../Menu/static/Calendar.svg");
+  background-origin: content-box;
+  background-position: left;
+  background-repeat: no-repeat;
+  background-size: 20px 20px;
+  background-clip: content-box;
+  text-align-last: right !important;
+}
+
+.stickyHeader select.selector {
+  background: #068585 !important;
+}
+.stickyHeader {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 60px;
+  background-color: #f8bb17;
+}
+
+.supriseSkipSave {
+  display: flex;
+  flex-direction: row;
+
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+@media (max-width: 500px) {
+  .root {
+    --navBarWidth: 0px;
+    --navBarHeight: 60px;
+  }
+  .sideNavBar {
+    display: none;
+  }
+  .bottomNavBar {
+    display: inherit;
+    position: absolute;
+    bottom: 0px;
+    width: inherit;
+  }
+}
+
+@media only screen and (min-width: 600px) {
+  .landing {
+    flex-direction: column;
+  }
+  .mainPanel {
+    display: flex;
+    flex-direction: row;
+  }
+  .MainImage {
+    width: 35rem;
+    height: 40rem;
+    z-index: 1;
+  }
+  .info {
+    display: flex;
+    flex: 2;
+    width: 100%;
+  }
+  .loginPanel {
+    position: relative;
+    background-color: #f3f3f3;
+    text-align: center;
+    width: 100%;
+    bottom: 10px;
+    flex: 1;
+    height: 100vh;
+  }
+  .signUp {
+    width: 5rem;
+    height: 2rem;
+    padding: 0.3rem;
+    background-color: #2a82a5;
+    color: white;
+  }
+  .mainApp {
+    width: 60rem;
+    padding-left: 20%;
+  }
+}
+
+.popUpHide {
+  z-index: 1;
+  display: none;
+}
+
+.popUpShow {
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  overflow: auto;
+  position: fixed;
+  display: grid;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.popUpContainer {
+  position: relative;
+  justify-self: center;
+  align-self: center;
+  display: block;
+  border: #F26522 solid 2px;
+  background-color: white;
+  border-radius: 0px;
+  height: max-content;
+  width: 384px;
+  height: 223px;
+  z-index: 2;
+}
+
+.popUpButton {
+  display: block;
+  justify-self: center;
+  /* font-weight: bold; */
+  font-size: 20px;
+  color: white;
+  background-color: #F26522;
+  height: 50px;
+  width: 200px;
+  /* text-align: center; */
+  border-radius: 20px;
+  /* padding: 10px 10px 4px; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin: auto;
+  margin-bottom: 15px;
+}
+
+.popUpButton:hover {
+  color:#ffba00;
+  text-decoration: none;
+}

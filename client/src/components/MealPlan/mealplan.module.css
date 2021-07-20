@@ -1,0 +1,355 @@
+.container {
+  text-align: center;
+  /* margin-left: 20px;
+  margin-right: 20px; */
+}
+
+.sectionHeader {
+  background-color: #ffba00;
+  width: 100%;
+  height: 60px;
+  font-weight: bold;
+  /*padding-left: 100px;*/
+  padding-left: 8%;
+  /* padding-top: 15px; */
+  display: flex;
+  align-items: center;
+  font-size: 25px;
+  margin-bottom: 30px;
+  margin-top: 30px;
+}
+
+.box {
+  width: 100%;
+  padding: 30px 30px;
+  /*border: 1px solid #e0dede;
+  border-radius: 30px;*/
+  text-align: left;
+  /*box-shadow: -1px 1px 0px 1px #ddd8d8;*/
+}
+.box1 {
+  padding: 10px;
+}
+.box2 {
+  margin-left: 8%;
+  margin-right: 8%;
+  margin-bottom: 30px;
+  width: 84%;
+  /* border: double; */
+  text-align: left;
+}
+
+.logo {
+  width: 100px;
+  height: 100px;
+  border-radius: 100px;
+  background-color: #ff9e19;
+  border-style: none;
+  font-size: 40px;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  padding: 0px;
+}
+.logo:focus {
+  outline: none !important;
+}
+.mealPlanImg img {
+  max-width: 30%;
+  padding: 25px;
+  margin: 0px auto 0px auto;
+}
+.header1 {
+  color: #ff9400 !important;
+  padding: 0px !important;
+  margin: auto;
+  /* text-align: center; */
+  font-size: 25px !important;
+  font-weight: bold;
+}
+.textCenter {
+  text-align: center;
+}
+.textLeft {
+  text-align: left;
+}
+.cardInfo {
+  padding: 0px 10px 0px 10px;
+}
+.cardInfo p {
+  color: black;
+  font-weight: 500;
+  padding: 0px !important;
+  margin-bottom: 0px;
+  font-size: 15px !important;
+  margin-bottom: 10px;
+}
+.infoBtn {
+  text-align: center;
+  border: 3px solid #ffba00;
+  margin: 10px;
+  border-radius: 30px;
+  max-width: 150px;
+}
+.infoBtn:focus {
+  outline: none !important;
+}
+.separatedLine {
+  justify-self: center;
+  display: block;
+  border: 0px;
+  opacity: 50%;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-top: 2px solid #ff9400;
+}
+.circleInput {
+  width: 50px;
+  height: 50px;
+  border-style: none;
+  background: url("../ChoosePlan/Group 2016.svg");
+  background-size: 50px;
+  background-repeat: no-repeat;
+}
+.font10 {
+  font-size: 10px !important;
+}
+.deliveryInfo {
+  text-align: left;
+}
+.deliveryInfo p {
+  color: black;
+  padding: 0px !important;
+  font-size: 15px !important;
+  font-weight: 400;
+  margin-bottom: 0px;
+  margin-top: 0px;
+}
+.historyItemName {
+  width: 100%;
+  justify-items: left;
+}
+.historyItemName p {
+  display: block;
+  color: black;
+  width: 100%;
+  padding: 5px 20px !important;
+  font-size: 15px;
+  font-weight: 400;
+  margin-bottom: 0px;
+}
+.itemName {
+  width: 100%;
+  color: #ff9400 !important;
+  font-size: 18px !important;
+  font-weight: bold !important;
+}
+.title {
+  font-weight: bold !important;
+  font-size: 15px;
+}
+.fixedHeight {
+  max-height: 100vh;
+}
+.flexHeight {
+  display: flex;
+  height: 100vh;
+}
+.dynamicHeight {
+  height: 100%;
+  overflow: scroll;
+}
+.subscribeNotice {
+  border: 1px solid;
+  border-radius: 20px;
+  box-shadow: 5px 5px #b1abab;
+  height: 100%;
+  width: 100%;
+  background-color: #89bce6;
+}
+.subscribeNotice > p {
+  color: rgb(22, 30, 73);
+  padding: 0px !important;
+  margin: auto;
+  font-size: 20px;
+  font-weight: bold;
+}
+.iconBtn {
+  width: 20%;
+  text-align: left;
+  background-color: transparent;
+  border-radius: 50%;
+  font-size: 15px !important;
+  border: none;
+  opacity: 0.3;
+}
+.iconBtn:hover {
+  opacity: 1;
+}
+.iconBtn:focus {
+  outline: none;
+}
+.iconBtn:active {
+  transform: translateY(2px);
+}
+.pastSubscriptions {
+  text-align: center;
+  margin-top: 4rem;
+}
+
+.orangeHeaderLeft {
+  border-top: solid;
+  color: #f26522;
+  border-width: 1px;
+  font-size: 20px;
+  padding-top: 4px;
+  padding-left: 4px;
+  width: 50%;
+  height: 40px;
+  text-overflow: ellipsis;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.orangeHeaderRight {
+  border-top: solid;
+  color: #f26522;
+  border-width: 1px;
+  font-size: 20px;
+  padding-top: 4px;
+  padding-right: 4px;
+  width: 50%;
+  height: 40px;
+  text-align: right;
+  text-overflow: ellipsis;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.orangeHeaderRightArrow {
+  border-top: solid;
+  /* border: solid; */
+  color: #f26522;
+  border-width: 1px;
+  font-size: 20px;
+  padding-top: 4px;
+  padding-right: 4px;
+  /* width: 50%; */
+  width: 46%;
+  height: 40px;
+  text-align: right;
+  text-overflow: ellipsis;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.orangeHeaderRightUL {
+  border-top: solid;
+  color: #f26522;
+  border-width: 1px;
+  font-size: 20px;
+  padding-top: 4px;
+  padding-right: 4px;
+  width: 50%;
+  height: 40px;
+  text-align: right;
+  text-decoration: underline;
+  text-overflow: ellipsis;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.mealHeaderLeft {
+  border: solid;
+  border-color: red;
+  font-size: 20px;
+  padding-top: 4px;
+  padding-left: 4px;
+  width: 50%;
+  height: 40px;
+}
+
+.mealHeaderRight {
+  border: solid;
+  border-color: red;
+  font-size: 20px;
+  padding-top: 4px;
+  padding-right: 4px;
+  width: 50%;
+  height: 40px;
+  text-align: right;
+}
+
+.dropdownSelection {
+  color: white;
+  border-radius: 15px;
+  background-color: #f26522;
+  font-size: 20px;
+  height: 40px;
+  padding-top: 5px;
+  box-shadow: 0px 5px 10px gray;
+  margin-bottom: 10px;
+  display: flex;
+  width: 40%;
+  min-width: 300px;
+  z-index: 2;
+  position: absolute;
+  cursor: pointer;
+}
+
+.dropdownArrow {
+  width: 0; 
+  height: 0; 
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-top: 20px solid white;
+}
+
+/* .orangeArrow {
+  color: #ffffff;
+  border: 1px solid #e4e4e4;
+  background-color: #ffffff;
+  border-radius: 50%;
+  padding: 0.75rem 0.75rem;
+  margin-top: 15px;
+  align-content: center;
+  flex: 1;
+  min-width: 20%;
+  font-size: 30px;
+  font-weight: 600;
+  outline: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('./static/yellow_plate.png');
+  background-size: 100%;
+} */
+
+.orangeArrowUp {
+  /* background-image: url('./static/orange_arrow_up.png'); */
+  background-image: url('../../images/orange_arrow_up.png');
+  background-size: 100%;
+  width: 12px;
+  height: 11px;
+}
+
+.orangeArrowDown {
+  /* background-image: url('./static/orange_arrow_down.png'); */
+  background-image: url('../../images/orange_arrow_down.png');
+  background-size: 100%;
+  width: 12px;
+  height: 11px;
+}
+
+.whiteArrowDown {
+  /* background-image: url('./static/white_arrow_down.png'); */
+  background-image: url('../../images/white_arrow_down.png');
+  background-size: 100%;
+  width: 24px;
+  height: 16px;
+  margin-top: 6px;
+  float: right;
+}
