@@ -2528,7 +2528,7 @@ function CustomerInfo(props) {
                 {/* {document.getElementById("custInfo").offsetWidth > 800 ? ( */}
                 {document.getElementById("custInfo") !== null && loadingUserInfo === false? (
                   <>
-                    <div 
+                    {/* <div 
                       style={{
                         // border: 'inset', 
                         position: 'absolute',
@@ -2559,7 +2559,7 @@ function CustomerInfo(props) {
                       }}
                     >
                       ${calculateRevenue().toFixed(2)}
-                    </div>
+                    </div> */}
 
                     <div 
                       style={{
@@ -2574,7 +2574,7 @@ function CustomerInfo(props) {
                         fontWeight: '500'
                       }}
                     >
-                      Active Subscriptions
+                      Total no. of orders
                     </div>
                     <div 
                       style={{
@@ -2593,6 +2593,39 @@ function CustomerInfo(props) {
                     <div 
                       style={{
                         position: 'absolute',
+                        right: '200px',
+                        width: '200px',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        top: '100px',
+                        height: '30px',
+                        color: '#E7404A',
+                        fontWeight: '500'
+                      }}
+                    >
+                      Customer UID
+                    </div>
+                    <div 
+                      style={{
+                        position: 'absolute',
+                        right: '200px',
+                        width: '200px',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        top: '130px',
+                        fontSize: '15px'
+                      }}
+                    >
+                      {isInvalid(selectedCustomer.customer_uid) ? (
+                        ERR_VAL
+                      ) : (
+                        selectedCustomer.customer_uid
+                      )}
+                    </div>
+
+                    <div 
+                      style={{
+                        position: 'absolute',
                         right: '400px',
                         width: '200px',
                         display: 'flex',
@@ -2603,7 +2636,7 @@ function CustomerInfo(props) {
                         fontWeight: '500'
                       }}
                     >
-                      Delivery Info
+                      Delivery Address
                     </div>
                     <div 
                       style={{
@@ -2622,6 +2655,40 @@ function CustomerInfo(props) {
                         selectedCustomer.customer_address
                       )}
                     </div>
+
+                    <div 
+                      style={{
+                        position: 'absolute',
+                        right: '400px',
+                        width: '200px',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        top: '100px',
+                        height: '30px',
+                        color: '#E7404A',
+                        fontWeight: '500'
+                      }}
+                    >
+                      Delivery Zone
+                    </div>
+                    <div 
+                      style={{
+                        position: 'absolute',
+                        right: '400px',
+                        width: '200px',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        top: '130px',
+                        fontSize: '15px'
+                      }}
+                    >
+                      {isInvalid(selectedCustomer.customer_address) ? (
+                        ERR_VAL
+                      ) : (
+                        selectedCustomer.customer_address
+                      )}
+                    </div>
+
                     <div 
                       style={{
                         position: 'absolute',
@@ -2686,6 +2753,35 @@ function CustomerInfo(props) {
                       }}
                     >
                       {selectedCustomer.customer_phone_num}
+                    </div>
+
+                    <div 
+                      style={{
+                        position: 'absolute',
+                        right: '600px',
+                        width: '200px',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        top: '100px',
+                        height: '30px',
+                        color: '#E7404A',
+                        fontWeight: '500'
+                      }}
+                    >
+                      Last order recieved
+                    </div>
+                    <div 
+                      style={{
+                        position: 'absolute',
+                        right: '600px',
+                        width: '200px',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        top: '130px',
+                        fontSize: '15px'
+                      }}
+                    >
+                      ??/??/????
                     </div>
                   </>
                 ) : (
@@ -2883,7 +2979,7 @@ function CustomerInfo(props) {
                             fontWeight: '500'
                           }}
                         >
-                          Contact Info
+                          Contact Info 1
                         </div>
                         <div 
                           style={{
@@ -2903,7 +2999,10 @@ function CustomerInfo(props) {
                         >
                           {selectedCustomer.customer_phone_num}
                         </div>
+
                       </div>
+
+                      
 
                       <div className={styles.narrowInfoBox}>
                         <div 

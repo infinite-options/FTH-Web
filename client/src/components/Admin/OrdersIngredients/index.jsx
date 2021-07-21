@@ -722,10 +722,10 @@ function OrdersIngredients({ history, ...props }) {
                 }}
                 className={styles.bold}
               >
-                <div style={{ marginBottom: "10px", color: "#E7404A" }}>
+                {/* <div style={{ marginBottom: "10px", color: "#E7404A" }}>
                   Total Revenue
-                </div>
-                <div style={{ fontSize: "20px" }}>
+                </div> */}
+                {/* <div style={{ fontSize: "20px" }}>
                   {currencyFormatter.format(
                     calculateTotalRevenue(
                       filterDataByBusiness(
@@ -734,12 +734,13 @@ function OrdersIngredients({ history, ...props }) {
                       )
                     )
                   )}
-                </div>
+                </div> */}
               </div>
             </Col>
           </Row>
           <Row>
-          <Col md="auto" className={styles.verticallyCenter}>
+            
+            <Col md="auto" className={styles.verticallyCenter}>
               <button
                 style={{ transform: "translateX(30px)", width: "5%" }}
                 className={styles.dateCarouselArrowBtn}
@@ -821,14 +822,14 @@ function OrdersIngredients({ history, ...props }) {
                         style={{
                           fontWeight: "bold",
                           color: "#E7404A",
-                          border: "none",
+                          border: "none", textAlign: "center",
                         }}
                       >
                         <TableSortLabel
                           style={{
                             fontWeight: "bold",
                             color: "#E7404A",
-                            border: "none",
+                            border: "none", textAlign: "center",
                           }}
                           direction={state.sortOrders.direction}
                           onClick={() => changeSortOrder("total_qty")}
@@ -840,14 +841,14 @@ function OrdersIngredients({ history, ...props }) {
                         style={{
                           fontWeight: "bold",
                           color: "#E7404A",
-                          border: "none",
+                          border: "none", textAlign: "center",
                         }}
                       >
                         <TableSortLabel
                           style={{
                             fontWeight: "bold",
                             color: "#E7404A",
-                            border: "none",
+                            border: "none", textAlign: "center",
                           }}
                           direction={state.sortOrders.direction}
                           onClick={() => changeSortOrder("meal_name")}
@@ -859,12 +860,40 @@ function OrdersIngredients({ history, ...props }) {
                         style={{
                           fontWeight: "bold",
                           color: "#E7404A",
-                          border: "none",
+                          border: "none", textAlign: "center",
                         }}
                       >
                         Meal Pictures
                       </TableCell>
                       <TableCell
+                        style={{
+                          fontWeight: "bold",
+                          color: "#E7404A",
+                          border: "none", textAlign: "center",
+                        }}
+                      >
+                        Type of Food
+                      </TableCell>
+                      <TableCell
+                        style={{
+                          fontWeight: "bold",
+                          color: "#E7404A",
+                          border: "none", textAlign: "center",
+                        }}
+                      >
+                        Current Inventory
+                      </TableCell>
+
+                      <TableCell
+                        style={{
+                          fontWeight: "bold",
+                          color: "#E7404A",
+                          border: "none", textAlign: "center",
+                        }}
+                      >
+                        Food Bank
+                      </TableCell>
+                      {/* <TableCell
                         style={{
                           fontWeight: "bold",
                           color: "#E7404A",
@@ -922,7 +951,7 @@ function OrdersIngredients({ history, ...props }) {
                         >
                           Additional Revenue
                         </TableSortLabel>
-                      </TableCell>
+                      </TableCell> */}
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -936,19 +965,19 @@ function OrdersIngredients({ history, ...props }) {
                             <TableCell
                               style={{
                                 fontWeight: "bold",
-                                fontSize: "18px",
-                                borderBottom: "1px solid #E7404A",
+                                fontSize: "30px",
+                                borderBottom: "1px solid #E7404A", textAlign: "center",
                               }}
                             >
                               {item.total_qty}
                             </TableCell>
                             <TableCell
-                              style={{ borderBottom: "1px solid #E7404A" }}
+                              style={{ borderBottom: "1px solid #E7404A", textAlign: "center", fontSize: "18px" }}
                             >
                               {item.meal_name}
                             </TableCell>
                             <TableCell
-                              style={{ borderBottom: "1px solid #E7404A" }}
+                              style={{ borderBottom: "1px solid #E7404A", textAlign: "center" }}
                             >
                               <img
                                 src={item.meal_photo_URL}
@@ -956,6 +985,46 @@ function OrdersIngredients({ history, ...props }) {
                               ></img>
                             </TableCell>
                             <TableCell
+                              style={{ borderBottom: "1px solid #E7404A", textAlign: "center" }}
+                            >
+                              <select
+                                className={styles.dropdown}
+                                // onChange={}
+                              >
+                                <option key={0}>Placeholder</option>
+                                {/* {state.businessData.map((business, index) => {
+                                  if (business) {
+                                    return (
+                                      <option
+                                        key={business.business_uid}
+                                        value={business.business_uid}
+                                      >
+                                        {business.business_name}
+                                      </option>
+                                    );
+                                  }
+                                })} */}
+                              </select>
+                            </TableCell>
+                            <TableCell
+                              style={{ 
+                                fontWeight: "bold",
+                                fontSize: "30px",
+                                borderBottom: "1px solid #E7404A", textAlign: "center" 
+                              }}
+                            >
+                              99
+                            </TableCell>
+
+                            <TableCell
+                              style={{ 
+                                fontSize: "18px",
+                                borderBottom: "1px solid #E7404A", textAlign: "center" 
+                              }}
+                            >
+                              {item.business_name}
+                            </TableCell>
+                            {/* <TableCell
                               style={{ borderBottom: "1px solid #E7404A" }}
                             >
                               {currencyFormatter.format(item.meal_cost)}
@@ -971,7 +1040,7 @@ function OrdersIngredients({ history, ...props }) {
                               {currencyFormatter.format(
                                 item.total_profit_sharing
                               )}
-                            </TableCell>
+                            </TableCell> */}
                           </TableRow>
                         );
                       })}
