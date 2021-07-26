@@ -548,7 +548,7 @@ function Zones ({history,...props}) {
               <div style={{width: "100%", textAlign: "center"}}>
                 <Button
                   style={{
-                    backgroundColor: "#F26522",
+                    backgroundColor: "#E7404A",
                     marginBottom: "15px",
                     marginTop: "15px",
                     borderRadius: "15px",
@@ -652,7 +652,7 @@ function Zones ({history,...props}) {
   }
 
   return (
-    <div style={{backgroundColor: '#F26522', height: "1000px"}}>
+    <div style={{backgroundColor: 'white', height: "1000px", width: "1920px"}}>
       {getAllBusinesses()}
 
       {selectBusinessModal()}
@@ -663,15 +663,15 @@ function Zones ({history,...props}) {
         <div style = {{width: "70%", height: "100%", float: "left", fontWeight: 'bold', paddingTop: "45px", paddingLeft: "27px", }}>
           Zones
         </div>
-        <div style = {{width: "15%", height: "100%", float: "left", fontWeight: 'bold', color: "#F26522", textAlign: "center", marginTop: "15px",}}>
+        <div style = {{width: "15%", height: "100%", float: "left", fontWeight: 'bold', color: "#E7404A", textAlign: "center", marginTop: "15px",}}>
           Total no. of Zones
           <div style = {{color: "black", fontSize: "30px"}}>
             {state.zones.length}
           </div>
         </div>
-        <div style={{width: "15%", height: "100%", float: "left", textAlign: "center"}}>
+        <div style={{width: "10%", height: "100%", float: "left", textAlign: "center"}}>
           <div 
-            style = {{fontWeight: 'bold', marginTop: "45px"}}
+            style = {{fontWeight: 'bold', marginTop: "35px", backgroundColor: "#E7404A", color: "white", paddingTop: '10px', paddingBottom: '10px', borderRadius: "25px"}}
             onClick={() => {toggleEditZone(initialState.editedZone)}}
           >
             Create New Zone +
@@ -718,7 +718,7 @@ function Zones ({history,...props}) {
 
             {setSwitchImage()}
 
-            <div style={{width: "10%", marginTop: "2%", display: "inline-block", color: "#F26522"}}
+            <div style={{width: "10%", marginTop: "2%", display: "inline-block", color: "#E7404A"}}
               >Active:</div>
               <div style={{width: "10%", display: "inline-block"}}
                 onClick={() => {
@@ -740,7 +740,7 @@ function Zones ({history,...props}) {
             {splitZoneName()}
             
             {/* <div style={{width: "98%", margin: "1%", float: "left"}}>
-              <div style={{color: "#F26522"}}>Zone Name:</div>
+              <div style={{color: "#E7404A"}}>Zone Name:</div>
               <Form.Control
                 value={state.editedZone.zone_name}
                 onChange={
@@ -751,8 +751,8 @@ function Zones ({history,...props}) {
             />
             </div> */}
             
-            <div style={{width: "31%", margin: "1%", float: "left"}}>
-              <div style={{color: "#F26522"}}>Zone Name:</div>
+            <div style={{width: "48%", margin: "1%", float: "left"}}>
+              <div style={{color: "#E7404A"}}>Zone Name:</div>
               <Form.Control
                 value={state.nameSplit.nameValue}
                 onChange={
@@ -765,8 +765,8 @@ function Zones ({history,...props}) {
             />
             </div>
 
-            <div style={{width: "31%", margin: "1%", float: "left"}}>
-              <div style={{color: "#F26522"}}>Zone Color:</div>
+            <div style={{width: "48%", margin: "1%", float: "left"}}>
+              <div style={{color: "#E7404A"}}>Zone Color:</div>
               <Form.Control
                 value={state.nameSplit.colorValue}
                 onChange={
@@ -781,8 +781,8 @@ function Zones ({history,...props}) {
             
             </div>
 
-            <div style={{width: "31%", margin: "1%", float: "left"}}>
-                  <div style={{color: "#F26522"}}>Zone UID:</div>
+            <div style={{width: "48%", margin: "1%", float: "left"}}>
+                  <div style={{color: "#E7404A"}}>Zone UID:</div>
                   <Form.Control
                     value={state.editedZone.zone_uid}
                     onChange={
@@ -791,15 +791,25 @@ function Zones ({history,...props}) {
                       }
                     }
                   />
-              </div>
+            </div>
 
-            
+            <div style={{width: "48%", margin: "1%", float: "left"}}>
+                  <div style={{color: "#E7404A"}}>Food Bank Name:</div>
+                  <Form.Control
+                    // value={state.editedZone.zone_uid}
+                    // onChange={
+                    //   (event) => {
+                    //     editZone('zone_uid',event.target.value);
+                    //   }
+                    // }
+                  />
+            </div>
 
             <div className={styles.spacer}></div>
 
             <div style={{width: "98%", margin: "1%", float: "left"}}>
               <div style={{width: "25%", float: "left"}}>
-                <div style={{color: "#F26522"}}>Business UID:</div>
+                <div style={{color: "#E7404A"}}>Business UID:</div>
                 {/* <select
                   className={styles.dropdown}
                   style={{width: "100%", float: "left"}}
@@ -835,7 +845,7 @@ function Zones ({history,...props}) {
               </div>
                 {/* convertUIDToNames(state.editedZone.z_businesses) */}
               <div style={{width: "25%", float: "left"}}>
-                <div style={{color: "#F26522"}}>Delivery Day</div>
+                <div style={{color: "#E7404A"}}>Delivery Day</div>
                 {/* <Form.Control
                   value={state.editedZone.z_delivery_day}
                   onChange={
@@ -881,7 +891,7 @@ function Zones ({history,...props}) {
               </div>
 
               <div style={{width: "25%", float: "left"}}>
-                <div style={{color: "#F26522"}}>Accepting Day</div>
+                <div style={{color: "#E7404A"}}>Accepting Day</div>
                 {/* <Form.Control
                   value={state.editedZone.z_delivery_day}
                   onChange={
@@ -927,7 +937,7 @@ function Zones ({history,...props}) {
               </div>
               
               <div style={{width: "25%", float: "left"}}>
-                <div style={{color: "#F26522"}}>Delivery Time</div>
+                <div style={{color: "#E7404A"}}>Delivery Time</div>
                 <Form.Control
                   value={state.editedZone.z_delivery_time}
                   onChange={
@@ -942,7 +952,7 @@ function Zones ({history,...props}) {
               <div className={styles.spacerSmall}></div>
 
               <div style={{width: "25%", float: "left"}}>
-                <div style={{color: "#F26522"}}>Accepting Time</div>
+                <div style={{color: "#E7404A"}}>Accepting Time</div>
                 <Form.Control
                   value={state.editedZone.z_accepting_time}
                   onChange={
@@ -953,7 +963,7 @@ function Zones ({history,...props}) {
                 />
               </div>
               <div style={{width: "25%", float: "left"}}>
-                <div style={{color: "#F26522"}}>Delivery Fee</div>
+                <div style={{color: "#E7404A"}}>Delivery Fee</div>
                 <Form.Control
                   value={state.editedZone.delivery_fee}
                   onChange={
@@ -964,7 +974,7 @@ function Zones ({history,...props}) {
                 />
               </div>
               <div style={{width: "25%", float: "left"}}>
-                <div style={{color: "#F26522"}}>Service Fee</div>
+                <div style={{color: "#E7404A"}}>Service Fee</div>
                 <Form.Control
                   value={state.editedZone.service_fee}
                   onChange={
@@ -975,7 +985,7 @@ function Zones ({history,...props}) {
                 />
               </div>
               <div style={{width: "25%", float: "left"}}>
-                <div style={{color: "#F26522"}}>Tax Rate</div>
+                <div style={{color: "#E7404A"}}>Tax Rate</div>
                 <Form.Control
                   value={state.editedZone.tax_rate}
                   onChange={
@@ -990,7 +1000,7 @@ function Zones ({history,...props}) {
             <div className={styles.spacer}></div>
 
             <div style={{width: "98%", margin: "1%", float: "left"}}>
-              <div style={{color: "#F26522"}}>Define Zone Points:</div>
+              <div style={{color: "#E7404A"}}>Define Zone Points:</div>
               <div className={styles.spacerSmall}></div>
               <div style={{width: "100%", float: "left"}}>
                 <div style={{width: "50%", float: "left"}}>
@@ -1099,7 +1109,7 @@ function Zones ({history,...props}) {
 
             <div style={{textAlign: "center"}}>
               <Button
-                style={{backgroundColor: "#F26522", borderRadius: "15px"}}
+                style={{backgroundColor: "#E7404A", borderRadius: "15px"}}
                 variant="secondary"
                 onClick={() => {
                   saveZone()
@@ -1108,7 +1118,7 @@ function Zones ({history,...props}) {
                 Save Zone
               </Button>
               {/* <Button
-                style={{backgroundColor: "#F26522", borderRadius: "15px"}}
+                style={{backgroundColor: "#E7404A", borderRadius: "15px"}}
                 variant="secondary"
                 onClick={() => stitchZoneName()}
               >

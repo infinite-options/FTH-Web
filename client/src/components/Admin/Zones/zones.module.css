@@ -10,6 +10,8 @@
     margin-left: 2%;
     margin-right: 2%;
     background-color: white;
+    border: solid;
+    border-color: #E7404A;
     /* display: flex; */
 }
 
