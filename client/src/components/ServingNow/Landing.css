@@ -1,0 +1,51 @@
+.rectangle {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+
+.shopping {
+  position: absolute;
+  top: -70px;
+  left: 372px;
+  max-width: 1370px;
+  height: 1080px;
+  z-index: -1;
+}
+
+.header {
+  position: absolute;
+  font-family: "SF Pro Display";
+  font-size: 45px;
+  left: 470px;
+  top: 34px;
+  letter-spacing: 0.49px;
+  color: #ffffff;
+  width: 264px;
+  height: 54px;
+}
+
+.text {
+  position: absolute;
+  font-family: "SF Pro Display";
+  font-size: 45px;
+  bottom: 550px;
+  right: 480px;
+  text-align: center;
+  width: 264px;
+  height: 108px;
+}
+
+.register {
+  position: absolute;
+  width: 433px;
+  height: 79px;
+  bottom: 340px;
+  right: 398px;
+}
+
+.login {
+  position: absolute;
+  width: 433px;
+  height: 79px;
+}

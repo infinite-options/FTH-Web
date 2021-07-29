@@ -43,6 +43,10 @@ import AdminZones from './components/Admin/Zones';
 import AdminCustomerInfo from './components/Admin/CustomerInfo';
 import AdminIngredientsUnits from './components/Admin/IngredientsUnits';
 
+import Landing from './components/ServingNow/Landing';
+import LoginPage from './components/ServingNow/Login';
+
+
 // import MapTest from './components/MapTest';
 import Congrats from "./components/Congrats";
 
@@ -153,6 +157,14 @@ function App() {
             <Route exact path="/admin/ingredients-units">
               <AdminIngredientsUnits />
             </Route>
+            
+            <Route exact path="/landing">
+              <Landing/>
+            </Route>
+            <Route exact path="/loginpage">
+              <LoginPage/>
+            </Route>
+            
             <AppliedRoute path='*' component={NotFound} />
           </Switch>
         </Router>
