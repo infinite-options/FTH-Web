@@ -64,10 +64,11 @@
 
 .login {
   position: absolute;
-  top: 415px;
-  left: 910px;
-  width: 325px;
-  height: 59px;
+  /* top: 415px;
+  left: 910px; */
+  /* width: 325px;
+  height: 59px; */
+  transform: translate(230px, 265px) scale(0.18);
 }
 
 .textContent {
