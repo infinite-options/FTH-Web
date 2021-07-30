@@ -8,12 +8,14 @@
   z-index: -1;
 }
 
-.rectangle {
+.rectangle1 {
   position: absolute;
-  /* width: 1920px;
-  height: 80px; */
+  width: 1920px;
+  height: 80px;
+  background-color: #e7404a;
   top: 0px;
   left: 0px;
+  z-index: -1;
 }
 
 .header {
@@ -62,13 +64,13 @@
   z-index: 1;
 }
 
-.login {
+.login1 {
   position: absolute;
   /* top: 415px;
   left: 910px; */
   /* width: 325px;
   height: 59px; */
-  transform: translate(230px, 265px) scale(0.18);
+  transform: translate(230px, 270px) scale(0.18);
 }
 
 .textContent {

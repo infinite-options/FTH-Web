@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 
 import "../ServingNow/Login.css";
 import shopping from '../Assets/shopping.png';
-import rectangle from '../Assets/thinRectangle.svg';
+// import rectangle from '../Assets/thinRectangle.svg';
 import box from '../Assets/loginBox.png';
 import textBox from '../Assets/textBox.svg';
-import login from '../Assets/login.svg';
+import login1 from '../Assets/login1.svg';
 import visibility from '../Assets/visibility.svg';
 import google from '../Assets/google.svg';
 import apple from '../Assets/apple.svg';
@@ -16,11 +16,11 @@ class Login extends Component {
         return (
             <div style={{width:'100%'}}>
                 <img src={shopping} alt="" class="shopping"/>
-                <img src={rectangle} alt="" class="rectangle"/>
+                {/* <img src={rectangle} alt="" class="rectangle"/> */}
                 <img src={box} alt="" class="box"/>
                 <img src={textBox} alt="" class="textBox"/>
                 <img src={textBox} alt="" class="textBox2"/>
-                <img src={login} alt="" class="login"/>
+                <img src={login1} alt="" class="login1"/>
                 <img src={visibility} alt="" class="visibility"/>
                 <img src={google} alt="" class="google"/>
                 <img src={apple} alt="" class="apple"/>
@@ -30,6 +30,8 @@ class Login extends Component {
                 <div class="header">
                     <h5> <b>Serving Now</b></h5>
                 </div>
+
+                <div class="rectangle1"> </div>
 
                 <div class="title">
                     <h5> <b>Login to your existing account</b></h5>

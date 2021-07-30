@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import "../ServingNow/Landing.css";
 import shopping from '../Assets/shopping.png';
 import register from '../Assets/register.svg';
-import login from '../Assets/login.svg';
+import login2 from '../Assets/login2.svg';
 
 class Landing extends Component {
     render() {
@@ -11,7 +11,7 @@ class Landing extends Component {
             <div>
                 <img src={shopping} alt="" class="shopping"/>
                 <img src={register} alt="" class="register"/>
-                <img src={login} alt="" class="login"/>
+                <img src={login2} alt="" class="login"/>
 
                 <div class="rectangle"> </div>
 
