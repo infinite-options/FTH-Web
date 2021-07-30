@@ -4,7 +4,7 @@ import "../ServingNow/Landing.css";
 import shopping from '../Assets/shopping.png';
 import login from '../Assets/login.svg';
 import register from '../Assets/register.svg';
-import rectangle from '../Assets/rectangle.svg';
+// import rectangle from '../Assets/rectangle.svg';
 
 class Landing extends Component {
     render() {
@@ -13,10 +13,16 @@ class Landing extends Component {
                 <img src={shopping} alt="" class="shopping"/>
                 <img src={login} alt="" class="login"/>
                 <img src={register} alt="" class="register"/>
-                <img src={rectangle} alt="" class="rectangle"/>
+                {/* <img src={rectangle} alt="" class="rectangle"/> */}
 
+                {/* <div class="header">
+                    <h1> <b> Serving Now</b></h1>
+                </div> */}
+
+                <div class="rectangle"> </div>
+                
                 <div class="header">
-                    <h1> <b>Serving Now</b></h1>
+                    <h1><b>Serving Now</b></h1>
                 </div>
                 
                 <div class="text">

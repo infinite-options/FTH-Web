@@ -1,5 +1,8 @@
 .rectangle {
   position: absolute;
+  width: 1920px;
+  height: 105px;
+  background-color: #e7404a;
   top: 0px;
   left: 0px;
 }
@@ -21,8 +24,10 @@
   top: 34px;
   letter-spacing: 0.49px;
   color: #ffffff;
-  width: 264px;
+  /* width: 264px; */
   height: 54px;
+  text-align: left;
+  white-space: nowrap;
 }
 
 .text {
