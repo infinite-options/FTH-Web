@@ -2,25 +2,19 @@ import React, { Component } from 'react';
 
 import "../ServingNow/Landing.css";
 import shopping from '../Assets/shopping.png';
-import login from '../Assets/login.svg';
 import register from '../Assets/register.svg';
-// import rectangle from '../Assets/rectangle.svg';
+import login from '../Assets/login.svg';
 
 class Landing extends Component {
     render() {
         return (
             <div>
                 <img src={shopping} alt="" class="shopping"/>
-                <img src={login} alt="" class="login"/>
                 <img src={register} alt="" class="register"/>
-                {/* <img src={rectangle} alt="" class="rectangle"/> */}
-
-                {/* <div class="header">
-                    <h1> <b> Serving Now</b></h1>
-                </div> */}
+                <img src={login} alt="" class="login"/>
 
                 <div class="rectangle"> </div>
-                
+
                 <div class="header">
                     <h1><b>Serving Now</b></h1>
                 </div>

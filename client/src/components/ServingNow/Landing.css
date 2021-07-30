@@ -46,11 +46,10 @@
   width: 433px;
   height: 79px;
   bottom: 340px;
-  right: 398px;
+  right: 390px;
 }
 
 .login {
   position: absolute;
-  width: 433px;
-  height: 79px;
+  transform: translate(0px, 70px) scale(1.32);
 }
