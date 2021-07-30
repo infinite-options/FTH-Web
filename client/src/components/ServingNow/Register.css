@@ -1,0 +1,146 @@
+.rectangle1 {
+  position: absolute;
+  width: 1920px;
+  height: 80px;
+  background-color: #e7404a;
+  top: 0px;
+  left: 0px;
+  z-index: -1;
+}
+
+.header {
+  position: absolute;
+  font-size: 22px;
+  top: 27px;
+  left: 470px;
+  width: 129px;
+  height: 26px;
+}
+
+.box1 {
+  position: absolute;
+  width: 350px;
+  height: 560px;
+  top: 190px;
+  /* bottom: 212px; */
+  left: 895px;
+}
+
+.title1 {
+  position: absolute;
+  font-family: "SF Pro Display";
+  font-size: 23px;
+  top: 220px;
+  left: 1010px;
+  width: 320px;
+  height: 28px;
+}
+
+.title2 {
+  position: absolute;
+  font-family: "SF Pro Display";
+  font-size: 23px;
+  top: 540px;
+  left: 995px;
+  width: 320px;
+  height: 28px;
+}
+
+.textBox3 {
+  position: absolute;
+  width: 315px;
+  height: 50px;
+  top: 260px;
+  left: 912px;
+  z-index: 1;
+}
+
+.textBox4 {
+  position: absolute;
+  width: 315px;
+  height: 50px;
+  top: 310px;
+  left: 912px;
+  z-index: 1;
+}
+
+.textBox5 {
+  position: absolute;
+  width: 315px;
+  height: 50px;
+  top: 360px;
+  left: 912px;
+  z-index: 1;
+}
+
+.textBox6 {
+  position: absolute;
+  width: 315px;
+  height: 50px;
+  top: 410px;
+  left: 912px;
+  z-index: 1;
+}
+
+.textBox7 {
+  position: absolute;
+  width: 155px;
+  height: 50px;
+  top: 460px;
+  left: 912px;
+  z-index: 1;
+}
+
+.textBox8 {
+  position: absolute;
+  width: 155px;
+  height: 50px;
+  top: 460px;
+  left: 1073px;
+  z-index: 1;
+}
+
+.textBox9 {
+  position: absolute;
+  width: 315px;
+  height: 50px;
+  top: 570px;
+  left: 912px;
+  z-index: 1;
+}
+
+.textBox11 {
+  position: absolute;
+  width: 155px;
+  height: 50px;
+  top: 620px;
+  left: 912px;
+  z-index: 1;
+}
+
+.textBox12 {
+  position: absolute;
+  width: 155px;
+  height: 50px;
+  top: 620px;
+  left: 1073px;
+  z-index: 1;
+}
+
+.continue {
+  position: absolute;
+  width: 309px;
+  height: 50px;
+  top: 680px;
+  left: 920px;
+}
+
+.textcontent3 {
+  position: absolute;
+  font-family: "SF Pro Display";
+  font-size: 16px;
+  /* width: 66px;
+  height: 19px; */
+  z-index: 1;
+  bottom: 500px;
+}

@@ -45,6 +45,8 @@ import AdminIngredientsUnits from './components/Admin/IngredientsUnits';
 
 import Landing from './components/ServingNow/Landing';
 import LoginPage from './components/ServingNow/Login';
+import RegisterPage from './components/ServingNow/Register';
+
 
 
 // import MapTest from './components/MapTest';
@@ -163,6 +165,9 @@ function App() {
             </Route>
             <Route exact path="/loginpage">
               <LoginPage/>
+            </Route>
+            <Route exact path="/register">
+              <RegisterPage/>
             </Route>
             
             <AppliedRoute path='*' component={NotFound} />

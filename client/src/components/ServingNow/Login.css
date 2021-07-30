@@ -80,9 +80,10 @@
   top: 318px;
   left: 930px;
   color: #000000;
-  width: 191px;
-  height: 19px;
+  /* width: 191px;
+  height: 19px; */
   z-index: 1;
+  white-space: nowrap;
 }
 
 .textContent2 {
@@ -146,8 +147,8 @@
   position: absolute;
   z-index: 1;
   top: 630px;
-  left: 935px;
-  font-size: 18px;
+  left: 955px;
+  font-size: 15px;
   /* width: 282px; */
   height: 21px;
 }

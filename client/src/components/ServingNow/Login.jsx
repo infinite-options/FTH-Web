@@ -37,12 +37,16 @@ class Login extends Component {
                     <h5> <b>Login to your existing account</b></h5>
                 </div>
 
+                {/* <div class="textContent">
+                    <h6 style={{color: 'black', position: 'absolute'}}>Phone Number</h6>
+                </div> */}
+
                 <div class="textContent">
-                    <h6 style={{color: 'black', position: 'absolute'}}> Phone Number</h6>
+                    <h6> Phone Number / ID Number</h6>
                 </div>
 
                 <div class="textContent2">
-                    <h6 style={{color: 'black', position: 'absolute'}}> Password</h6>
+                    <h6 style={{color: 'black', position: 'absolute', fontSize: '3'}}>Password</h6>
                 </div>
 
                 <div class="text1">
@@ -50,7 +54,7 @@ class Login extends Component {
                 </div>
 
                 <div class="text2">
-                    <h6> Don't have an account? <font color="#E7404A"> <u>Register </u> </font> </h6>
+                    <h7> <b>Don't have an account? <font color="#E7404A"> <u>Register </u> </font> </b> </h7>
                 </div>
 
             </div>
