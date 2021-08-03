@@ -6,7 +6,7 @@ import box from '../Assets/loginBox.png';
 import continuebutton from '../Assets/continue.svg';
 import downArrow from '../Assets/downArrow.svg';
 
-class Login extends Component {
+class Register extends Component {
     render() {
         return (
             <div style={{width:'100%'}}>
@@ -124,4 +124,4 @@ class Login extends Component {
     }
 }
 
-export default Login
+export default Register

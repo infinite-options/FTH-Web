@@ -46,6 +46,7 @@ import AdminIngredientsUnits from './components/Admin/IngredientsUnits';
 import Landing from './components/ServingNow/Landing';
 import LoginPage from './components/ServingNow/Login';
 import RegisterPage from './components/ServingNow/Register';
+import CreatePassword from './components/ServingNow/CreatePassword';
 
 
 
@@ -168,6 +169,9 @@ function App() {
             </Route>
             <Route exact path="/register">
               <RegisterPage/>
+            </Route>
+            <Route exact path="/createpassword">
+              <CreatePassword/>
             </Route>
             
             <AppliedRoute path='*' component={NotFound} />

@@ -11,6 +11,7 @@ import visibility from '../Assets/visibility.svg';
 import google from '../Assets/google.svg';
 import apple from '../Assets/apple.svg';
 import fb from '../Assets/fb.svg';
+import { nodeModuleNameResolver } from 'typescript';
 
 class Login extends Component {
     render() {
@@ -18,8 +19,6 @@ class Login extends Component {
             <div style={{width:'100%'}}>
                 <img src={shopping} alt="" class="shopping"/>
                 <img src={box} alt="" class="box"/>
-                {/* <img src={textBox} alt="" class="textBox"/> */}
-                {/* <img src={textBox} alt="" class="textBox2"/> */}
                 <img src={login1} alt="" class="login1"/>
                 <img src={visibility} alt="" class="visibility"/>
                 <img src={google} alt="" class="google"/>
@@ -37,18 +36,6 @@ class Login extends Component {
                     <h5> <b>Login to your existing account</b></h5>
                 </div>
 
-                {/* <div class="textContent">
-                    <h6 style={{color: 'black', position: 'absolute'}}>Phone Number</h6>
-                </div> */}
-
-                {/* <div class="textContent">
-                    <h6> Phone Number / ID Number</h6>
-                </div> */}
-
-                {/* <div class="textContent2">
-                    <h6 style={{color: 'black', position: 'absolute', fontSize: '3'}}>Password</h6>
-                </div> */}
-
                 <div class="text1">
                     <h5> <b> Or sign in with</b></h5>
                 </div>
@@ -62,7 +49,6 @@ class Login extends Component {
                     <input
                       style={{marginBottom: "0px", border: "0px", width: "200px"}}
                       type='text'
-                    //   id='phoneNumber'
                       placeholder='Phone Number / ID Number'
                     />
                     </span>
@@ -79,9 +65,9 @@ class Login extends Component {
                     </span>
                 </div>
 
-                {/* <div class="loginButton">
-                    <button> Login </button>
-                </div> */}
+                <div class="loginButton">
+                    <button style={{color: 'white', background: "#e7404a", border:"none"}}> <b>Login </b> </button>
+                </div>
             </div>
         )
     }
