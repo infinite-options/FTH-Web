@@ -47,7 +47,7 @@ import Landing from './components/ServingNow/Landing';
 import LoginPage from './components/ServingNow/Login';
 import RegisterPage from './components/ServingNow/Register';
 import CreatePassword from './components/ServingNow/CreatePassword';
-
+import Confirmation from './components/ServingNow/Confirmation';
 
 
 // import MapTest from './components/MapTest';
@@ -172,6 +172,9 @@ function App() {
             </Route>
             <Route exact path="/createpassword">
               <CreatePassword/>
+            </Route>
+            <Route exact path="/confirmation">
+              <Confirmation/>
             </Route>
             
             <AppliedRoute path='*' component={NotFound} />
