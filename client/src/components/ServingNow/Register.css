@@ -135,12 +135,9 @@
   left: 920px;
 }
 
-.textcontent3 {
+.downArrow {
   position: absolute;
-  font-family: "SF Pro Display";
-  font-size: 16px;
-  /* width: 66px;
-  height: 19px; */
+  top: 480px;
+  left: 1038px;
   z-index: 1;
-  bottom: 500px;
 }

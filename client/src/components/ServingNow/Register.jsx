@@ -6,6 +6,7 @@ import box from '../Assets/loginBox.png';
 import textBox from '../Assets/textBox.svg';
 import smallTextBox from '../Assets/smallBox1.svg';
 import continuebutton from '../Assets/continue.svg';
+import downArrow from '../Assets/downArrow.svg';
 
 class Login extends Component {
     render() {
@@ -23,8 +24,7 @@ class Login extends Component {
                 <img src={smallTextBox} alt="" class="textBox11"/>
                 <img src={smallTextBox} alt="" class="textBox12"/>
                 <img src={continuebutton} alt="" class="continue"/>
-
-
+                <img src={downArrow} alt="" class="downArrow"/>
 
                 <div class="rectangle1"> </div>
 
@@ -39,9 +39,6 @@ class Login extends Component {
                 <div class="title2">
                     <h5> <b>For Delivery Only</b></h5>
                 </div>
-
-                {/* <label for="fname">First name:</label> */}
-                {/* <input type="text" id="fname" name="fname"> </input> */}
 
             </div>
         )
