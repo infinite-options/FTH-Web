@@ -1296,7 +1296,7 @@ function Zones ({history,...props}) {
                   copyZone()
                 }}
               >
-                Copy to a New Zone
+                Save as New Zone
               </Button>
               {/* <Button
                 style={{backgroundColor: "#E7404A", borderRadius: "15px"}}
