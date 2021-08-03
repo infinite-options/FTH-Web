@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import axios from 'axios';
 import { API_URL } from '../../../reducers/constants';
 import { sortedArray } from '../../../reducers/helperFuncs';
@@ -118,6 +118,7 @@ function reducer(state, action) {
 
 function Zones ({history,...props}) {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [businessFilter, setBusinessFilter] = useState('')
 
   // Check for log in
   useEffect(() => {
@@ -221,7 +222,7 @@ function Zones ({history,...props}) {
       area: state.editedZone.area,
       zone: state.editedZone.zone,
       zone_name: state.editedZone.zone_name,
-      z_businesses: state.editedZone.z_businesses,
+      z_businesses: JSON.stringify([state.editedZone.z_business_uid]),
       z_delivery_day: state.editedZone.z_delivery_day,
       z_delivery_time: state.editedZone.z_delivery_time,
       z_accepting_day: state.editedZone.z_accepting_day,
@@ -245,8 +246,8 @@ function Zones ({history,...props}) {
     if(myObj.zone_uid === '') {
       const newZone = {
         ...myObj,
-        z_business_uid: '200-000001', 
-        z_businesses: [],
+        z_business_uid: businessFilter, 
+        z_businesses: [businessFilter],
       }
       // Add New Zone
       axios
@@ -287,15 +288,63 @@ function Zones ({history,...props}) {
     }
   }
 
+  const copyZone = () => {
+    let myObj = {
+      zone_uid: '',
+      z_business_uid: state.editedZone.z_business_uid,
+      area: state.editedZone.area,
+      zone: state.editedZone.zone,
+      zone_name: state.editedZone.zone_name + ' Copy',
+      z_businesses: JSON.stringify([state.editedZone.z_business_uid]),
+      z_delivery_day: state.editedZone.z_delivery_day,
+      z_delivery_time: state.editedZone.z_delivery_time,
+      z_accepting_day: state.editedZone.z_accepting_day,
+      z_accepting_time: state.editedZone.z_accepting_time,
+      service_fee: state.editedZone.service_fee,
+      delivery_fee: state.editedZone.delivery_fee,
+      tax_rate: state.editedZone.tax_rate,
+      LB_long: state.editedZone.LB_long,
+      LB_lat: state.editedZone.LB_lat,
+      LT_long: state.editedZone.LT_long,
+      LT_lat: state.editedZone.LT_lat,
+      RT_long: state.editedZone.RT_long,
+      RT_lat: state.editedZone.RT_lat,
+      RB_long: state.editedZone.RB_long,
+      RB_lat: state.editedZone.RB_lat,
+      status: state.editedZone.zone_status
+    }
+    
+    axios
+      .post(`${API_URL}update_zones/create`, myObj)
+      .then(() => {
+        getZone();
+        // toggleEditZone(initialState.editedZone)
+      })
+      .catch((err) => {
+        if (err.response) {
+          // eslint-disable-next-line no-console
+          console.log(err.response);
+        }
+        // eslint-disable-next-line no-console
+        console.log(err);
+      });
+  }
+
   const createDropdownZones = () => {
+    console.log('createDropdownZones')
+    // add filtering by business
     let items = []
     items.push(<option key={-1} value={-1}>Select Zone</option>)
     for (let i = 0; i < state.zones.length; i++) {
       // console.log(i)
       // console.log(state.zones[i])
-      items.push(
-        <option key={i} value={i}>{state.zones[i].zone_name + ", " + state.zones[i].z_delivery_day} </option>
-      )
+      // console.log(JSON.parse(state.zones[i].z_businesses).indexOf(businessFilter))
+      // if (businessFilter == '' || JSON.parse(state.zones[i].z_businesses).indexOf(businessFilter) != -1) {
+      if (businessFilter == '' || businessFilter == state.zones[i].z_business_uid) {
+        items.push(
+          <option key={i} value={i}>{state.zones[i].zone_name + ", " + state.zones[i].z_delivery_day} </option>
+        )
+      }
     }
     return items
   }
@@ -324,7 +373,12 @@ function Zones ({history,...props}) {
 
       let zonePolygons = []
 
+      console.log('in initMap')
+
+      console.log(state.zones)
+
       for (let i = 0; i < state.zones.length; i++) {
+        
         zonePolygons.push(
           [
             { lat: parseFloat(state.zones[i].LB_lat), lng: parseFloat(state.zones[i].LB_long) },
@@ -333,13 +387,18 @@ function Zones ({history,...props}) {
             { lat: parseFloat(state.zones[i].RB_lat), lng: parseFloat(state.zones[i].RB_long) }
           ]
         )
+        
       }
 
       let polyObjects = []
 
+
+
       for (let i = 0; i < zonePolygons.length; i++) {
         let polyColor = state.zones[i].zone_name.split(" ")[0]
-        polyObjects.push(
+        // if (businessFilter == '' || JSON.parse(state.zones[i].z_businesses).indexOf(businessFilter) != -1) {
+        if (businessFilter == '' || businessFilter == state.zones[i].z_business_uid) {
+          polyObjects.push(
           new google.maps.Polygon({
             path: zonePolygons[i],
             strokeColor: polyColor,
@@ -349,6 +408,7 @@ function Zones ({history,...props}) {
             fillOpacity: 0.35
           })
         )
+        }
       }
 
       let polyColor = state.editedZone.zone_name.split(" ")[0]
@@ -506,6 +566,40 @@ function Zones ({history,...props}) {
     return items
   }
 
+  const businessOptions = () => {
+    let ret = []
+    for (let i = 0; i < state.businesses.length; i++) {
+      console.log(state.businesses[i].business_uid, state.editedZone.z_business_uid)
+      if (state.businesses[i].business_uid == state.editedZone.z_business_uid) {
+        ret.push(
+          <option key={i} value={state.businesses[i].business_uid} selected>
+            {state.businesses[i].business_name + ", " + state.businesses[i].business_uid}
+          </option>
+        )
+      } else {
+        ret.push(
+          <option key={i} value={state.businesses[i].business_uid}>
+            {state.businesses[i].business_name + ", " + state.businesses[i].business_uid}
+          </option>
+        )
+      }
+    }
+    return ret
+  }
+
+  const businessOptions2 = () => {
+    let ret = []
+    for (let i = 0; i < state.businesses.length; i++) {
+      ret.push(
+        <option key={i} value={state.businesses[i].business_uid}>
+          {state.businesses[i].business_name + ", " + state.businesses[i].business_uid}
+        </option>
+      )
+      
+    }
+    return ret
+  }
+
   // Fetch Zones
   useEffect(() => {
     getZone();
@@ -660,8 +754,26 @@ function Zones ({history,...props}) {
       <AdminNavBar currentPage={'zones'}/>
 
       <div className={styles.containerCustomer}>
-        <div style = {{width: "70%", height: "100%", float: "left", fontWeight: 'bold', paddingTop: "45px", paddingLeft: "27px", }}>
-          Zones
+        <div style = {{width: "70%", height: "100%", float: "left", fontWeight: 'bold', paddingTop: "35px", paddingLeft: "27px", }}>
+        <select
+              className={styles.dropdown}
+              // style={{
+              //   width: "38%", margin: "1%", float: "left"
+              // }}
+              onChange={(event) => {
+                
+                setBusinessFilter(event.target.value)
+                state.nameSplit.colorValue = ''
+                state.nameSplit.nameValue = ''
+                toggleEditZone(initialState.editedZone)
+                console.log(event.target.value)
+                // editZone('z_business_uid', event.target.value)
+                
+              }}
+            >
+              <option key={-1} value="">All Business</option>
+              {businessOptions2()}
+            </select>
         </div>
         <div style = {{width: "15%", height: "100%", float: "left", fontWeight: 'bold', color: "#E7404A", textAlign: "center", marginTop: "15px",}}>
           Total no. of Zones
@@ -695,6 +807,26 @@ function Zones ({history,...props}) {
 
             {/* NEW CODE */}
 
+            {/* <select
+              className={styles.dropdown}
+              style={{
+                width: "38%", margin: "1%", float: "left"
+              }}
+              onChange={(event) => {
+                
+                setBusinessFilter(event.target.value)
+                state.nameSplit.colorValue = ''
+                state.nameSplit.nameValue = ''
+                toggleEditZone(initialState.editedZone)
+                console.log(event.target.value)
+                // editZone('z_business_uid', event.target.value)
+                
+              }}
+            >
+              <option key={-1} value="">All Business</option>
+              {businessOptions2()}
+            </select> */}
+
             <select
               style={{width: "78%", margin: "1%", float: "left"}}
               className={styles.dropdown}
@@ -715,6 +847,8 @@ function Zones ({history,...props}) {
             >
               {createDropdownZones()}
             </select>
+
+            
 
             {setSwitchImage()}
 
@@ -751,7 +885,7 @@ function Zones ({history,...props}) {
             />
             </div> */}
             
-            <div style={{width: "48%", margin: "1%", float: "left"}}>
+            <div style={{width: "31%", margin: "1%", float: "left"}}>
               <div style={{color: "#E7404A"}}>Zone Name:</div>
               <Form.Control
                 value={state.nameSplit.nameValue}
@@ -765,7 +899,7 @@ function Zones ({history,...props}) {
             />
             </div>
 
-            <div style={{width: "48%", margin: "1%", float: "left"}}>
+            <div style={{width: "31%", margin: "1%", float: "left"}}>
               <div style={{color: "#E7404A"}}>Zone Color:</div>
               <Form.Control
                 value={state.nameSplit.colorValue}
@@ -781,7 +915,7 @@ function Zones ({history,...props}) {
             
             </div>
 
-            <div style={{width: "48%", margin: "1%", float: "left"}}>
+            {/* <div style={{width: "48%", margin: "1%", float: "left"}}>
                   <div style={{color: "#E7404A"}}>Zone UID:</div>
                   <Form.Control
                     value={state.editedZone.zone_uid}
@@ -791,37 +925,63 @@ function Zones ({history,...props}) {
                       }
                     }
                   />
-            </div>
+            </div> */}
 
-            <div style={{width: "48%", margin: "1%", float: "left"}}>
+            <div style={{width: "31%", margin: "1%", float: "left"}}>
                   <div style={{color: "#E7404A"}}>Food Bank Name:</div>
-                  <Form.Control
+                  {console.log(state.businesses)}
+                  {/* <Form.Control
                     // value={state.editedZone.zone_uid}
                     // onChange={
                     //   (event) => {
                     //     editZone('zone_uid',event.target.value);
                     //   }
                     // }
-                  />
+                  /> */}
+                  <select
+                    className={styles.dropdown}
+                    style={{
+                      width: "100%", 
+                      float: "left",
+                      borderStyle: "solid",
+                      borderWidth: "1px",
+                      borderColor: "#CED4DA",
+                      borderRadius: ".25rem",
+                      padding: ".375rem .75rem",
+                      color: "#495057",
+                      height: "calc(1.5em + .75rem + 2px)",
+                      lineHeight: "1.5",
+                      fontSize: "1rem",
+                      fontWeight: "400",
+                      textOverflow: "ellipsis",
+                      overflow: "hidden",
+                      whiteSpace: "nowrap"
+                    }}
+                    // value = {state.editedZone.z_business_uid}
+                    onChange={(event) => {
+                      
+                      // setBusinessFilter(event.target.value)
+                      // state.nameSplit.colorValue = ''
+                      // state.nameSplit.nameValue = ''
+                      // toggleEditZone(initialState.editedZone)
+                      console.log(event.target.value)
+                      editZone('z_business_uid', event.target.value)
+                      // editZone('z_businesses', JSON.stringify([event.target.value]))
+                      
+                    }}
+                    
+                  >
+
+                    {businessOptions()}
+                  </select>
             </div>
 
             <div className={styles.spacer}></div>
 
             <div style={{width: "98%", margin: "1%", float: "left"}}>
-              <div style={{width: "25%", float: "left"}}>
+              {/* <div style={{width: "25%", float: "left"}}>
                 <div style={{color: "#E7404A"}}>Business UID:</div>
-                {/* <select
-                  className={styles.dropdown}
-                  style={{width: "100%", float: "left"}}
-                  value={state.editedZone.z_business_uid}
-                  onChange={
-                    (event) => {
-                      editZone('z_business_uid',event.target.value);
-                    }
-                  }
-                >
-                  {createDropdownBusinesses()}
-                </select> */}
+                
                 <div 
                   style = {{
                     borderStyle: "solid",
@@ -842,8 +1002,19 @@ function Zones ({history,...props}) {
                   dispatch({ type: 'TOGGLE_SELECT_BUSINESS', payload: true });
                   console.log(state.toggleSelectBusiness)
                 }}>{convertUIDToNames(state.editedZone.z_businesses)}</div>
-              </div>
+              </div> */}
                 {/* convertUIDToNames(state.editedZone.z_businesses) */}
+            <div style={{width: "25%", float: "left"}}>
+                  <div style={{color: "#E7404A"}}>Zone UID:</div>
+                  <Form.Control
+                    value={state.editedZone.zone_uid}
+                    onChange={
+                      (event) => {
+                        editZone('zone_uid',event.target.value);
+                      }
+                    }
+                  />
+            </div>
               <div style={{width: "25%", float: "left"}}>
                 <div style={{color: "#E7404A"}}>Delivery Day</div>
                 {/* <Form.Control
@@ -1107,15 +1278,25 @@ function Zones ({history,...props}) {
 
             {/* NEW CODE */}
 
-            <div style={{textAlign: "center"}}>
+            <div style={{textAlign: "center", width: '100%'}}>
               <Button
-                style={{backgroundColor: "#E7404A", borderRadius: "15px"}}
+                style={{backgroundColor: "#E7404A", borderRadius: "15px", width: '30%', marginLeft: '10%', marginRight: '10%'}}
                 variant="secondary"
                 onClick={() => {
                   saveZone()
                 }}
               >
-                Save Zone
+                Save Current Zone
+              </Button>
+              
+              <Button
+                style={{backgroundColor: "#E7404A", borderRadius: "15px", width: '30%', marginLeft: '10%', marginRight: '10%'}}
+                variant="secondary"
+                onClick={() => {
+                  copyZone()
+                }}
+              >
+                Copy to a New Zone
               </Button>
               {/* <Button
                 style={{backgroundColor: "#E7404A", borderRadius: "15px"}}

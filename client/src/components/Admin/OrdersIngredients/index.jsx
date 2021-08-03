@@ -962,6 +962,7 @@ function OrdersIngredients({ history, ...props }) {
                       ).map((item, index) => {
                         return (
                           <TableRow key={index}>
+                            {console.log(item)}
                             <TableCell
                               style={{
                                 fontWeight: "bold",
@@ -985,26 +986,20 @@ function OrdersIngredients({ history, ...props }) {
                               ></img>
                             </TableCell>
                             <TableCell
-                              style={{ borderBottom: "1px solid #E7404A", textAlign: "center" }}
+                              style={{ 
+                                fontSize: "18px",
+                                borderBottom: "1px solid #E7404A", textAlign: "center" 
+                              }}
                             >
-                              <select
+                              {item.meal_cat}
+                              {/* <select
                                 className={styles.dropdown}
                                 // onChange={}
                               >
+                                
                                 <option key={0}>Placeholder</option>
-                                {/* {state.businessData.map((business, index) => {
-                                  if (business) {
-                                    return (
-                                      <option
-                                        key={business.business_uid}
-                                        value={business.business_uid}
-                                      >
-                                        {business.business_name}
-                                      </option>
-                                    );
-                                  }
-                                })} */}
-                              </select>
+                                
+                              </select> */}
                             </TableCell>
                             <TableCell
                               style={{ 
