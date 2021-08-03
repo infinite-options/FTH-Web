@@ -46,84 +46,210 @@
   height: 28px;
 }
 
-.textBox3 {
+.FirstName {
   position: absolute;
-  width: 315px;
+  width: 400px;
   height: 50px;
-  top: 260px;
+  top: 265px;
   left: 912px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.FirstNameInput {
+  width: 315px;
+  height: 40px;
+  padding: 9px 15px;
+  background-color: #ffffffd0;
+  border: 1px solid #707070;
+  border-radius: 25px;
+  opacity: 1;
   z-index: 1;
 }
 
-.textBox4 {
+.LastName {
   position: absolute;
-  width: 315px;
+  width: 400px;
   height: 50px;
-  top: 310px;
+  top: 315px;
   left: 912px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.LastNameInput {
+  width: 315px;
+  height: 40px;
+  padding: 9px 15px;
+  background-color: #ffffffd0;
+  border: 1px solid #707070;
+  border-radius: 25px;
+  opacity: 1;
   z-index: 1;
 }
 
-.textBox5 {
+.PhoneNumber {
   position: absolute;
-  width: 315px;
+  width: 400px;
   height: 50px;
-  top: 360px;
+  top: 365px;
   left: 912px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.PhoneNumberInput {
+  width: 315px;
+  height: 40px;
+  padding: 9px 15px;
+  background-color: #ffffffd0;
+  border: 1px solid #707070;
+  border-radius: 25px;
+  opacity: 1;
   z-index: 1;
 }
 
-.textBox6 {
+.Affiliation {
   position: absolute;
-  width: 315px;
+  width: 400px;
   height: 50px;
-  top: 410px;
+  top: 415px;
   left: 912px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.AffiliationInput {
+  width: 315px;
+  height: 40px;
+  padding: 9px 15px;
+  background-color: #ffffffd0;
+  border: 1px solid #707070;
+  border-radius: 25px;
+  opacity: 1;
   z-index: 1;
 }
 
-.textBox7 {
+.IDtype {
   position: absolute;
+  width: 400px;
+  height: 50px;
+  top: 465px;
+  left: 912px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.IDtypeInput {
   width: 155px;
-  height: 50px;
-  top: 460px;
-  left: 912px;
+  height: 40px;
+  padding: 9px 15px;
+  background-color: #ffffffd0;
+  border: 1px solid #707070;
+  border-radius: 25px;
+  opacity: 1;
   z-index: 1;
 }
 
-.textBox8 {
+.IDnum {
   position: absolute;
-  width: 155px;
+  width: 400px;
   height: 50px;
-  top: 460px;
+  top: 465px;
   left: 1073px;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
 }
 
-.textBox9 {
+.IDnumInput {
+  width: 155px;
+  height: 40px;
+  padding: 9px 15px;
+  background-color: #ffffffd0;
+  border: 1px solid #707070;
+  border-radius: 25px;
+  opacity: 1;
+  z-index: 1;
+}
+
+.Address {
   position: absolute;
+  width: 400px;
+  height: 50px;
+  top: 575px;
+  left: 912px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.AddressInput {
   width: 315px;
-  height: 50px;
-  top: 570px;
-  left: 912px;
+  height: 40px;
+  padding: 9px 15px;
+  background-color: #ffffffd0;
+  border: 1px solid #707070;
+  border-radius: 25px;
+  opacity: 1;
   z-index: 1;
 }
 
-.textBox11 {
+.City {
   position: absolute;
-  width: 155px;
+  width: 400px;
   height: 50px;
-  top: 620px;
+  top: 625px;
   left: 912px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.CityInput {
+  width: 155px;
+  height: 40px;
+  padding: 9px 15px;
+  background-color: #ffffffd0;
+  border: 1px solid #707070;
+  border-radius: 25px;
+  opacity: 1;
   z-index: 1;
 }
 
-.textBox12 {
+.ZipCode {
   position: absolute;
-  width: 155px;
+  width: 400px;
   height: 50px;
-  top: 620px;
+  top: 625px;
   left: 1073px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.ZipCodeInput {
+  width: 155px;
+  height: 40px;
+  padding: 9px 15px;
+  background-color: #ffffffd0;
+  border: 1px solid #707070;
+  border-radius: 25px;
+  opacity: 1;
   z-index: 1;
 }
 
@@ -139,5 +265,5 @@
   position: absolute;
   top: 480px;
   left: 1038px;
-  z-index: 1;
+  z-index: 2;
 }

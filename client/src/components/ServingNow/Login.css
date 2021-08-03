@@ -46,54 +46,10 @@
   height: 28px;
 }
 
-/* .textBox {
-  position: absolute;
-  width: 315px;
-  height: 50px;
-  top: 305px;
-  left: 912px;
-  z-index: 1;
-}
-
-.textBox2 {
-  position: absolute;
-  width: 315px;
-  height: 50px;
-  top: 355px;
-  left: 912px;
-  z-index: 1;
-} */
-
 .login1 {
   position: absolute;
-  /* top: 415px;
-  left: 910px; */
-  /* width: 325px;
-  height: 59px; */
   transform: translate(230px, 270px) scale(0.18);
 }
-
-/* .textContent {
-  position: absolute;
-  font-family: "SF Pro Display";
-  font-size: 16px;
-  top: 318px;
-  left: 930px;
-  color: #000000; */
-/* width: 191px;
-  height: 19px;
-} */
-
-/* .textContent2 {
-  position: absolute;
-  font-family: "SF Pro Display";
-  font-size: 16px;
-  top: 368px;
-  left: 930px;
-  width: 66px;
-  height: 19px;
-  z-index: 1;
-} */
 
 .text1 {
   position: absolute;
