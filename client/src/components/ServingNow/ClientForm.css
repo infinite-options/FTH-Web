@@ -1,0 +1,368 @@
+.box4 {
+  position: absolute;
+  top: 132px;
+  left: 470px;
+  width: 900px;
+  height: 2333px;
+  border: 2px solid #e7404a;
+  border-radius: 68px;
+  opacity: 1;
+}
+
+.title3 {
+  position: absolute;
+  top: 187px;
+  left: 840px;
+  width: 227px;
+  height: 33px;
+}
+
+.subheading1 {
+  position: absolute;
+  top: 246px;
+  left: 569px;
+}
+
+.ClientName {
+  position: absolute;
+  top: 275px;
+  left: 562px;
+  width: 801px;
+  height: 50px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.ClientNameInput {
+  width: 720px;
+  height: 40px;
+  padding: 9px 15px;
+  background-color: #ffffffd0;
+  border: 1px solid #707070;
+  border-radius: 25px;
+  opacity: 1;
+  z-index: 1;
+}
+
+.SSN {
+  position: absolute;
+  top: 325px;
+  left: 562px;
+  width: 801px;
+  height: 50px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.SSNInput {
+  width: 720px;
+  height: 40px;
+  padding: 9px 15px;
+  background-color: #ffffffd0;
+  border: 1px solid #707070;
+  border-radius: 25px;
+  opacity: 1;
+  z-index: 1;
+}
+
+.DOB {
+  position: absolute;
+  top: 375px;
+  left: 562px;
+  width: 801px;
+  height: 50px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.DOBInput {
+  width: 720px;
+  height: 40px;
+  padding: 9px 15px;
+  background-color: #ffffffd0;
+  border: 1px solid #707070;
+  border-radius: 25px;
+  opacity: 1;
+  z-index: 1;
+}
+
+.CurrentAddress {
+  position: absolute;
+  top: 425px;
+  left: 562px;
+  width: 801px;
+  height: 50px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.CurrentAddressInput {
+  width: 720px;
+  height: 40px;
+  padding: 9px 15px;
+  background-color: #ffffffd0;
+  border: 1px solid #707070;
+  border-radius: 25px;
+  opacity: 1;
+  z-index: 1;
+}
+
+.City1 {
+  position: absolute;
+  top: 475px;
+  left: 562px;
+  width: 801px;
+  height: 50px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.City1Input {
+  width: 355px;
+  height: 40px;
+  padding: 9px 15px;
+  background-color: #ffffffd0;
+  border: 1px solid #707070;
+  border-radius: 25px;
+  opacity: 1;
+  z-index: 1;
+}
+
+.County {
+  position: absolute;
+  top: 475px;
+  left: 927px;
+  width: 801px;
+  height: 50px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.CountyInput {
+  width: 355px;
+  height: 40px;
+  padding: 9px 15px;
+  background-color: #ffffffd0;
+  border: 1px solid #707070;
+  border-radius: 25px;
+  opacity: 1;
+  z-index: 1;
+}
+
+.State {
+  position: absolute;
+  top: 525px;
+  left: 562px;
+  width: 801px;
+  height: 50px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.StateInput {
+  width: 355px;
+  height: 40px;
+  padding: 9px 15px;
+  background-color: #ffffffd0;
+  border: 1px solid #707070;
+  border-radius: 25px;
+  opacity: 1;
+  z-index: 1;
+}
+
+.ZipCode1 {
+  position: absolute;
+  top: 525px;
+  left: 927px;
+  width: 801px;
+  height: 50px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.ZipCode1Input {
+  width: 355px;
+  height: 40px;
+  padding: 9px 15px;
+  background-color: #ffffffd0;
+  border: 1px solid #707070;
+  border-radius: 25px;
+  opacity: 1;
+  z-index: 1;
+}
+
+.HomePhone {
+  position: absolute;
+  top: 575px;
+  left: 562px;
+  width: 801px;
+  height: 50px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.HomePhoneInput {
+  width: 720px;
+  height: 40px;
+  padding: 9px 15px;
+  background-color: #ffffffd0;
+  border: 1px solid #707070;
+  border-radius: 25px;
+  opacity: 1;
+  z-index: 1;
+}
+
+.CellPhone {
+  position: absolute;
+  top: 625px;
+  left: 562px;
+  width: 801px;
+  height: 50px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.CellPhoneInput {
+  width: 720px;
+  height: 40px;
+  padding: 9px 15px;
+  background-color: #ffffffd0;
+  border: 1px solid #707070;
+  border-radius: 25px;
+  opacity: 1;
+  z-index: 1;
+}
+
+.subheading2 {
+  position: absolute;
+  top: 695px;
+  left: 569px;
+}
+
+.subheading2text {
+  position: absolute;
+  top: 720px;
+  left: 569px;
+  left: 569px;
+  width: 368px;
+  height: 40px;
+}
+
+.Member {
+  position: absolute;
+  top: 775px;
+  left: 569px;
+}
+
+.Name {
+  position: absolute;
+  top: 800px;
+  left: 562px;
+  width: 801px;
+  height: 50px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.NameInput {
+  width: 720px;
+  height: 40px;
+  padding: 9px 15px;
+  background-color: #ffffffd0;
+  border: 1px solid #707070;
+  border-radius: 25px;
+  opacity: 1;
+  z-index: 1;
+}
+
+.Age {
+  position: absolute;
+  top: 850px;
+  left: 562px;
+  width: 801px;
+  height: 50px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.AgeInput {
+  width: 355px;
+  height: 40px;
+  padding: 9px 15px;
+  background-color: #ffffffd0;
+  border: 1px solid #707070;
+  border-radius: 25px;
+  opacity: 1;
+  z-index: 1;
+}
+
+.Relationship {
+  position: absolute;
+  top: 850px;
+  left: 927px;
+  width: 801px;
+  height: 50px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.RelationshipInput {
+  width: 355px;
+  height: 40px;
+  padding: 9px 15px;
+  background-color: #ffffffd0;
+  border: 1px solid #707070;
+  border-radius: 25px;
+  opacity: 1;
+  z-index: 1;
+}
+
+.submitButton {
+  position: absolute;
+  border-radius: 25px;
+  padding: 7px;
+  padding-left: 68px;
+  font-size: 1rem;
+  margin: 0rem 1rem;
+  box-shadow: 0px 3px 6px #00000029;
+  background: white;
+  top: 900px;
+  left: 800px;
+  opacity: 1;
+  font-family: "SF Pro Display";
+  width: 280px;
+  height: 45px;
+  text-align: center;
+  font-size: 22.8px;
+  transform: scale(0.85);
+  border-style: solid;
+  border-color: #e7404a;
+  border-width: 0.8px;
+  z-index: 1;
+}

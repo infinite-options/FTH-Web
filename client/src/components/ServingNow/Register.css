@@ -1,0 +1,286 @@
+.rectangle1 {
+  position: absolute;
+  width: 1920px;
+  height: 80px;
+  background-color: #e7404a;
+  top: 0px;
+  left: 0px;
+  z-index: -1;
+}
+
+.header {
+  position: absolute;
+  font-size: 22px;
+  top: 27px;
+  left: 470px;
+  width: 129px;
+  height: 26px;
+}
+
+.box1 {
+  position: absolute;
+  width: 350px;
+  height: 560px;
+  top: 190px;
+  /* bottom: 212px; */
+  left: 895px;
+}
+
+.title1 {
+  position: absolute;
+  font-family: "SF Pro Display";
+  font-size: 23px;
+  top: 220px;
+  left: 915px;
+  width: 320px;
+  height: 28px;
+  text-align: center;
+}
+
+.title2 {
+  position: absolute;
+  font-family: "SF Pro Display";
+  font-size: 23px;
+  top: 700px;
+  left: 995px;
+  width: 320px;
+  height: 28px;
+}
+
+.FirstName {
+  position: absolute;
+  width: 400px;
+  height: 50px;
+  top: 265px;
+  left: 912px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.FirstNameInput {
+  width: 315px;
+  height: 40px;
+  padding: 9px 15px;
+  background-color: #ffffffd0;
+  border: 1px solid #707070;
+  border-radius: 25px;
+  opacity: 1;
+  z-index: 1;
+}
+
+.LastName {
+  position: absolute;
+  width: 400px;
+  height: 50px;
+  top: 315px;
+  left: 912px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.LastNameInput {
+  width: 315px;
+  height: 40px;
+  padding: 9px 15px;
+  background-color: #ffffffd0;
+  border: 1px solid #707070;
+  border-radius: 25px;
+  opacity: 1;
+  z-index: 1;
+}
+
+.PhoneNumber {
+  position: absolute;
+  width: 400px;
+  height: 50px;
+  top: 365px;
+  left: 912px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.PhoneNumberInput {
+  width: 315px;
+  height: 40px;
+  padding: 9px 15px;
+  background-color: #ffffffd0;
+  border: 1px solid #707070;
+  border-radius: 25px;
+  opacity: 1;
+  z-index: 1;
+}
+
+.Affiliation {
+  position: absolute;
+  width: 400px;
+  height: 50px;
+  top: 415px;
+  left: 912px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.AffiliationInput {
+  width: 315px;
+  height: 40px;
+  padding: 9px 15px;
+  background-color: #ffffffd0;
+  border: 1px solid #707070;
+  border-radius: 25px;
+  opacity: 1;
+  z-index: 1;
+}
+
+.IDtype {
+  position: absolute;
+  width: 400px;
+  height: 50px;
+  top: 465px;
+  left: 912px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.IDtypeInput {
+  width: 155px;
+  height: 40px;
+  padding: 9px 15px;
+  background-color: #ffffffd0;
+  border: 1px solid #707070;
+  border-radius: 25px;
+  opacity: 1;
+  z-index: 1;
+}
+
+.IDnum {
+  position: absolute;
+  width: 400px;
+  height: 50px;
+  top: 465px;
+  left: 1073px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.IDnumInput {
+  width: 155px;
+  height: 40px;
+  padding: 9px 15px;
+  background-color: #ffffffd0;
+  border: 1px solid #707070;
+  border-radius: 25px;
+  opacity: 1;
+  z-index: 1;
+}
+
+.Address {
+  position: absolute;
+  width: 400px;
+  height: 50px;
+  top: 575px;
+  left: 912px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.AddressInput {
+  width: 315px;
+  height: 40px;
+  padding: 9px 15px;
+  background-color: #ffffffd0;
+  border: 1px solid #707070;
+  border-radius: 25px;
+  opacity: 1;
+  z-index: 1;
+}
+
+.City {
+  position: absolute;
+  width: 400px;
+  height: 50px;
+  top: 625px;
+  left: 912px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.CityInput {
+  width: 155px;
+  height: 40px;
+  padding: 9px 15px;
+  background-color: #ffffffd0;
+  border: 1px solid #707070;
+  border-radius: 25px;
+  opacity: 1;
+  z-index: 1;
+}
+
+.ZipCode {
+  position: absolute;
+  width: 400px;
+  height: 50px;
+  top: 625px;
+  left: 1073px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.ZipCodeInput {
+  width: 155px;
+  height: 40px;
+  padding: 9px 15px;
+  background-color: #ffffffd0;
+  border: 1px solid #707070;
+  border-radius: 25px;
+  opacity: 1;
+  z-index: 1;
+}
+
+.downArrow {
+  position: absolute;
+  top: 480px;
+  left: 1038px;
+  z-index: 2;
+}
+
+.continueButton {
+  position: absolute;
+  border-radius: 25px;
+  padding: 7px;
+  padding-left: 83px;
+  font-size: 1rem;
+  margin: 0rem 1rem;
+  box-shadow: 0px 3px 6px #00000029;
+  background: white;
+  top: 680px;
+  left: 920px;
+  opacity: 1;
+  font-family: "SF Pro Display";
+  width: 280px;
+  height: 45px;
+  text-align: center;
+  font-size: 22.8px;
+  transform: scale(0.85);
+  border-style: solid;
+  border-color: #e7404a;
+  border-width: 0.8px;
+  z-index: 1;
+}

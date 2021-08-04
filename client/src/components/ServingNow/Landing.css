@@ -1,0 +1,84 @@
+.rectangle {
+  position: absolute;
+  width: 1920px;
+  height: 105px;
+  background-color: #e7404a;
+  top: 0px;
+  left: 0px;
+}
+
+.shopping {
+  position: absolute;
+  top: -70px;
+  left: 372px;
+  max-width: 1370px;
+  height: 1080px;
+  z-index: -1;
+}
+
+.header {
+  position: absolute;
+  font-family: "SF Pro Display";
+  font-size: 45px;
+  left: 470px;
+  top: 34px;
+  letter-spacing: 0.49px;
+  color: #ffffff;
+  /* width: 264px; */
+  height: 54px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.text {
+  position: absolute;
+  font-family: "SF Pro Display";
+  font-size: 45px;
+  bottom: 550px;
+  right: 480px;
+  text-align: center;
+  width: 264px;
+  height: 108px;
+}
+
+.loginButton1 {
+  position: absolute;
+  border-radius: 25px;
+  padding: 10px;
+  padding-left: 110px;
+  font-size: 33px;
+  margin: 0rem 1rem;
+  box-shadow: 0px 3px 6px #00000029;
+  background: #e7404a;
+  top: 485px;
+  left: 912px;
+  opacity: 1;
+  font-family: "SF Pro Display";
+  width: 290px;
+  height: 53px;
+  font-size: 22.8px;
+  transform: scale(1.23);
+}
+
+.registerButton {
+  position: absolute;
+  border-radius: 25px;
+  padding: 10px;
+  padding-left: 95px;
+  font-size: 1rem;
+  margin: 0rem 1rem;
+  box-shadow: 0px 3px 6px #00000029;
+  background: white;
+  top: 562px;
+  left: 912px;
+  opacity: 1;
+  font-family: "SF Pro Display";
+  width: 290px;
+  height: 53px;
+  text-align: center;
+  font-size: 22.8px;
+  transform: scale(1.23);
+  border-style: solid;
+  border-color: #e7404a;
+  border-width: 0.8px;
+}

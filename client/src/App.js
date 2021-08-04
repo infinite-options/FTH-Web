@@ -43,6 +43,15 @@ import AdminZones from './components/Admin/Zones';
 import AdminCustomerInfo from './components/Admin/CustomerInfo';
 import AdminIngredientsUnits from './components/Admin/IngredientsUnits';
 
+import Landing from './components/ServingNow/Landing';
+import LoginPage from './components/ServingNow/Login';
+import RegisterPage from './components/ServingNow/Register';
+import CreatePassword from './components/ServingNow/CreatePassword';
+import Confirmation from './components/ServingNow/Confirmation';
+import ClientForm from './components/ServingNow/ClientForm';
+
+
+
 // import MapTest from './components/MapTest';
 import Congrats from "./components/Congrats";
 
@@ -154,6 +163,26 @@ function App() {
             <Route exact path="/admin/ingredients-units">
               <AdminIngredientsUnits />
             </Route>
+            
+            <Route exact path="/landing">
+              <Landing/>
+            </Route>
+            <Route exact path="/loginfth">
+              <LoginPage/>
+            </Route>
+            <Route exact path="/register">
+              <RegisterPage/>
+            </Route>
+            <Route exact path="/createpassword">
+              <CreatePassword/>
+            </Route>
+            <Route exact path="/confirmation">
+              <Confirmation/>
+            </Route>
+            <Route exact path="/clientform">
+              <ClientForm/>
+            </Route>
+            
             <AppliedRoute path='*' component={NotFound} />
           </Switch>
         </Router>

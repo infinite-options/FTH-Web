@@ -1,0 +1,192 @@
+.page {
+  /* overflow: hidden; */
+  overflow-y: hidden; /* Hide vertical scrollbar */
+  overflow-x: hidden;
+}
+
+.shopping {
+  position: absolute;
+  top: -70px;
+  left: 370px;
+  /* bottom: 70px; */
+  /* max-width: 1370px; */
+  /* height: 1080px; */
+  z-index: -1;
+}
+
+.rectangle1 {
+  position: absolute;
+  /* width: 1800px; */
+  height: 80px;
+  background-color: #e7404a;
+  top: 0px;
+  left: 0px;
+  z-index: -1;
+}
+
+.header {
+  position: absolute;
+  font-size: 22px;
+  top: 27px;
+  left: 470px;
+  width: 129px;
+  height: 26px;
+}
+
+.box {
+  position: absolute;
+  width: 350px;
+  height: 485px;
+  top: 230px;
+  /* bottom: 212px; */
+  left: 895px;
+}
+
+.title {
+  position: absolute;
+  font-family: "SF Pro Display";
+  font-size: 23px;
+  top: 265px;
+  left: 905px;
+  width: 320px;
+  height: 28px;
+}
+
+.login1 {
+  position: absolute;
+  transform: translate(230px, 270px) scale(0.18);
+}
+
+.text1 {
+  position: absolute;
+  font-family: "SF Pro Display";
+  font-size: 23px;
+  top: 510px;
+  left: 1005px;
+  width: 151px;
+  height: 28px;
+}
+
+.visibility {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  top: 368px;
+  left: 1185px;
+  z-index: 2;
+}
+
+.google {
+  position: absolute;
+  z-index: 1;
+  width: 50px;
+  height: 50px;
+  top: 545px;
+  left: 935px;
+}
+
+.apple {
+  position: absolute;
+  z-index: 1;
+  width: 50px;
+  height: 50px;
+  top: 545px;
+  left: 1050px;
+}
+
+.fb {
+  position: absolute;
+  z-index: 1;
+  width: 50px;
+  height: 50px;
+  top: 545px;
+  left: 1160px;
+}
+
+.text2 {
+  position: absolute;
+  z-index: 1;
+  top: 630px;
+  left: 955px;
+  font-size: 15px;
+  /* width: 282px; */
+  height: 21px;
+}
+
+.loginPhoneNumber {
+  position: absolute;
+  width: 400px;
+  height: 50px;
+  top: 310px;
+  left: 912px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  border: none;
+}
+
+.loginNumberInput {
+  width: 315px;
+  height: 40px;
+  padding: 9px 15px;
+  background-color: #ffffffd0;
+  border: 1px solid #707070;
+  border-radius: 25px;
+  opacity: 1;
+}
+
+input::placeholder {
+  font-size: 16px;
+}
+
+.loginPassword {
+  position: absolute;
+  width: 400px;
+  height: 50px;
+  top: 360px;
+  left: 912px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.loginPasswordInput {
+  width: 315px;
+  height: 40px;
+  padding: 9px 15px;
+  background-color: #ffffffd0;
+  border: 1px solid #707070;
+  border-radius: 25px;
+  opacity: 1;
+  z-index: 1;
+}
+
+::placeholder {
+  font-family: "SF Pro Display";
+  font-size: 16px;
+  width: 400px;
+  height: 19px;
+  color: black;
+}
+
+.loginButton {
+  position: absolute;
+  border-radius: 25px;
+  padding: 10px;
+  font-size: 1rem;
+  /* font-weight: 500; */
+  margin: 0rem 0.8rem;
+  box-shadow: 0px 3px 6px #00000029;
+  background: #e7404a;
+  top: 422px;
+  left: 912px;
+  /* border: none; */
+  opacity: 1;
+  font-family: "SF Pro Display";
+  width: 290px;
+  height: 53px;
+  text-align: center;
+  font-size: 22.8px;
+}
