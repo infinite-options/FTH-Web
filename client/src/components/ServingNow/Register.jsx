@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import "../ServingNow/Register.css";
 import shopping from '../Assets/shopping.png';
 import box from '../Assets/loginBox.png';
-import continuebutton from '../Assets/continue.svg';
 import downArrow from '../Assets/downArrow.svg';
 
 class Register extends Component {
@@ -12,7 +11,6 @@ class Register extends Component {
             <div style={{width:'100%'}}>
                 <img src={shopping} alt="" class="shopping"/>
                 <img src={box} alt="" class="box1"/>
-                <img src={continuebutton} alt="" class="continue"/>
                 <img src={downArrow} alt="" class="downArrow"/>
 
                 <div class="rectangle1"> </div>
@@ -129,6 +127,12 @@ class Register extends Component {
                       placeholder='ID Number'
                     />
                     </span>
+                </div>
+
+                <div class="continueButton">
+                    <a href="clientform">
+                    <button style={{color: "#e7404a", background: "white", border: "none"}}> <b>Continue </b> </button>
+                    </a>
                 </div>
 
             </div>

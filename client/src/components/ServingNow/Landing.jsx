@@ -2,16 +2,12 @@ import React, { Component } from 'react';
 
 import "../ServingNow/Landing.css";
 import shopping from '../Assets/shopping.png';
-import register from '../Assets/register.svg';
-import login2 from '../Assets/login2.svg';
 
 class Landing extends Component {
     render() {
         return (
             <div>
                 <img src={shopping} alt="" class="shopping"/>
-                <img src={register} alt="" class="register"/>
-                <img src={login2} alt="" class="login"/>
 
                 <div class="rectangle"> </div>
 

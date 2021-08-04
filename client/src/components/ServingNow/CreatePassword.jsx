@@ -71,7 +71,8 @@ class CreatePassword extends Component {
                 </div>
 
                 <div class="registerButton1">
-                    <button style={{color: 'white', background: "#e7404a", border:"none"}}> <b>Register </b> </button>
+                    <a href="confirmation">
+                    <button style={{color: 'white', background: "#e7404a", border:"none"}}> <b>Register </b> </button> </a>
                 </div>
 
                 <div class="smallText">

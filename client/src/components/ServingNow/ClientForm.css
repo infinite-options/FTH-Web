@@ -1,66 +1,42 @@
-.rectangle1 {
+.box4 {
   position: absolute;
-  width: 1920px;
-  height: 80px;
-  background-color: #e7404a;
-  top: 0px;
-  left: 0px;
-  z-index: -1;
-}
-
-.header {
-  position: absolute;
-  font-size: 22px;
-  top: 27px;
+  top: 132px;
   left: 470px;
-  width: 129px;
-  height: 26px;
+  width: 900px;
+  height: 2333px;
+  border: 2px solid #e7404a;
+  border-radius: 68px;
+  opacity: 1;
 }
 
-.box1 {
+.title3 {
   position: absolute;
-  width: 350px;
-  height: 560px;
-  top: 190px;
-  /* bottom: 212px; */
-  left: 895px;
+  top: 187px;
+  left: 840px;
+  width: 227px;
+  height: 33px;
 }
 
-.title1 {
+.subheading1 {
   position: absolute;
-  font-family: "SF Pro Display";
-  font-size: 23px;
-  top: 220px;
-  left: 915px;
-  width: 320px;
-  height: 28px;
-  text-align: center;
+  top: 246px;
+  left: 569px;
 }
 
-.title2 {
+.ClientName {
   position: absolute;
-  font-family: "SF Pro Display";
-  font-size: 23px;
-  top: 700px;
-  left: 995px;
-  width: 320px;
-  height: 28px;
-}
-
-.FirstName {
-  position: absolute;
-  width: 400px;
+  top: 275px;
+  left: 562px;
+  width: 801px;
   height: 50px;
-  top: 265px;
-  left: 912px;
   z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: left;
 }
 
-.FirstNameInput {
-  width: 315px;
+.ClientNameInput {
+  width: 720px;
   height: 40px;
   padding: 9px 15px;
   background-color: #ffffffd0;
@@ -70,20 +46,20 @@
   z-index: 1;
 }
 
-.LastName {
+.SSN {
   position: absolute;
-  width: 400px;
+  top: 325px;
+  left: 562px;
+  width: 801px;
   height: 50px;
-  top: 315px;
-  left: 912px;
   z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: left;
 }
 
-.LastNameInput {
-  width: 315px;
+.SSNInput {
+  width: 720px;
   height: 40px;
   padding: 9px 15px;
   background-color: #ffffffd0;
@@ -93,20 +69,20 @@
   z-index: 1;
 }
 
-.PhoneNumber {
+.DOB {
   position: absolute;
-  width: 400px;
+  top: 375px;
+  left: 562px;
+  width: 801px;
   height: 50px;
-  top: 365px;
-  left: 912px;
   z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: left;
 }
 
-.PhoneNumberInput {
-  width: 315px;
+.DOBInput {
+  width: 720px;
   height: 40px;
   padding: 9px 15px;
   background-color: #ffffffd0;
@@ -116,20 +92,20 @@
   z-index: 1;
 }
 
-.Affiliation {
+.CurrentAddress {
   position: absolute;
-  width: 400px;
+  top: 425px;
+  left: 562px;
+  width: 801px;
   height: 50px;
-  top: 415px;
-  left: 912px;
   z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: left;
 }
 
-.AffiliationInput {
-  width: 315px;
+.CurrentAddressInput {
+  width: 720px;
   height: 40px;
   padding: 9px 15px;
   background-color: #ffffffd0;
@@ -139,20 +115,20 @@
   z-index: 1;
 }
 
-.IDtype {
+.City1 {
   position: absolute;
-  width: 400px;
+  top: 475px;
+  left: 562px;
+  width: 801px;
   height: 50px;
-  top: 465px;
-  left: 912px;
   z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: left;
 }
 
-.IDtypeInput {
-  width: 155px;
+.City1Input {
+  width: 355px;
   height: 40px;
   padding: 9px 15px;
   background-color: #ffffffd0;
@@ -162,20 +138,20 @@
   z-index: 1;
 }
 
-.IDnum {
+.County {
   position: absolute;
-  width: 400px;
+  top: 475px;
+  left: 927px;
+  width: 801px;
   height: 50px;
-  top: 465px;
-  left: 1073px;
   z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: left;
 }
 
-.IDnumInput {
-  width: 155px;
+.CountyInput {
+  width: 355px;
   height: 40px;
   padding: 9px 15px;
   background-color: #ffffffd0;
@@ -185,43 +161,66 @@
   z-index: 1;
 }
 
-.Address {
+.State {
   position: absolute;
-  width: 400px;
+  top: 525px;
+  left: 562px;
+  width: 801px;
   height: 50px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.StateInput {
+  width: 355px;
+  height: 40px;
+  padding: 9px 15px;
+  background-color: #ffffffd0;
+  border: 1px solid #707070;
+  border-radius: 25px;
+  opacity: 1;
+  z-index: 1;
+}
+
+.ZipCode1 {
+  position: absolute;
+  top: 525px;
+  left: 927px;
+  width: 801px;
+  height: 50px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.ZipCode1Input {
+  width: 355px;
+  height: 40px;
+  padding: 9px 15px;
+  background-color: #ffffffd0;
+  border: 1px solid #707070;
+  border-radius: 25px;
+  opacity: 1;
+  z-index: 1;
+}
+
+.HomePhone {
+  position: absolute;
   top: 575px;
-  left: 912px;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: left;
-}
-
-.AddressInput {
-  width: 315px;
-  height: 40px;
-  padding: 9px 15px;
-  background-color: #ffffffd0;
-  border: 1px solid #707070;
-  border-radius: 25px;
-  opacity: 1;
-  z-index: 1;
-}
-
-.City {
-  position: absolute;
-  width: 400px;
+  left: 562px;
+  width: 801px;
   height: 50px;
-  top: 625px;
-  left: 912px;
   z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: left;
 }
 
-.CityInput {
-  width: 155px;
+.HomePhoneInput {
+  width: 720px;
   height: 40px;
   padding: 9px 15px;
   background-color: #ffffffd0;
@@ -231,20 +230,20 @@
   z-index: 1;
 }
 
-.ZipCode {
+.CellPhone {
   position: absolute;
-  width: 400px;
+  top: 625px;
+  left: 562px;
+  width: 801px;
   height: 50px;
-  top: 625px;
-  left: 1073px;
   z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: left;
 }
 
-.ZipCodeInput {
-  width: 155px;
+.CellPhoneInput {
+  width: 720px;
   height: 40px;
   padding: 9px 15px;
   background-color: #ffffffd0;
@@ -254,24 +253,107 @@
   z-index: 1;
 }
 
-.downArrow {
+.subheading2 {
   position: absolute;
-  top: 480px;
-  left: 1038px;
-  z-index: 2;
+  top: 695px;
+  left: 569px;
 }
 
-.continueButton {
+.subheading2text {
+  position: absolute;
+  top: 720px;
+  left: 569px;
+  left: 569px;
+  width: 368px;
+  height: 40px;
+}
+
+.Member {
+  position: absolute;
+  top: 775px;
+  left: 569px;
+}
+
+.Name {
+  position: absolute;
+  top: 800px;
+  left: 562px;
+  width: 801px;
+  height: 50px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.NameInput {
+  width: 720px;
+  height: 40px;
+  padding: 9px 15px;
+  background-color: #ffffffd0;
+  border: 1px solid #707070;
+  border-radius: 25px;
+  opacity: 1;
+  z-index: 1;
+}
+
+.Age {
+  position: absolute;
+  top: 850px;
+  left: 562px;
+  width: 801px;
+  height: 50px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.AgeInput {
+  width: 355px;
+  height: 40px;
+  padding: 9px 15px;
+  background-color: #ffffffd0;
+  border: 1px solid #707070;
+  border-radius: 25px;
+  opacity: 1;
+  z-index: 1;
+}
+
+.Relationship {
+  position: absolute;
+  top: 850px;
+  left: 927px;
+  width: 801px;
+  height: 50px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.RelationshipInput {
+  width: 355px;
+  height: 40px;
+  padding: 9px 15px;
+  background-color: #ffffffd0;
+  border: 1px solid #707070;
+  border-radius: 25px;
+  opacity: 1;
+  z-index: 1;
+}
+
+.submitButton {
   position: absolute;
   border-radius: 25px;
   padding: 7px;
-  padding-left: 83px;
+  padding-left: 68px;
   font-size: 1rem;
   margin: 0rem 1rem;
   box-shadow: 0px 3px 6px #00000029;
   background: white;
-  top: 680px;
-  left: 920px;
+  top: 900px;
+  left: 800px;
   opacity: 1;
   font-family: "SF Pro Display";
   width: 280px;

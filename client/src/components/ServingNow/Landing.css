@@ -41,20 +41,6 @@
   height: 108px;
 }
 
-.register {
-  position: absolute;
-  width: 433px;
-  height: 79px;
-  bottom: 340px;
-  right: 390px;
-}
-
-.login {
-  position: absolute;
-  /* transform: translate(0px, 60px) scale(5); */
-  left: 890px;
-}
-
 .loginButton1 {
   position: absolute;
   border-radius: 25px;

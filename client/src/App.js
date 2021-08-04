@@ -48,6 +48,8 @@ import LoginPage from './components/ServingNow/Login';
 import RegisterPage from './components/ServingNow/Register';
 import CreatePassword from './components/ServingNow/CreatePassword';
 import Confirmation from './components/ServingNow/Confirmation';
+import ClientForm from './components/ServingNow/ClientForm';
+
 
 
 // import MapTest from './components/MapTest';
@@ -175,6 +177,9 @@ function App() {
             </Route>
             <Route exact path="/confirmation">
               <Confirmation/>
+            </Route>
+            <Route exact path="/clientform">
+              <ClientForm/>
             </Route>
             
             <AppliedRoute path='*' component={NotFound} />
