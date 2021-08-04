@@ -54,3 +54,45 @@
   /* transform: translate(0px, 60px) scale(5); */
   left: 890px;
 }
+
+.loginButton1 {
+  position: absolute;
+  border-radius: 25px;
+  padding: 10px;
+  padding-left: 110px;
+  font-size: 33px;
+  margin: 0rem 1rem;
+  box-shadow: 0px 3px 6px #00000029;
+  background: #e7404a;
+  top: 485px;
+  left: 912px;
+  opacity: 1;
+  font-family: "SF Pro Display";
+  width: 290px;
+  height: 53px;
+  font-size: 22.8px;
+  transform: scale(1.23);
+}
+
+.registerButton {
+  position: absolute;
+  border-radius: 25px;
+  padding: 10px;
+  padding-left: 95px;
+  font-size: 1rem;
+  margin: 0rem 1rem;
+  box-shadow: 0px 3px 6px #00000029;
+  background: white;
+  top: 562px;
+  left: 912px;
+  opacity: 1;
+  font-family: "SF Pro Display";
+  width: 290px;
+  height: 53px;
+  text-align: center;
+  font-size: 22.8px;
+  transform: scale(1.23);
+  border-style: solid;
+  border-color: #e7404a;
+  border-width: 0.8px;
+}

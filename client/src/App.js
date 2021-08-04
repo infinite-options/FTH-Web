@@ -164,7 +164,7 @@ function App() {
             <Route exact path="/landing">
               <Landing/>
             </Route>
-            <Route exact path="/loginpage">
+            <Route exact path="/loginfth">
               <LoginPage/>
             </Route>
             <Route exact path="/register">

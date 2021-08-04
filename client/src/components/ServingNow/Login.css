@@ -1,16 +1,22 @@
+.page {
+  /* overflow: hidden; */
+  overflow-y: hidden; /* Hide vertical scrollbar */
+  overflow-x: hidden;
+}
+
 .shopping {
   position: absolute;
   top: -70px;
   left: 370px;
   /* bottom: 70px; */
-  max-width: 1370px;
-  height: 1080px;
+  /* max-width: 1370px; */
+  /* height: 1080px; */
   z-index: -1;
 }
 
 .rectangle1 {
   position: absolute;
-  width: 1920px;
+  /* width: 1800px; */
   height: 80px;
   background-color: #e7404a;
   top: 0px;

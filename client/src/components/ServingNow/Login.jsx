@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { useState, useContext } from 'react';
 
 import "../ServingNow/Login.css";
 
@@ -11,12 +12,42 @@ import visibility from '../Assets/visibility.svg';
 import google from '../Assets/google.svg';
 import apple from '../Assets/apple.svg';
 import fb from '../Assets/fb.svg';
-import { nodeModuleNameResolver } from 'typescript';
 
-class Login extends Component {
-    render() {
-        return (
-            <div style={{width:'100%'}}>
+export default function Login() {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [loggedIn, setLoggedIn] = useState(); 
+    const [validation, setValidation] = useState('');
+
+    const handleEmailChange = (event) => {
+        setEmail(event.target.value);
+    };
+    
+      const handlePasswordChange = (event) => {
+        setPassword(event.target.value);
+    };
+
+    // const handleSubmit = (event) => {
+    //     event.preventDefault();
+    //     console.log('event', event, email, password);
+    //     axios
+    //       .get(
+    //         'https://3s3sftsr90.execute-api.us-west-1.amazonaws.com/dev//api/v2/loginTA/' +
+    //           email.toString() +
+    //           '/' +
+    //           password.toString()
+    //       )
+    //       .then((response) => {
+    //         console.log('response', response.data);
+    //         if (response.data.result !== false) {
+    //           setLoggedIn(true);
+    //           console.log('response id', response)
+    //         }
+    //     }
+    // }
+
+      return (
+            <div id="loginfth" class="page">
                 <img src={shopping} alt="" class="shopping"/>
                 <img src={box} alt="" class="box"/>
                 <img src={login1} alt="" class="login1"/>
@@ -50,6 +81,7 @@ class Login extends Component {
                       style={{marginBottom: "0px", border: "0px", width: "200px"}}
                       type='text'
                       placeholder='Phone Number / ID Number'
+                      onChange= {handleEmailChange}
                     />
                     </span>
                 </div>
@@ -61,16 +93,14 @@ class Login extends Component {
                       type='password'
                       id='password'
                       placeholder='Password'
+                      onChange={handlePasswordChange}
                     />
                     </span>
                 </div>
 
                 <div class="loginButton">
-                    <button style={{color: 'white', background: "#e7404a", border:"none"}}> <b>Login </b> </button>
+                    <button style={{color: 'white', background: "#e7404a", border:"none", textAlign:"center"}}> <b>Login </b> </button>
                 </div>
             </div>
         )
-    }
 }
-
-export default Login

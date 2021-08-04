@@ -23,6 +23,18 @@ class Register extends Component {
 
                 <div class="title1">
                     <h5> <b>Registration</b></h5>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <h5> <b>For Delivery Only</b></h5>
                 </div>
 
                 <div class="FirstName">
@@ -85,9 +97,9 @@ class Register extends Component {
                     </span>
                 </div>
 
-                <div class="title2">
+                {/* <div class="title2">
                     <h5> <b>For Delivery Only</b></h5>
-                </div>
+                </div> */}
 
                 <div class="Address">
                   <span class="AddressInput">

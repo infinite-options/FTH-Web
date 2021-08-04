@@ -1,6 +1,8 @@
 html,
 body {
   height: 100%;
+  overflow-y: hidden; /* Hide vertical scrollbar */
+  overflow-x: hidden;
 }
 
 .root {
