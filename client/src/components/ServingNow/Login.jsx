@@ -47,7 +47,7 @@ export default function Login() {
     // }
 
       return (
-            <div id="loginfth" class="page">
+            <div id="loginfth">
                 <img src={shopping} alt="" class="shopping"/>
                 <img src={box} alt="" class="box"/>
                 <img src={login1} alt="" class="login1"/>

@@ -49,6 +49,7 @@ import RegisterPage from './components/ServingNow/Register';
 import CreatePassword from './components/ServingNow/CreatePassword';
 import Confirmation from './components/ServingNow/Confirmation';
 import ClientForm from './components/ServingNow/ClientForm';
+import PickItems from './components/ServingNow/PickItems';
 
 
 
@@ -180,6 +181,9 @@ function App() {
             </Route>
             <Route exact path="/clientform">
               <ClientForm/>
+            </Route>
+            <Route exact path="/pickitems">
+              <PickItems/>
             </Route>
             
             <AppliedRoute path='*' component={NotFound} />

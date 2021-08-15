@@ -1,0 +1,235 @@
+.foodbanksbutton {
+  position: absolute;
+  top: 30px;
+  left: 759px;
+  width: 92px;
+  height: 21px;
+  white-space: nowrap;
+  font-size: 18px;
+}
+
+.shopButton {
+  position: absolute;
+  top: 24px;
+  left: 881px;
+  width: 85px;
+  height: 33px;
+  box-shadow: 0px 3px 6px #00000029;
+  border-radius: 18px;
+  opacity: 1;
+  border-radius: 25px;
+  padding: 5px;
+  font-size: 1rem;
+  margin: 0rem 0.8rem;
+  background: white;
+  font-family: "SF Pro Display";
+  text-align: center;
+  font-size: 18px;
+}
+
+.profileButton {
+  position: absolute;
+  top: 30px;
+  left: 1014px;
+  width: 50px;
+  height: 21px;
+  font-size: 18px;
+}
+
+.myordersButton {
+  position: absolute;
+  top: 30px;
+  left: 1123px;
+  width: 83px;
+  height: 21px;
+  font-size: 18px;
+  white-space: nowrap;
+}
+
+.helplineButton {
+  position: absolute;
+  top: 30px;
+  left: 1266px;
+  width: 65px;
+  height: 21px;
+  font-size: 18px;
+}
+
+.foodbankHeader {
+  position: absolute;
+  top: 91px;
+  left: 470px;
+  width: 980px;
+  height: 181px;
+  background-color: white;
+  border: 2px solid #e7404a;
+  border-radius: 20px;
+  opacity: 1;
+}
+
+.foodBankPic {
+  position: absolute;
+  top: 110px;
+  left: 526px;
+  width: 118px;
+  height: 118px;
+  z-index: 1;
+}
+
+.foodBankText {
+  position: absolute;
+  top: 146px;
+  left: 670px;
+  width: 328px;
+  height: 28px;
+  z-index: 1;
+}
+
+.itemLimitText {
+  position: absolute;
+  top: 221px;
+  left: 840px;
+  width: 261px;
+  height: 28px;
+}
+
+.itemsList {
+  padding-left: 470px;
+  height: 689px;
+  transform: translate(0px, 335px);
+}
+
+.counter {
+  position: absolute;
+  top: 490px;
+  left: 517px;
+  width: 17px;
+  height: 31px;
+  z-index: 2;
+  display: flex;
+  font-family: "SF Pro Display";
+}
+
+.beverages {
+  /* top: 100px; */
+  /* left: 524px; */
+  width: 96px;
+  height: 30px;
+  box-shadow: 0px 3px 6px #00000029;
+  border: 1px solid #e7404a;
+  border-radius: 39px;
+  opacity: 1;
+  padding: 5px;
+  letter-spacing: 0.15px;
+  font-size: 14px;
+  transform: translate(524px, -405px);
+  z-index: 2;
+}
+
+.fruits {
+  width: 98px;
+  height: 30px;
+  box-shadow: 0px 3px 6px #00000029;
+  opacity: 1;
+  border-radius: 39px;
+  padding: 5px;
+  text-align: center;
+  letter-spacing: 0.15px;
+  font-size: 14px;
+  background-color: #e7404a;
+  transform: translate(630px, -435px);
+  z-index: 2;
+}
+
+.vegetables {
+  width: 96px;
+  height: 30px;
+  box-shadow: 0px 3px 6px #00000029;
+  border: 1px solid #e7404a;
+  border-radius: 39px;
+  opacity: 1;
+  padding: 5px;
+  letter-spacing: 0.15px;
+  font-size: 14px;
+  transform: translate(738px, -465px);
+  z-index: 2;
+}
+
+.meals {
+  width: 96px;
+  height: 30px;
+  box-shadow: 0px 3px 6px #00000029;
+  border: 1px solid #e7404a;
+  border-radius: 39px;
+  opacity: 1;
+  padding: 5px;
+  letter-spacing: 0.15px;
+  font-size: 14px;
+  transform: translate(846px, -495px);
+  z-index: 2;
+  text-align: center;
+}
+
+.desserts {
+  position: absolute;
+  width: 96px;
+  height: 30px;
+  box-shadow: 0px 3px 6px #00000029;
+  border: 1px solid #e7404a;
+  border-radius: 39px;
+  opacity: 1;
+  padding: 5px;
+  letter-spacing: 0.15px;
+  font-size: 14px;
+  transform: translate(951px, -525px);
+  z-index: 2;
+  text-align: center;
+}
+
+.canned {
+  position: absolute;
+  width: 96px;
+  height: 30px;
+  box-shadow: 0px 3px 6px #00000029;
+  border: 1px solid #e7404a;
+  border-radius: 39px;
+  opacity: 1;
+  padding: 5px;
+  letter-spacing: 0.15px;
+  font-size: 14px;
+  transform: translate(1055px, -525px);
+  z-index: 2;
+  text-align: center;
+}
+
+.dairy {
+  position: absolute;
+  width: 96px;
+  height: 30px;
+  box-shadow: 0px 3px 6px #00000029;
+  border: 1px solid #e7404a;
+  border-radius: 39px;
+  opacity: 1;
+  padding: 5px;
+  letter-spacing: 0.15px;
+  font-size: 14px;
+  transform: translate(1160px, -525px);
+  z-index: 2;
+  text-align: center;
+}
+
+.snacks {
+  position: absolute;
+  width: 96px;
+  height: 30px;
+  box-shadow: 0px 3px 6px #00000029;
+  border: 1px solid #e7404a;
+  border-radius: 39px;
+  opacity: 1;
+  padding: 5px;
+  letter-spacing: 0.15px;
+  font-size: 14px;
+  transform: translate(1273px, -525px);
+  z-index: 2;
+  text-align: center;
+}
