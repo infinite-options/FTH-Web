@@ -42,6 +42,7 @@ import AdminNotfications from './components/Admin/Notifications';
 import AdminZones from './components/Admin/Zones';
 import AdminCustomerInfo from './components/Admin/CustomerInfo';
 import AdminIngredientsUnits from './components/Admin/IngredientsUnits';
+import AdminCustomerInfo2 from './components/Admin/CustomerInfo2';
 
 import Landing from './components/ServingNow/Landing';
 import LoginPage from './components/ServingNow/Login';
@@ -159,6 +160,9 @@ function App() {
             </Route>
             <Route exact path="/admin/customers">
               <AdminCustomerInfo />
+            </Route>
+            <Route exact path="/admin/customers2">
+              <AdminCustomerInfo2 />
             </Route>
             <Route exact path="/admin/ingredients-units">
               <AdminIngredientsUnits />

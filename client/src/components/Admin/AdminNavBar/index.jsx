@@ -457,6 +457,17 @@ function NavBar(props) {
               </div>
               <div className={styles.dropdownLink}>
                 <a
+                  href="/admin/customers2"
+                  className={styles.navLinkDD}
+                  style={
+                    props.currentPage === "customers2" ? { color: "black" } : {}
+                  }
+                >
+                  Customers2
+                </a>
+              </div>
+              <div className={styles.dropdownLink}>
+                <a
                   href="/admin/notifications"
                   className={styles.navLinkDD}
                   style={

@@ -468,24 +468,25 @@ function EditMeal({history, ...props}) {
               }}
             >
               <tr width= "100%">
-                <th style={{marginLeft: "27px", textAlign:"center", display:"inline-block", overflow:"hidden", textOverflow: "ellipsis"}} width = "7%">
+                <th style={{marginLeft: "27px", textAlign:"center", display:"inline-block", overflow:"hidden", textOverflow: "ellipsis"}} width = "16%">
                   {allMeals[index].meal_name}
                 </th>
-                <th style={{textAlign:"center", display:"inline-block"}} width="7%">
+                <th style={{textAlign:"center", display:"inline-block"}} width="16%">
                   <img src={allMeals[index].meal_photo_URL} height="45" width="45"></img>
                 </th>
-                <th style={{textAlign:"center", display:"inline-block", overflow:"hidden", textOverflow: "ellipsis"}} width = "7%" height="45">{allMeals[index].meal_desc}</th>
-                <th style={{textAlign:"center", display:"inline-block"}} width = "7%" height="45">{allMeals[index].meal_category}</th>
-                <th style={{textAlign:"center", display:"inline-block", overflow:"hidden", textOverflow: "ellipsis"}} width = "7%" height="45">{allMeals[index].meal_hint}</th>
+                {/* <th style={{textAlign:"center", display:"inline-block", overflow:"hidden", textOverflow: "ellipsis"}} width = "7%" height="45">{allMeals[index].meal_desc}</th> */}
+                <th style={{textAlign:"center", display:"inline-block"}} width = "16%" height="45">{allMeals[index].meal_category}</th>
+                {/* <th style={{textAlign:"center", display:"inline-block", overflow:"hidden", textOverflow: "ellipsis"}} width = "7%" height="45">{allMeals[index].meal_hint}</th>
                 <th style={{textAlign:"center", display:"inline-block"}} width = "7%" height="45">{allMeals[index].meal_calories} Cal</th>
                 <th style={{textAlign:"center", display:"inline-block"}} width = "7%" height="45">{allMeals[index].meal_protein}g</th>            
                 <th style={{textAlign:"center", display:"inline-block"}} width = "7%" height="45">{allMeals[index].meal_carbs}g</th>
                 <th style={{textAlign:"center", display:"inline-block"}} width = "7%" height="45">{allMeals[index].meal_fiber}g</th>
                 <th style={{textAlign:"center", display:"inline-block"}} width = "7%" height="45">{allMeals[index].meal_sugar}g</th>
                 <th style={{textAlign:"center", display:"inline-block"}} width = "7%" height="45">{allMeals[index].meal_fat}%</th>
-                <th style={{textAlign:"center", display:"inline-block"}} width = "7%" height="45">{allMeals[index].meal_sat}%</th>
-                <th style={{textAlign:"center", display:"inline-block"}} width = "7%" height="45">{allMeals[index].meal_status}</th>
-                <th style={{textAlign:"center", display:"inline-block"}} width = "7%" height="45">
+                <th style={{textAlign:"center", display:"inline-block"}} width = "7%" height="45">{allMeals[index].meal_sat}%</th> */}
+                <th style={{textAlign:"center", display:"inline-block"}} width = "16%" height="45">{allMeals[index].meal_status}</th> 
+                <th style={{textAlign:"center", display:"inline-block"}} width = "16%" height="45">???</th>
+                <th style={{textAlign:"center", display:"inline-block"}} width = "16%" height="45">
                   <div className={styles.editIcon}
                     onClick={() => {
                       // console.log("clicked on " + allMeals[index].meal_uid)
@@ -2035,24 +2036,22 @@ function EditMeal({history, ...props}) {
           Send Message
         </div>
 
-        <div style={{
+        {/* <div style={{
           position: "absolute",
           top: "125px",
           left: "700px",
           color: "#E7404A"
         }}>
           Cusines
-        </div>
+        </div> */}
 
-        <div style={{
+        {/* <div style={{
           position: "absolute",
           top: "145px",
           left: "700px",
         }}>
           {activeBusinessData.business_type}
-          {/* {tempCusine} */}
-          {/* {console.log(activeBusinessData)} */}
-        </div>
+        </div> */}
 
         <div style={{
           position: "absolute",
@@ -2080,6 +2079,15 @@ function EditMeal({history, ...props}) {
           <div style={{display: "block", fontSize: "12px"}}>
             Thursday
           </div>
+          <div style={{display: "block", fontSize: "12px"}}>
+            Friday
+          </div>
+          <div style={{display: "block", fontSize: "12px"}}>
+            Saturday
+          </div>
+          <div style={{display: "block", fontSize: "12px"}}>
+            Sunday
+          </div>
         </div>
         <div style={{
           position: "absolute",
@@ -2098,8 +2106,17 @@ function EditMeal({history, ...props}) {
           <div style={{display: "block", fontSize: "12px"}}>
             {getActiveBusinessHours().Thursday[0]} - {getActiveBusinessHours().Thursday[1]}
           </div>
+          <div style={{display: "block", fontSize: "12px"}}>
+            {getActiveBusinessHours().Friday[0]} - {getActiveBusinessHours().Friday[1]}
+          </div>
+          <div style={{display: "block", fontSize: "12px"}}>
+            {getActiveBusinessHours().Saturday[0]} - {getActiveBusinessHours().Saturday[1]}
+          </div>
+          <div style={{display: "block", fontSize: "12px"}}>
+            {getActiveBusinessHours().Sunday[0]} - {getActiveBusinessHours().Sunday[1]}
+          </div>
         </div>
-        <div style={{
+        {/* <div style={{
           position: "absolute",
           top: "145px",
           left: "1125px",
@@ -2128,6 +2145,22 @@ function EditMeal({history, ...props}) {
           <div style={{display: "block", fontSize: "12px"}}>
             {getActiveBusinessHours().Sunday[0]} - {getActiveBusinessHours().Sunday[1]}
           </div>
+        </div> */}
+        <div style={{
+          position: "absolute",
+          top: "125px",
+          left: "1150px",
+          color: "#E7404A"
+        }}>
+          Item limit per person
+        </div>
+       
+        <div style={{
+          position: "absolute",
+          top: "145px",
+          left: "1150px",
+        }}>
+          5 (placeholder)
         </div>
       </div>
 
@@ -2149,19 +2182,20 @@ function EditMeal({history, ...props}) {
 
         <table width="100%">
           <tr width="100%">
-            <th style={{color: '#E7404A', marginLeft: "27px", textAlign:"center", display:"inline-block"}} width = "7%">Meal Name</th>
-            <th style={{color: '#E7404A', margin: "auto", textAlign:"center", display:"inline-block"}} width = "7%">Picture</th>
-            <th style={{color: '#E7404A', margin: "auto", textAlign:"center", display:"inline-block"}} width = "7%">Meal Description</th>
-            <th style={{color: '#E7404A', margin: "auto", textAlign:"center", display:"inline-block"}} width = "7%">Meal Category</th>
-            <th style={{color: '#E7404A', margin: "auto", textAlign:"center", display:"inline-block"}} width = "7%">Meal Hint</th>
+            <th style={{color: '#E7404A', marginLeft: "27px", textAlign:"center", display:"inline-block"}} width = "16%">Item Name</th>
+            <th style={{color: '#E7404A', margin: "auto", textAlign:"center", display:"inline-block"}} width = "16%">Item Picture</th>
+            {/* <th style={{color: '#E7404A', margin: "auto", textAlign:"center", display:"inline-block"}} width = "7%">Meal Description</th> */}
+            <th style={{color: '#E7404A', margin: "auto", textAlign:"center", display:"inline-block"}} width = "16%">Type of Food</th>
+            {/* <th style={{color: '#E7404A', margin: "auto", textAlign:"center", display:"inline-block"}} width = "7%">Meal Hint</th>
             <th style={{color: '#E7404A', margin: "auto", textAlign:"center", display:"inline-block"}} width = "7%">Calories</th>
             <th style={{color: '#E7404A', margin: "auto", textAlign:"center", display:"inline-block"}} width = "7%">Protein</th>
             <th style={{color: '#E7404A', margin: "auto", textAlign:"center", display:"inline-block"}} width = "7%">Carbs</th>
             <th style={{color: '#E7404A', margin: "auto", textAlign:"center", display:"inline-block"}} width = "7%">Fiber</th>
             <th style={{color: '#E7404A', margin: "auto", textAlign:"center", display:"inline-block"}} width = "7%">Sugar</th>
             <th style={{color: '#E7404A', margin: "auto", textAlign:"center", display:"inline-block"}} width = "7%">Fats</th>
-            <th style={{color: '#E7404A', margin: "auto", textAlign:"center", display:"inline-block"}} width = "7%">Sat</th>
-            <th style={{color: '#E7404A', margin: "auto", textAlign:"center", display:"inline-block"}} width = "7%">Status</th>
+            <th style={{color: '#E7404A', margin: "auto", textAlign:"center", display:"inline-block"}} width = "7%">Sat</th> */}
+            <th style={{color: '#E7404A', margin: "auto", textAlign:"center", display:"inline-block"}} width = "16%">Status</th>
+            <th style={{color: '#E7404A', margin: "auto", textAlign:"center", display:"inline-block"}} width = "16%">Current Inventory</th>
             {/* <th style={{color: '#E7404A', paddingLeft: "67px", textAlign:"center", display:"inline-block"}} ></th> */}
           </tr>
         </table>

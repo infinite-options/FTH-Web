@@ -2239,6 +2239,13 @@ function CustomerInfo(props) {
     );
   }
 
+  const setDefaultPlan = () => {
+    if (uniquePlans != null && currentPlan == null) {
+      console.log('setting current plan')
+      setCurrentPlan(uniquePlans[0])
+    }
+  }
+
   return (
 		<div 
 			style={{
@@ -3702,6 +3709,8 @@ function CustomerInfo(props) {
                 </div>
 
 							</div>
+
+              {/* need to set a plan to be the default plan */}
 
 							{uniquePlans === null || currentPlan === null ? (
 								<div 

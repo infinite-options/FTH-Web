@@ -27,19 +27,19 @@ const responsive = {
   superLargeDesktop: {
     // the naming can be any, depends on you.
     breakpoint: { max: 4000, min: 3000 },
-    items: 8,
+    items: 12,
   },
   desktop: {
     breakpoint: { max: 3000, min: 1024 },
-    items: 5,
+    items: 10,
   },
   tablet: {
     breakpoint: { max: 1024, min: 464 },
-    items: 2,
+    items: 6,
   },
   mobile: {
     breakpoint: { max: 464, min: 0 },
-    items: 1,
+    items: 3,
   },
 };
 
@@ -955,147 +955,75 @@ function CreateMenu({ history, ...props }) {
       <div className={styles.root}>
         {console.log(state)}
         <Container fluid className={styles.container}>
-          <Row 
-            className={styles.section}
-            style={{marginBottom: "10px"}}
-          >
-            <Col md="auto" className={styles.restaurantSelector}>
-              <div style={{height: "100%", float: "left"}}>
-                {state.selectedBusinessID ? (
-                  <img
-                    src={state.selectedBusinessData.business_image}
-                    className={styles.restaurantImg}
-                    style={{border: "solid", borderColor: "#E7404A", borderRadius: "50%", borderWidth: "1px"}}
-                  ></img>
-                ) : (
-                  <div className={styles.restaurantImg}></div>
-                )}
-              </div>
-              
-              <div style={{ marginLeft: "10px", height: "100%", float: "left" }}>
-                <form>
-                  <div className={styles.dropdownArrow}>
-                    <select
-                      className={styles.dropdown}
-                      onChange={filterBusiness}
-                    >
-                      <option key={0}>All Orders</option>
-                      {state.businessData.map((business, index) => {
-                        if (business) {
-                          return (
-                            <option
-                              key={business.business_uid}
-                              value={business.business_uid}
-                            >
-                              {business.business_name}
-                            </option>
-                          );
-                        }
-                      })}
-                    </select>
-                  </div>
-                </form>
-                <div
-                  className={[styles.restaurantLinks, styles.bold].join(" ")}
-                >
-                  <div>Edit Details</div>
-                </div>
-              </div>
-              {state.selectedBusinessID ? (
-                <>
-                  <div style={{height: "100%", float: "left", marginLeft: "20px"}}>
-                    <div>Monday</div>
-                    <div>Wednesday</div>
-                    <div>Friday</div>
-                    <div>Sunday</div>
-                  </div>
-                  <div style={{height: "100%", float: "left", marginLeft: "20px"}}>
-                    <div>{state.businessHours.Monday[0]}-{state.businessHours.Monday[1]}</div>
-                    <div>{state.businessHours.Wednesday[0]}-{state.businessHours.Wednesday[1]}</div>
-                    <div>{state.businessHours.Friday[0]}-{state.businessHours.Friday[1]}</div>
-                    <div>{state.businessHours.Sunday[0]}-{state.businessHours.Sunday[1]}</div>
-                  </div>
-                  <div style={{height: "100%", float: "left", marginLeft: "20px"}}>
-                    <div>Tuesday</div>
-                    <div>Thursday</div>
-                    <div>Saturday</div>
-                  </div>
-                  <div style={{height: "100%", float: "left", marginLeft: "20px"}}>
-                    <div>{state.businessHours.Tuesday[0]}-{state.businessHours.Tuesday[1]}</div>
-                    <div>{state.businessHours.Thursday[0]}-{state.businessHours.Thursday[1]}</div>
-                    <div>{state.businessHours.Saturday[0]}-{state.businessHours.Saturday[1]}</div>
-                  </div>
-                </>
-              ) : (
-                null
-              )}
-              
-              
-            </Col>
-          </Row>
+          
           <Row className={styles.section}>
-            <Col
+            <Row
               md="auto"
               className={[styles.verticallyCenter, styles.bold].join(" ")}
-              style={{ fontSize: "20px" }}
+              style={{ fontSize: "20px", width: '100%' }}
             >
               Create / Edit Menu
-            </Col>
+            </Row>
             <Col md="auto" className={styles.verticallyCenter}></Col>
-            <button
-              style={{ transform: "translateX(10px)" }}
-              className={styles.dateCarouselArrowBtn}
-              onClick={() => {
-                carouselRef.current.previous();
-                dispatch({ type: "DECREMENT_DATE_INDEX" });
-              }}
-            >
-              <LeftArrow />
-            </button>
-            <Col md="auto" style={{ width: "450px" }}>
-              {state.dateIndex != null && (
-                <Carousel
-                  responsive={responsive}
-                  ref={carouselRef}
-                  arrows={false}
-                  sliderClass={styles.carouselSlider}
-                  keyBoardControl
+
+            <Row sm='8' style={{width:'70%', marginLeft:'15%'}}>
+              
+                <button
+                  style={{ transform: "translateX(10px)",width:'10%' }}
+                  className={styles.dateCarouselArrowBtn}
+                  onClick={() => {
+                    carouselRef.current.previous();
+                    dispatch({ type: "DECREMENT_DATE_INDEX" });
+                  }}
                 >
-                  {menuDates.map((date) => {
-                    const dateButtonStatus =
-                      date.value === state.menuDate
-                        ? styles.datebuttonSelected
-                        : styles.datebuttonNotSelected;
-                    return (
-                      <button
-                        className={[
-                          styles.datebutton,
-                          dateButtonStatus,
-                          styles.bold,
-                        ].join(" ")}
-                        key={date.value}
-                        value={date.value}
-                        onClick={(e) => changeDate(e.target.value)}
-                      >
-                        {date.display.substring(0, 1).toUpperCase()} <br />{" "}
-                        {date.display.substring(4, 10)}
-                      </button>
-                    );
-                  })}
-                </Carousel>
-              )}
-            </Col>
-            <button
-              style={{ transform: "translateX(0px)" }}
-              className={styles.dateCarouselArrowBtn}
-              onClick={() => {
-                carouselRef.current.next();
-                dispatch({ type: "INCREMENT_DATE_INDEX" });
-              }}
-            >
-              <RightArrow />
-            </button>
-            <Col
+                  <LeftArrow />
+                </button>
+                <Col md="auto" style={{ width: "80%", }}>
+                  {state.dateIndex != null && (
+                    <Carousel
+                      responsive={responsive}
+                      ref={carouselRef}
+                      arrows={false}
+                      sliderClass={styles.carouselSlider}
+                      keyBoardControl
+                    >
+                      {menuDates.map((date) => {
+                        const dateButtonStatus =
+                          date.value === state.menuDate
+                            ? styles.datebuttonSelected
+                            : styles.datebuttonNotSelected;
+                        return (
+                          <button
+                            className={[
+                              styles.datebutton,
+                              dateButtonStatus,
+                              styles.bold,
+                            ].join(" ")}
+                            key={date.value}
+                            value={date.value}
+                            onClick={(e) => changeDate(e.target.value)}
+                          >
+                            {date.display.substring(0, 1).toUpperCase()} <br />{" "}
+                            {date.display.substring(4, 10)}
+                          </button>
+                        );
+                      })}
+                    </Carousel>
+                  )}
+                </Col>
+                <button
+                  style={{ transform: "translateX(0px)" }}
+                  className={styles.dateCarouselArrowBtn}
+                  onClick={() => {
+                    carouselRef.current.next();
+                    dispatch({ type: "INCREMENT_DATE_INDEX" });
+                  }}
+                >
+                  <RightArrow />
+                </button>
+              
+            </Row>
+            {/* <Col
               style={{
                 display: "flex",
                 flexDirection: "row",
@@ -1127,7 +1055,7 @@ function CreateMenu({ history, ...props }) {
               >
                 Add Menu Item
               </button>
-            </Col>
+            </Col> */}
           </Row>
           <Row 
             className={[styles.section, styles.main].join(" ")}
