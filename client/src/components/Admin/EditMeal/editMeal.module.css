@@ -74,7 +74,7 @@
   /* text-align: center;
   display: flex; */
   width: 96%;
-  height: 150px;
+  height: 250px;
   z-index: 1;
   /* border: solid; */
   border-radius: 15px;
@@ -712,4 +712,43 @@ border-radius: 34px;
 
 .slider.round:before {
 border-radius: 50%;
+}
+
+.datebutton {
+  height: 80px;
+  width: 50px;
+  font-size: 15px;
+  border: solid;
+  border-color: #E7404A;
+  border-radius: 25px;
+  text-align: center;
+}
+
+.datebuttonNotSelected {
+  box-shadow: 0 0 7px #838383;
+  background-color: white;
+}
+
+.datebuttonSelected {
+  background-color: #E7404A;
+  border: 4px solid #E7404A;
+  color: white;
+}
+
+.verticallyCenter {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.carouselSlider {
+  text-align: center;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.dateCarouselArrowBtn {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
 }

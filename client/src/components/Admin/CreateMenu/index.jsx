@@ -2,7 +2,7 @@ import { useEffect, useMemo, useReducer, useRef } from "react";
 import axios from "axios";
 import { API_URL } from "../../../reducers/constants";
 import { formatTime, sortedArray } from "../../../reducers/helperFuncs";
-import { ReactComponent as LeftArrow } from "./static/Polygon 1 (1).svg";
+import { ReactComponent as LeftArrow } from "./static/Polygon 1.svg";
 import { ReactComponent as RightArrow } from "./static/Polygon 9.svg";
 import { ReactComponent as ModalCloseBtn } from "./static/modalClose.svg";
 import { ReactComponent as DeleteBtn } from "./static/delete.svg";

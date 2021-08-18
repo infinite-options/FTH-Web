@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    backgroundColor: '#BCCDCE',
+    backgroundColor: 'white',
     padding: '2rem',
   },
   search: {
@@ -42,11 +42,11 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   inputRoot: {
-    color: '#1C6D74',
+    color: '#E7404A',
   },
   inputInput: {
     background: '#FFFFFF 0% 0% no-repeat padding-box',
-    border: '1px solid #1C6D74',
+    border: '1px solid #E7404A',
     borderRadius: ' 8px',
     opacity: 1,
     width: '189px',
@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '0.9rem',
     fontWeight: 'bold',
     letterSpacing: '0.25px',
-    color: '#1C6D74',
+    color: '#E7404A',
     opacity: 1,
     justifyContent: 'start',
     padding: '10px',
@@ -94,10 +94,10 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: 'transparent',
   },
   infoRow: {
-    color: '#1C6D74',
+    color: '#E7404A',
     '&:active': {
       boxShadow: 'none',
-      backgroundColor: '#1C6D74',
+      backgroundColor: '#E7404A',
       color: 'white',
     },
   },
@@ -109,7 +109,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     font: 'normal normal 600 16px SF Pro Display',
     letterSpacing: '0.25px',
-    color: ' #1C6D74',
+    color: ' #E7404A',
     opacity: 1,
     padding: '5px 5px',
     fontSize: '14px',
@@ -153,7 +153,7 @@ const useStyles = makeStyles((theme) => ({
     cursor: 'pointer',
     '&:active': {
       boxShadow: 'none',
-      backgroundColor: '#1C6D74',
+      backgroundColor: '#E7404A',
       borderColor: '#005cbf',
       color: 'white',
     },
@@ -162,7 +162,7 @@ const useStyles = makeStyles((theme) => ({
     padding: '10px',
   },
   activePayment: {
-    background: ' #1C6D74 0% 0% no-repeat padding-box',
+    background: ' #E7404A 0% 0% no-repeat padding-box',
     opacity: 1,
     color: 'white',
   },
@@ -267,7 +267,7 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: ' 1px solid #0000001A',
     cursor: 'pointer',
     boxShadow: 'none',
-    backgroundColor: '#1C6D74',
+    backgroundColor: '#E7404A',
     borderColor: '#005cbf',
     color: 'white',
     outline: 'none',
@@ -824,7 +824,7 @@ function Customers() {
                           style={{
                             textAlign: 'left',
                             font: 'normal normal 600 20px SF Pro Display',
-                            color: '#1C6D74',
+                            color: '#E7404A',
                             opacity: 1,
                           }}
                         >
@@ -870,7 +870,7 @@ function Customers() {
                         textTransform: 'none',
                         textDecorationColor: 'none',
                         letterSpacing: '0.25px',
-                        color: ' #1C6D74',
+                        color: ' #E7404A',
                         opacity: 1,
                       }}
                     >
@@ -879,7 +879,7 @@ function Customers() {
                         style={{
                           textTransform: 'none',
                           textDecorationColor: 'none',
-                          color: ' #1C6D74',
+                          color: ' #E7404A',
                         }}
                       >
                         Send Message

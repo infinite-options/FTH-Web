@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from 'react';
+import { useEffect, useReducer, useState, useRef, useMemo } from 'react';
 import axios from 'axios';
 import { API_URL } from '../../../reducers/constants';
 import {
@@ -9,6 +9,30 @@ import AdminNavBar from '../AdminNavBar';
 import styles from "./editMeal.module.css";
 import { act } from 'react-dom/test-utils';
 import testImage from './static/test.jpeg'
+import { ReactComponent as LeftArrow } from "./static/Polygon 1.svg";
+import { ReactComponent as RightArrow } from "./static/Polygon 9.svg";
+import Carousel from "react-multi-carousel";
+import { formatTime, sortedArray } from "../../../reducers/helperFuncs";
+
+const responsive = {
+  superLargeDesktop: {
+    // the naming can be any, depends on you.
+    breakpoint: { max: 4000, min: 3000 },
+    items: 12,
+  },
+  desktop: {
+    breakpoint: { max: 3000, min: 1024 },
+    items: 10,
+  },
+  tablet: {
+    breakpoint: { max: 1024, min: 464 },
+    items: 6,
+  },
+  mobile: {
+    breakpoint: { max: 464, min: 0 },
+    items: 3,
+  },
+};
 
 const initialState = {
   mounted: false,
@@ -32,6 +56,21 @@ const initialState = {
   },
   selectedFile: null,
   previewLink: "",
+
+  businessData: [],
+  dateIndex: null,
+  carouselLoaded: false,
+  dateValid: true,
+  mealExists: false,
+  selectedMealName: "",
+  menuCategories: [],
+  selectedBusinessID: "",
+  selectedBusinessData: [],
+  businessHours: {},
+  allMenuDates: [],
+  menuDate: "",
+  mealData: [],
+  menuDataByDate: [],
 };
 
 function useForceUpdate() {
@@ -68,6 +107,27 @@ function reducer (state, action) {
         ...state,
         previewLink: action.payload
       }
+    case "FETCH_MENU_BY_DATE":
+      return {
+        ...state,
+        menuDataByDate: action.payload,
+      };
+    case "FETCH_DATES":
+      return {
+        ...state,
+        allMenuDates: action.payload.menuDates,
+        dateIndex: action.payload.dateIndex,
+        menuDate: action.payload.menuDate,
+      };
+    case "CHANGE_DATE":
+      return {
+        ...state,
+        menuDate: action.payload,
+        newMeal: {
+          ...state.newMeal,
+          menu_date: action.payload,
+        },
+      };
     default:
       return state;
   }
@@ -151,6 +211,7 @@ function EditMeal({history, ...props}) {
   const [mealsGenerated, toggleMealsGenerated] = useState(false)
   
   const forceUpdate = useForceUpdate();
+  const carouselRef = useRef();
 
   // Check for log in
   useEffect(() => {
@@ -191,12 +252,131 @@ function EditMeal({history, ...props}) {
     }
   }, [history]);
 
+  // Get Dates
+  useEffect(() => {
+    let nextMenuDate = "";
+    axios
+      .get(`${API_URL}all_menu_dates`)
+      .then((response) => {
+        const datesApiResult = response.data.result;
+        const closestDateIndex = getClosestDateIndex(datesApiResult);
+        nextMenuDate = datesApiResult[closestDateIndex].menu_date;
+        dispatch({
+          type: "FETCH_DATES",
+          payload: {
+            menuDates: datesApiResult,
+            dateIndex: closestDateIndex,
+            menuDate: nextMenuDate,
+          },
+        });
+        return axios.get(
+          `${API_URL}meals_ordered_by_date/${nextMenuDate.substring(0, 10)}`
+        );
+      })
+      // .then((response) => {
+      //   if (response.status === 200) {
+      //     const mealsApi = response.data.result;
+      //     if (mealsApi !== undefined) {
+      //       dispatch({ type: "FETCH_MENU_BY_DATE", payload: mealsApi });
+      //       dispatch({ type: "EDIT_MENU", payload: mealsApi });
+      //     }
+      //   }
+      // })
+      .catch((err) => {
+        if (err.response) {
+          // eslint-disable-next-line no-console
+          console.log(err.response);
+        }
+        // eslint-disable-next-line no-console
+        console.log(err);
+      });
+  }, []);
+
+  const menuDates = useMemo(() => {
+    const menuDatesFormatted = state.allMenuDates.map((item) => {
+      const menuDate = item.menu_date;
+      const menuDateTime = new Date(formatTime(menuDate));
+      return {
+        value: menuDate,
+        display: menuDateTime.toDateString(),
+      };
+    });
+    return menuDatesFormatted;
+  }, [state.allMenuDates]);
+
+  const getCurrentDate = () => {
+    const currentDate = new Date();
+    let day = currentDate.getDate();
+    if (day < 10) {
+      day = ["0", day].join("");
+    }
+    let month = currentDate.getMonth() + 1;
+    if (month < 10) {
+      month = ["0", month].join("");
+    }
+    let year = currentDate.getFullYear();
+    return [[year, month, day].join("-"), "00-00-00"].join(" ");
+  };
+
+  const getClosestDateIndex = (dates) => {
+    if (dates) {
+      let curDay = getCurrentDate();
+
+      for (let i = 0; i < dates.length; i++) {
+        const day = dates[i].menu_date;
+        if (
+          day.localeCompare(curDay) === 0 ||
+          day.localeCompare(curDay) === 1
+        ) {
+          return i;
+        }
+      }
+    }
+    return 0;
+  };
+
+  const getMenuData = async (date) => {
+    const mealApiData = await axios.get(
+      `${API_URL}meals_ordered_by_date/${date.substring(0, 10)}`
+    );
+    const mealApiDataResult = mealApiData.data.result;
+    return mealApiDataResult;
+  };
+
   const getMealCategories = () => {
     const mealCategories = state.mealData.map((menuItem) => menuItem.meal_category);
     const mealCategoriesUnique = mealCategories.filter(
       (elt, index) => mealCategories.indexOf(elt) === index,
     );
     return mealCategoriesUnique;
+  };
+
+  const changeDate = (newDate) => {
+    dispatch({ type: "CHANGE_DATE", payload: newDate });
+    //const curMenu = getMenuData(newDate);
+    // curMenu.then((response) => console.log(response));
+    //console.log(curMenu);
+    getMenuData(newDate)
+      .then((curMenu) => {
+        if (curMenu) {
+          const sortedMenu = sortedArray(
+            curMenu,
+            state.sortEditMenu.field,
+            state.sortEditMenu.direction
+          );
+          dispatch({ type: "EDIT_MENU", payload: sortedMenu });
+        } else {
+          dispatch({ type: "EDIT_MENU", payload: [] });
+        }
+      })
+      .catch((err) => {
+        if (err.response) {
+          // eslint-disable-next-line no-console
+          console.log(err.response);
+        }
+        // eslint-disable-next-line no-console
+        console.log(err);
+      });
   };
 
   // Fetch meals
@@ -557,7 +737,7 @@ function EditMeal({history, ...props}) {
             const idB = mealB.meal_uid;
             return (idA < idB) ? -1 : 1;
           });
-          dispatch({ type: 'FETCH_MEALS', payload: mealApiResult });
+          //dispatch({ type: 'FETCH_MEALS', payload: mealApiResult });
           console.log("dispatch FETCH_MEALS")
           //console.log(mealApiResult)
           allMeals = mealApiResult
@@ -2162,6 +2342,63 @@ function EditMeal({history, ...props}) {
         }}>
           5 (placeholder)
         </div>
+        <Row sm='8' style={{width:'70%', marginLeft:'15%', marginTop:'45px'}}>
+              
+                <button
+                  style={{ transform: "translateX(10px)",width:'10%' }}
+                  className={styles.dateCarouselArrowBtn}
+                  onClick={() => {
+                    carouselRef.current.previous();
+                    dispatch({ type: "DECREMENT_DATE_INDEX" });
+                  }}
+                >
+                  <LeftArrow />
+                </button>
+                <Col md="auto" style={{ width: "80%", }}>
+                  {state.dateIndex != null && (
+                    <Carousel
+                      responsive={responsive}
+                      ref={carouselRef}
+                      arrows={false}
+                      sliderClass={styles.carouselSlider}
+                      keyBoardControl
+                    >
+                      {menuDates.map((date) => {
+                        const dateButtonStatus =
+                          date.value === state.menuDate
+                            ? styles.datebuttonSelected
+                            : styles.datebuttonNotSelected;
+                        return (
+                          <button
+                            className={[
+                              styles.datebutton,
+                              dateButtonStatus,
+                              styles.bold,
+                            ].join(" ")}
+                            key={date.value}
+                            value={date.value}
+                            onClick={(e) => changeDate(e.target.value)}
+                          >
+                            {date.display.substring(0, 1).toUpperCase()} <br />{" "}
+                            {date.display.substring(4, 10)}
+                          </button>
+                        );
+                      })}
+                    </Carousel>
+                  )}
+                </Col>
+                <button
+                  style={{ transform: "translateX(0px)" }}
+                  className={styles.dateCarouselArrowBtn}
+                  onClick={() => {
+                    carouselRef.current.next();
+                    dispatch({ type: "INCREMENT_DATE_INDEX" });
+                  }}
+                >
+                  <RightArrow />
+                </button>
+              
+            </Row>
       </div>
 
       {editBusinessBox()}
