@@ -72,9 +72,9 @@
   /* top: 91px;
   left: 470px; */
   /* width: 980px; */
-  margin-left: 2%;
-  margin-right: 2%;
-  width: 96%;
+  margin-left: 20px;
+  margin-right: 20px;
+  width: calc(100% - 40px);
   margin-top: 20px;
   height: 181px;
   background-color: white;
@@ -158,7 +158,7 @@
   transform: translate(0px, 335px);
 } */
 
-.counter {
+/* .counter {
   position: absolute;
   top: 490px;
   left: 517px;
@@ -167,11 +167,9 @@
   z-index: 2;
   display: flex;
   font-family: "SF Pro Display";
-}
+} */
 
-.beverages {
-  /* top: 100px; */
-  /* left: 524px; */
+/* .beverages {
   width: 96px;
   height: 30px;
   box-shadow: 0px 3px 6px #00000029;
@@ -183,6 +181,42 @@
   font-size: 14px;
   transform: translate(524px, -405px);
   z-index: 2;
+} */
+.beverages {
+  width: 96px;
+  height: 30px;
+  box-shadow: 0px 3px 6px #00000029;
+  /* border: 1px solid #e7404a; */
+  /* border:  */
+  border-radius: 39px;
+  opacity: 1;
+  padding: 5px;
+  letter-spacing: 0.15px;
+  font-size: 14px;
+  /* transform: translate(524px, -405px); */
+  z-index: 2;
+}
+
+.filterButtonWrapper {
+  width: 15%;
+  /* border: 1px solid blue; */
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.filterButton {
+  width: 96px;
+  height: 30px;
+  border-radius: 39px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #E7404A;
+  background: white;
+  border: 2px solid #e7404a;
+  text-align: center;
+  box-shadow: 0px 3px 6px #00000029;
 }
 
 .fruits {
@@ -302,43 +336,83 @@
   width: 100%;
 }
 
-.product component {
+/* .product component {
   position: absolute;
   top: 220px;
   left: 470px;
   width: 171px;
   height: 202px;
+} */
+.product component {
+  /* position: absolute; */
+  /* top: 220px;
+  left: 470px;
+  width: 171px;
+  height: 202px; */
+  border: dashed;
 }
 
-.productsList {
+/* .productsList {
   top: 130px;
   left: 0px;
-  /* width: 80px;
-  height: 21px; */
   position: absolute;
   text-align: center;
   letter-spacing: 0.2px;
   white-space: nowrap;
   display: grid;
   grid-template-columns: 1fr 1fr;
+} */
+.productsList {
+  /* top: 130px; */
+  /* left: 0px; */
+  /* position: absolute; */
+  text-align: center;
+  /* letter-spacing: 0.2px;
+  white-space: nowrap; */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  /* grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); */
+  /* grid-template-columns: 1fr 1fr; */
+    /* grid-template-columns: 100px 50px 100px;
+    grid-template-rows: 80px auto 80px; 
+    column-gap: 10px;
+    row-gap: 15px; */
 }
 
 .product name {
-  position: absolute;
-  top: 330px;
-  left: 508px;
+  /* position: absolute; */
+  /* top: 330px;
+  left: 508px; */
   width: 80px;
   height: 21px;
   z-index: 2;
 }
 
-.counter {
+/* .counter {
   position: absolute;
   top: 366px;
   left: 510px;
   width: 24px;
   height: 3px;
+} */
+/* .counter {
+  position: absolute;
+  top: 490px;
+  left: 517px;
+  width: 17px;
+  height: 31px;
+  z-index: 2;
+  display: flex;
+  font-family: "SF Pro Display";
+} */
+.counter {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  /* border: 1px dashed; */
+  justify-content: center;
 }
+
 
 /* .shoppingcart {
   position: absolute;

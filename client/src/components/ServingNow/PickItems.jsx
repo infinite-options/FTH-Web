@@ -28,13 +28,43 @@ function PickItems() {
             image: apples,
             component: component, 
         },
+        {
+            name: 'Apples (2)',
+            image: apples,
+            component: component, 
+        },
+        {
+            name: 'Apples (2)', 
+            image: apples,
+            component: component, 
+        },
+        {
+            name: 'Apples (2)', 
+            image: apples,
+            component: component, 
+        },
+        {
+            name: 'Apples (2)',
+            image: apples,
+            component: component, 
+        },
+        {
+            name: 'Apples (2)', 
+            image: apples,
+            component: component, 
+        },
+        {
+            name: 'Apples (2)', 
+            image: apples,
+            component: component, 
+        },
     ])
 
     return (
         <>
             <div
                 style={{
-                    border: 'dashed',
+                    // border: 'dashed',
                     height: '80px',
                     width: '100vw',
                     maxWidth: '100%',
@@ -97,6 +127,165 @@ function PickItems() {
                     <div class="itemLimitText">
                         <h5> <b>You can pick any 5 items</b> </h5>
                     </div>
+                </div>
+            </div>
+
+            <div
+                style={{
+                    // border: 'dashed',
+                    marginTop: '20px',
+                    height: '60px',
+                    display: 'flex'
+                }}
+            >
+                <div class="filterButtonWrapper">
+                    <button 
+                        class="filterButton"
+                    > 
+                        Beverages
+                    </button>
+                </div>
+
+                <div class="filterButtonWrapper">
+                    <button 
+                        class="filterButton"
+                    > 
+                        Fruits
+                    </button>
+                </div>
+
+                <div class="filterButtonWrapper">
+                    <button 
+                        class="filterButton"
+                    > 
+                        Vegetables
+                    </button>
+                </div>
+
+                <div class="filterButtonWrapper">
+                    <button 
+                        class="filterButton"
+                    > 
+                        Meals
+                    </button>
+                </div>
+
+                <div class="filterButtonWrapper">
+                    <button 
+                        class="filterButton"
+                    > 
+                        Desserts
+                    </button>
+                </div>
+
+                <div class="filterButtonWrapper">
+                    <button 
+                        class="filterButton"
+                    > 
+                        Canned
+                    </button>
+                </div>
+
+                <div class="filterButtonWrapper">
+                    <button 
+                        class="filterButton"
+                    > 
+                        Dairy
+                    </button>
+                </div>
+
+                <div class="filterButtonWrapper">
+                    <button 
+                        class="filterButton"
+                    > 
+                        Snacks
+                    </button>
+                </div>
+            </div>
+
+            <div
+                style={{
+                    // border: 'dashed',
+                    marginTop: '20px',
+                    marginBottom: '20px'
+                    // height: '500px'
+                }}
+            >
+                <div 
+                    class="productsList"
+                    style={{
+                        // border: '1px solid red',
+                        marginLeft: '20px',
+                        marginRight: '20px',
+                        width: 'calc(100% - 40px)'
+                    }}
+                > 
+                {products.map(product => (
+                    <div
+                        style={{
+                            // border: '1px solid blue',
+                            // width: '100px',
+                            // minWidth: '0px',
+                            height: '200px',
+                            display: 'flex',
+                            justifyContent: 'center'
+                        }}
+                    >
+                        {/* APPLES */}
+                        {/* <h5 style={{fontFamily: "SF Pro Display"}} class="name">{product.name}</h5> */}
+                        {/* <img src={product.image} alt="" class="apple_fruit"/> */}
+                        {/* <img src={product.component} alt="" class="component"/> */}
+                        {/* <Counter class="counter"> </Counter> */}
+                        <div
+                            style={{
+                                // border: '1px solid green',
+                                marginTop: '10px',
+                                marginBottom: '10px',
+                                width: '150px',
+                                borderRadius: '15px',
+                                boxShadow: '0px 3px 6px #00000029',
+                                position: 'relative'
+                            }}
+                        >
+                            <div
+                                style={{
+                                    // border: '1px dashed',
+                                    marginTop: '15px',
+                                    height: '120px',
+                                    display: 'flex',
+                                    alignItems: 'center'
+                                }}
+                            >
+                                <img src={product.image} alt="" class="product_image"/>
+                            </div>
+                            <div
+                                style={{
+                                    position: 'absolute',
+                                    bottom: '0px',
+                                    // border: '1px dashed',
+                                    borderRadius: '0px 0px 15px 15px',
+                                    backgroundColor: '#e7404a',
+                                    // marginTop: '15px',
+                                    height: '40px',
+                                    width: '100%',
+                                    display: 'flex',
+                                    alignItems: 'center'
+                                }}
+                            >
+                                {/* <div>
+                                    -
+                                </div>
+                                <div>
+
+                                </div>
+                                <div>
+                                    +
+                                </div> */}
+                                <Counter class="counter"> </Counter>
+                            </div>
+                        </div>
+                    </div>
+                ))}
                 </div>
             </div>
 
