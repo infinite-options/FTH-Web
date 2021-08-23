@@ -578,7 +578,12 @@ function OrdersIngredients({ history, ...props }) {
                 <img
                   src={state.selectedBusinessData.business_image}
                   className={styles.restaurantImg}
-                  style={{border: "solid", borderColor: "#E7404A", borderRadius: "50%", borderWidth: "1px"}}
+                  style={{
+                    border: "solid",
+                    borderColor: "#E7404A",
+                    borderRadius: "50%",
+                    borderWidth: "1px",
+                  }}
                 ></img>
               ) : (
                 <div className={styles.restaurantImg}></div>
@@ -739,7 +744,6 @@ function OrdersIngredients({ history, ...props }) {
             </Col>
           </Row>
           <Row>
-            
             <Col md="auto" className={styles.verticallyCenter}>
               <button
                 style={{ transform: "translateX(30px)", width: "5%" }}
@@ -752,7 +756,7 @@ function OrdersIngredients({ history, ...props }) {
                 <LeftArrow />
               </button>
             </Col>
-            <Col md="auto" style={{ width: "90%"}}>
+            <Col md="auto" style={{ width: "90%" }}>
               {state.dateIndex != null && (
                 <Carousel
                   responsive={responsive}
@@ -788,7 +792,7 @@ function OrdersIngredients({ history, ...props }) {
             </Col>
             <Col md="auto" className={styles.verticallyCenter}>
               <button
-                style={{ transform: "translateX(-20px)",  width: "5%" }}
+                style={{ transform: "translateX(-20px)", width: "5%" }}
                 className={styles.dateCarouselArrowBtn}
                 onClick={() => {
                   carouselRef.current.next();
@@ -805,7 +809,14 @@ function OrdersIngredients({ history, ...props }) {
           >
             <Col
               className={styles.section}
-              style={{ marginRight: 10, maxWidth: "100%", minWidth: "30%", border: "solid", borderColor: "#E7404A", borderWidth: "1px" }}
+              style={{
+                marginRight: 10,
+                maxWidth: "100%",
+                minWidth: "30%",
+                border: "solid",
+                borderColor: "#E7404A",
+                borderWidth: "1px",
+              }}
             >
               <div
                 className={styles.bold}
@@ -822,14 +833,16 @@ function OrdersIngredients({ history, ...props }) {
                         style={{
                           fontWeight: "bold",
                           color: "#E7404A",
-                          border: "none", textAlign: "center",
+                          border: "none",
+                          textAlign: "center",
                         }}
                       >
                         <TableSortLabel
                           style={{
                             fontWeight: "bold",
                             color: "#E7404A",
-                            border: "none", textAlign: "center",
+                            border: "none",
+                            textAlign: "center",
                           }}
                           direction={state.sortOrders.direction}
                           onClick={() => changeSortOrder("total_qty")}
@@ -841,14 +854,16 @@ function OrdersIngredients({ history, ...props }) {
                         style={{
                           fontWeight: "bold",
                           color: "#E7404A",
-                          border: "none", textAlign: "center",
+                          border: "none",
+                          textAlign: "center",
                         }}
                       >
                         <TableSortLabel
                           style={{
                             fontWeight: "bold",
                             color: "#E7404A",
-                            border: "none", textAlign: "center",
+                            border: "none",
+                            textAlign: "center",
                           }}
                           direction={state.sortOrders.direction}
                           onClick={() => changeSortOrder("meal_name")}
@@ -860,7 +875,8 @@ function OrdersIngredients({ history, ...props }) {
                         style={{
                           fontWeight: "bold",
                           color: "#E7404A",
-                          border: "none", textAlign: "center",
+                          border: "none",
+                          textAlign: "center",
                         }}
                       >
                         Meal Pictures
@@ -869,7 +885,8 @@ function OrdersIngredients({ history, ...props }) {
                         style={{
                           fontWeight: "bold",
                           color: "#E7404A",
-                          border: "none", textAlign: "center",
+                          border: "none",
+                          textAlign: "center",
                         }}
                       >
                         Type of Food
@@ -878,7 +895,8 @@ function OrdersIngredients({ history, ...props }) {
                         style={{
                           fontWeight: "bold",
                           color: "#E7404A",
-                          border: "none", textAlign: "center",
+                          border: "none",
+                          textAlign: "center",
                         }}
                       >
                         Current Inventory
@@ -888,7 +906,8 @@ function OrdersIngredients({ history, ...props }) {
                         style={{
                           fontWeight: "bold",
                           color: "#E7404A",
-                          border: "none", textAlign: "center",
+                          border: "none",
+                          textAlign: "center",
                         }}
                       >
                         Food Bank
@@ -967,18 +986,26 @@ function OrdersIngredients({ history, ...props }) {
                               style={{
                                 fontWeight: "bold",
                                 fontSize: "30px",
-                                borderBottom: "1px solid #E7404A", textAlign: "center",
+                                borderBottom: "1px solid #E7404A",
+                                textAlign: "center",
                               }}
                             >
                               {item.total_qty}
                             </TableCell>
                             <TableCell
-                              style={{ borderBottom: "1px solid #E7404A", textAlign: "center", fontSize: "18px" }}
+                              style={{
+                                borderBottom: "1px solid #E7404A",
+                                textAlign: "center",
+                                fontSize: "18px",
+                              }}
                             >
                               {item.meal_name}
                             </TableCell>
                             <TableCell
-                              style={{ borderBottom: "1px solid #E7404A", textAlign: "center" }}
+                              style={{
+                                borderBottom: "1px solid #E7404A",
+                                textAlign: "center",
+                              }}
                             >
                               <img
                                 src={item.meal_photo_URL}
@@ -986,9 +1013,10 @@ function OrdersIngredients({ history, ...props }) {
                               ></img>
                             </TableCell>
                             <TableCell
-                              style={{ 
+                              style={{
                                 fontSize: "18px",
-                                borderBottom: "1px solid #E7404A", textAlign: "center" 
+                                borderBottom: "1px solid #E7404A",
+                                textAlign: "center",
                               }}
                             >
                               {item.meal_cat}
@@ -1002,19 +1030,21 @@ function OrdersIngredients({ history, ...props }) {
                               </select> */}
                             </TableCell>
                             <TableCell
-                              style={{ 
+                              style={{
                                 fontWeight: "bold",
                                 fontSize: "30px",
-                                borderBottom: "1px solid #E7404A", textAlign: "center" 
+                                borderBottom: "1px solid #E7404A",
+                                textAlign: "center",
                               }}
                             >
                               99
                             </TableCell>
 
                             <TableCell
-                              style={{ 
+                              style={{
                                 fontSize: "18px",
-                                borderBottom: "1px solid #E7404A", textAlign: "center" 
+                                borderBottom: "1px solid #E7404A",
+                                textAlign: "center",
                               }}
                             >
                               {item.business_name}
