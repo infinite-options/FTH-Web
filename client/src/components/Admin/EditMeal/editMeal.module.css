@@ -17,7 +17,7 @@
   margin-right: 2%;
   z-index: 2;
   /* cursor: pointer; */
-  color: #F26522;
+  color: #E7404A;
   padding-left: 1%;
   font-weight: 600;
   font-size: 18px;
@@ -45,6 +45,9 @@
   margin-right: 2%;
   background-color: white;
   z-index: -500;
+  border: solid;
+  border-width: 2px;
+  border-color: #E7404A;
 }
 
 .containerHistory {
@@ -79,6 +82,9 @@
   margin-left: 2%;
   margin-right: 2%;
   background-color: white;
+  border: solid;
+  border-width: 2px;
+  border-color: #E7404A;
   /* display: flex; */
 }
 
@@ -202,7 +208,7 @@
   text-align: center;
   justify-content: center;
   align-items: center;
-  color: #f26522;
+  color: #E7404A;
   font-size: 14px;
   font-weight: 600;
   /* padding-top: 4px;
@@ -225,7 +231,7 @@
   text-align: center;
   justify-content: center;
   align-items: center;
-  color: #f26522;
+  color: #E7404A;
   font-size: 14px;
   font-weight: 600;
   /* padding-top: 4px;
@@ -254,7 +260,7 @@
   width: 7%;
   height: 40px;
   border-top: solid;
-  border-color: #f26522;
+  border-color: #E7404A;
   border-width: 1px;
   height: 70px;
 }
@@ -267,7 +273,7 @@
   font-weight: 600;
   width: 7%;
   border: solid;
-  border-color: #f26522;
+  border-color: #E7404A;
   border-width: 1px;
   height: 70px;
 } */
@@ -280,7 +286,7 @@
   justify-content: center;
   align-items: center; */
   
-  color: #f26522;
+  color: #E7404A;
   font-size: 14px;
   font-weight: 600;
   /* padding-top: 4px;
@@ -292,14 +298,14 @@
   white-space: nowrap;
   overflow: hidden; */
   border-top: solid;
-  /* border-color: #f26522; */
+  /* border-color: #E7404A; */
   border-width: 1px;
   height: 70px;
 }
 
 .orangeHeaderLeft {
   border-top: solid;
-  color: #f26522;
+  color: #E7404A;
   border-width: 1px;
   font-size: 20px;
   padding-top: 4px;
@@ -314,7 +320,7 @@
 
 .orangeHeaderRight {
   border-top: solid;
-  color: #f26522;
+  color: #E7404A;
   border-width: 1px;
   font-size: 20px;
   padding-top: 4px;
@@ -512,7 +518,7 @@
 .orangeHeaderRightArrow {
   border-top: solid;
   /* border: solid; */
-  color: #f26522;
+  color: #E7404A;
   border-width: 1px;
   font-size: 20px;
   padding-top: 4px;
@@ -529,7 +535,7 @@
 
 .orangeHeaderRightUL {
   border-top: solid;
-  color: #f26522;
+  color: #E7404A;
   border-width: 1px;
   font-size: 20px;
   padding-top: 4px;
@@ -585,7 +591,7 @@
 .dropdownSelection {
   color: white;
   border-radius: 15px;
-  background-color: #f26522;
+  background-color: #E7404A;
   font-size: 20px;
   height: 40px;
   padding-top: 5px;

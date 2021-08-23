@@ -461,7 +461,7 @@ function EditMeal({history, ...props}) {
               style={{
                 backgroundColor: selectedMeal==allMeals[index] ? "#FEF7E0" : "white",
                 borderStyle: "solid",
-                borderColor: selectedMeal==allMeals[index] ? "#F26522" : "white",
+                borderColor: selectedMeal==allMeals[index] ? "#E7404A" : "white",
                 borderRadius: "10px",
                 // marginLeft: "2%",
                 // marginRight: "2%"
@@ -696,7 +696,7 @@ function EditMeal({history, ...props}) {
         key={'space'}
         style={{
           height: '25px',
-          backgroundColor: '#f26522',
+          backgroundColor: '#E7404A',
         }}
       />
     ]
@@ -715,7 +715,7 @@ function EditMeal({history, ...props}) {
         />
         <div
           style={{
-            backgroundColor: '#f26522',
+            backgroundColor: '#E7404A',
             width: '40%',
             minWidth: '300px',
             height: 40 + (allBusinesses.length * 42),
@@ -754,7 +754,7 @@ function EditMeal({history, ...props}) {
     }
     return (
       <div className={styles.containerEditBusiness}>
-        <div style={{display: "inline-block", color: "#F26522", marginLeft: "27px", width:"200px", textAlign:"center", verticalAlign:"top", marginTop:"15px"}}>
+        <div style={{display: "inline-block", color: "#E7404A", marginLeft: "27px", width:"200px", textAlign:"center", verticalAlign:"top", marginTop:"15px"}}>
           <div>Restaurant Name</div>
           <input 
             value={tempBusinessName}
@@ -763,7 +763,7 @@ function EditMeal({history, ...props}) {
               console.log(e.target.value)
             }}></input>
         </div>
-        <div style={{display: "inline-block", color: "#F26522", width:"200px", textAlign:"center", verticalAlign:"top", marginTop:"15px"}}>
+        <div style={{display: "inline-block", color: "#E7404A", width:"200px", textAlign:"center", verticalAlign:"top", marginTop:"15px"}}>
           <div>Cusine</div>
           <input 
             value={tempCusine}
@@ -772,7 +772,7 @@ function EditMeal({history, ...props}) {
               console.log(e.target.value)
             }}></input>
         </div>
-        <div style={{display: "inline-block", color: "#F26522", width:"650px", textAlign:"center", marginTop:"15px", marginBottom:"15px"}}>
+        <div style={{display: "inline-block", color: "#E7404A", width:"650px", textAlign:"center", marginTop:"15px", marginBottom:"15px"}}>
           <div style={{display: "inline-block", width:"325px"}}>Business Hours</div>
           <div style={{display: "inline-block", width:"100px", color: "black"}}>Thursday</div>
           <input 
@@ -887,7 +887,7 @@ function EditMeal({history, ...props}) {
 
           </input>
         </div>
-        <div style={{display:"inline-block",color: "#F26522",textDecoration: "underline", verticalAlign:"top", marginTop: "60px", marginLeft: "60px"}}
+        <div style={{display:"inline-block",color: "#E7404A",textDecoration: "underline", verticalAlign:"top", marginTop: "60px", marginLeft: "60px"}}
           onClick={() => {
             // generate JSONs as text
             // parse text to JSON
@@ -1042,7 +1042,7 @@ function EditMeal({history, ...props}) {
               }}>
                 <div style={{fontSize: "20px", fontWeight: "bold", marginBottom: "25px"}}>Meal:</div>
                   <Form.Group as={Row}>
-                    <Form.Label column sm={3} style={{color: "#F26522"}}>
+                    <Form.Label column sm={3} style={{color: "#E7404A"}}>
                       Meal Name
                     </Form.Label>
                     <Col sm={9}>
@@ -1060,7 +1060,7 @@ function EditMeal({history, ...props}) {
                   </Form.Group>
   
                   <Form.Group as={Row}>
-                  <Form.Label column sm={3} style={{color: "#F26522"}}>
+                  <Form.Label column sm={3} style={{color: "#E7404A"}}>
                     Picture URL
                   </Form.Label>
                   <Col sm={9}>
@@ -1094,7 +1094,7 @@ function EditMeal({history, ...props}) {
   
                   {/* <div>Business {activeBusinessData.business_name}</div> */}
                   <Form.Group as={Row}>
-                    <Form.Label column sm={3} style={{color: "#F26522"}}>
+                    <Form.Label column sm={3} style={{color: "#E7404A"}}>
                       Business
                     </Form.Label>
                     <Form.Label column sm={9}>
@@ -1104,7 +1104,7 @@ function EditMeal({history, ...props}) {
                   
                  
                   <Form.Group as={Row}>
-                    <Form.Label column sm={3} style={{color: "#F26522"}}>
+                    <Form.Label column sm={3} style={{color: "#E7404A"}}>
                       Category
                     </Form.Label>
                     <Col sm={9}>
@@ -1135,7 +1135,7 @@ function EditMeal({history, ...props}) {
                   </Form.Group>
   
                   <Form.Group as={Row}>
-                    <Form.Label column sm={3} style={{color: "#F26522"}}>
+                    <Form.Label column sm={3} style={{color: "#E7404A"}}>
                       Description
                     </Form.Label>
                     <Col sm={9}>
@@ -1154,7 +1154,7 @@ function EditMeal({history, ...props}) {
                   </Form.Group>
   
                   <Form.Group as={Row}>
-                    <Form.Label column sm={3} style={{color: "#F26522"}}>
+                    <Form.Label column sm={3} style={{color: "#E7404A"}}>
                       Hint
                     </Form.Label>
                     <Col sm={9}>
@@ -1212,7 +1212,7 @@ function EditMeal({history, ...props}) {
               }}>
                   <div style={{fontSize: "20px", fontWeight: "bold", marginBottom: "10px"}}>Nutritional Facts:</div>
                   <Form.Group as={Row}>
-                    <Form.Label column sm={3} style={{color: "#F26522"}}>
+                    <Form.Label column sm={3} style={{color: "#E7404A"}}>
                       Calories
                     </Form.Label>
                     <Col sm={9}>
@@ -1229,7 +1229,7 @@ function EditMeal({history, ...props}) {
                     </Col>
                   </Form.Group>
                   <Form.Group as={Row}>
-                    <Form.Label column sm={3} style={{color: "#F26522"}}>
+                    <Form.Label column sm={3} style={{color: "#E7404A"}}>
                       Protein
                     </Form.Label>
                     <Col sm={9}>
@@ -1246,7 +1246,7 @@ function EditMeal({history, ...props}) {
                     </Col>
                   </Form.Group>
                   <Form.Group as={Row}>
-                    <Form.Label column sm={3} style={{color: "#F26522"}}>
+                    <Form.Label column sm={3} style={{color: "#E7404A"}}>
                       Carbs
                     </Form.Label>
                     <Col sm={9}>
@@ -1263,7 +1263,7 @@ function EditMeal({history, ...props}) {
                     </Col>
                   </Form.Group>
                   <Form.Group as={Row}>
-                    <Form.Label column sm={3} style={{color: "#F26522"}}>
+                    <Form.Label column sm={3} style={{color: "#E7404A"}}>
                       Fiber
                     </Form.Label>
                     <Col sm={9}>
@@ -1280,7 +1280,7 @@ function EditMeal({history, ...props}) {
                     </Col>
                   </Form.Group>
                   <Form.Group as={Row}>
-                    <Form.Label column sm={3} style={{color: "#F26522"}}>
+                    <Form.Label column sm={3} style={{color: "#E7404A"}}>
                       Sugar
                     </Form.Label>
                     <Col sm={9}>
@@ -1297,7 +1297,7 @@ function EditMeal({history, ...props}) {
                     </Col>
                   </Form.Group>
                   <Form.Group as={Row}>
-                    <Form.Label column sm={3} style={{color: "#F26522"}}>
+                    <Form.Label column sm={3} style={{color: "#E7404A"}}>
                       Fat
                     </Form.Label>
                     <Col sm={9}>
@@ -1314,7 +1314,7 @@ function EditMeal({history, ...props}) {
                     </Col>
                   </Form.Group>
                   <Form.Group as={Row}>
-                    <Form.Label column sm={3} style={{color: "#F26522"}}>
+                    <Form.Label column sm={3} style={{color: "#E7404A"}}>
                       Sat
                     </Form.Label>
                     <Col sm={9}>
@@ -1332,7 +1332,7 @@ function EditMeal({history, ...props}) {
                   </Form.Group>
 
                   <Form.Group as={Row}>
-                  <Form.Label column sm={3} style={{color: "#F26522"}}>
+                  <Form.Label column sm={3} style={{color: "#E7404A"}}>
                     Status
                   </Form.Label>
                   <Col sm={9}>
@@ -1378,7 +1378,7 @@ function EditMeal({history, ...props}) {
                           //toggleEditMeal(false)
                         }}
                         style={{
-                          backgroundColor: "#F26522",
+                          backgroundColor: "#E7404A",
                           marginBottom: "30px",
                           marginTop: "30px",
                           borderRadius: "15px",
@@ -1404,7 +1404,7 @@ function EditMeal({history, ...props}) {
                           toggleEditMeal(false)
                         }}
                         style={{
-                          backgroundColor: "#F26522",
+                          backgroundColor: "#E7404A",
                           borderRadius: "15px",
                           width: "200px",
                           fontSize: "18px"
@@ -1472,7 +1472,7 @@ function EditMeal({history, ...props}) {
             }}>
               <div style={{fontSize: "20px", fontWeight: "bold", marginBottom: "25px"}}>Meal:</div>
                 <Form.Group as={Row}>
-                  <Form.Label column sm={3} style={{color: "#F26522"}}>
+                  <Form.Label column sm={3} style={{color: "#E7404A"}}>
                     Meal Name
                   </Form.Label>
                   <Col sm={9}>
@@ -1492,7 +1492,7 @@ function EditMeal({history, ...props}) {
                 
 
                 <Form.Group as={Row}>
-                  <Form.Label column sm={3} style={{color: "#F26522"}}>
+                  <Form.Label column sm={3} style={{color: "#E7404A"}}>
                     Picture
                   </Form.Label>
                   <Col sm={9}>
@@ -1515,7 +1515,7 @@ function EditMeal({history, ...props}) {
 
                 {/* <div>Business {activeBusinessData.business_name}</div> */}
                 <Form.Group as={Row}>
-                  <Form.Label column sm={3} style={{color: "#F26522"}}>
+                  <Form.Label column sm={3} style={{color: "#E7404A"}}>
                     Business
                   </Form.Label>
                   <Form.Label column sm={9}>
@@ -1525,7 +1525,7 @@ function EditMeal({history, ...props}) {
                 
                
                 <Form.Group as={Row}>
-                  <Form.Label column sm={3} style={{color: "#F26522"}}>
+                  <Form.Label column sm={3} style={{color: "#E7404A"}}>
                     Category
                   </Form.Label>
                   <Col sm={9}>
@@ -1556,7 +1556,7 @@ function EditMeal({history, ...props}) {
                 </Form.Group>
 
                 <Form.Group as={Row}>
-                  <Form.Label column sm={3} style={{color: "#F26522"}}>
+                  <Form.Label column sm={3} style={{color: "#E7404A"}}>
                     Description
                   </Form.Label>
                   <Col sm={9}>
@@ -1575,7 +1575,7 @@ function EditMeal({history, ...props}) {
                 </Form.Group>
 
                 <Form.Group as={Row}>
-                  <Form.Label column sm={3} style={{color: "#F26522"}}>
+                  <Form.Label column sm={3} style={{color: "#E7404A"}}>
                     Hint
                   </Form.Label>
                   <Col sm={9}>
@@ -1630,7 +1630,7 @@ function EditMeal({history, ...props}) {
             }}>
                 <div style={{fontSize: "20px", fontWeight: "bold", marginBottom: "10px"}}>Nutritional Facts:</div>
                 <Form.Group as={Row}>
-                  <Form.Label column sm={3} style={{color: "#F26522"}}>
+                  <Form.Label column sm={3} style={{color: "#E7404A"}}>
                     Calories
                   </Form.Label>
                   <Col sm={9}>
@@ -1647,7 +1647,7 @@ function EditMeal({history, ...props}) {
                   </Col>
                 </Form.Group>
                 <Form.Group as={Row}>
-                  <Form.Label column sm={3} style={{color: "#F26522"}}>
+                  <Form.Label column sm={3} style={{color: "#E7404A"}}>
                     Protein
                   </Form.Label>
                   <Col sm={9}>
@@ -1664,7 +1664,7 @@ function EditMeal({history, ...props}) {
                   </Col>
                 </Form.Group>
                 <Form.Group as={Row}>
-                  <Form.Label column sm={3} style={{color: "#F26522"}}>
+                  <Form.Label column sm={3} style={{color: "#E7404A"}}>
                     Carbs
                   </Form.Label>
                   <Col sm={9}>
@@ -1681,7 +1681,7 @@ function EditMeal({history, ...props}) {
                   </Col>
                 </Form.Group>
                 <Form.Group as={Row}>
-                  <Form.Label column sm={3} style={{color: "#F26522"}}>
+                  <Form.Label column sm={3} style={{color: "#E7404A"}}>
                     Fiber
                   </Form.Label>
                   <Col sm={9}>
@@ -1698,7 +1698,7 @@ function EditMeal({history, ...props}) {
                   </Col>
                 </Form.Group>
                 <Form.Group as={Row}>
-                  <Form.Label column sm={3} style={{color: "#F26522"}}>
+                  <Form.Label column sm={3} style={{color: "#E7404A"}}>
                     Sugar
                   </Form.Label>
                   <Col sm={9}>
@@ -1715,7 +1715,7 @@ function EditMeal({history, ...props}) {
                   </Col>
                 </Form.Group>
                 <Form.Group as={Row}>
-                  <Form.Label column sm={3} style={{color: "#F26522"}}>
+                  <Form.Label column sm={3} style={{color: "#E7404A"}}>
                     Fat
                   </Form.Label>
                   <Col sm={9}>
@@ -1732,7 +1732,7 @@ function EditMeal({history, ...props}) {
                   </Col>
                 </Form.Group>
                 <Form.Group as={Row}>
-                  <Form.Label column sm={3} style={{color: "#F26522"}}>
+                  <Form.Label column sm={3} style={{color: "#E7404A"}}>
                     Sat
                   </Form.Label>
                   <Col sm={9}>
@@ -1750,7 +1750,7 @@ function EditMeal({history, ...props}) {
                 </Form.Group>
                 
                 <Form.Group as={Row}>
-                  <Form.Label column sm={3} style={{color: "#F26522"}}>
+                  <Form.Label column sm={3} style={{color: "#E7404A"}}>
                     Status
                   </Form.Label>
                   <Col sm={9}>
@@ -1833,7 +1833,7 @@ function EditMeal({history, ...props}) {
                         // toggleNewMeal(false)
                       }}
                       style={{
-                        backgroundColor: "#F26522",
+                        backgroundColor: "#E7404A",
                         marginBottom: "30px",
                         marginTop: "30px",
                         borderRadius: "15px",
@@ -1861,7 +1861,7 @@ function EditMeal({history, ...props}) {
                         console.log("dispatch SET_PREVIEW")
                       }}
                       style={{
-                        backgroundColor: "#F26522",
+                        backgroundColor: "#E7404A",
                         borderRadius: "15px",
                         width: "200px",
                         fontSize: "18px"
@@ -1912,7 +1912,7 @@ function EditMeal({history, ...props}) {
   displayBusinessHours()
 
   return (
-    <div style={{backgroundColor: '#F26522'}}>
+    <div style={{backgroundColor: 'white'}}>
 
       {/*NEW CODE*/}
       {/* {console.log("begin render")}
@@ -1993,7 +1993,7 @@ function EditMeal({history, ...props}) {
           position:"absolute",
           top:'185px',
           left:'176px',
-          color: "#F26522",
+          color: "#E7404A",
           textDecoration: "underline"
           }}
           onClick={() => {
@@ -2028,7 +2028,7 @@ function EditMeal({history, ...props}) {
           position:"absolute",
           top:'185px',
           left:'296px',
-          color: "#F26522",
+          color: "#E7404A",
           textDecoration: "underline"
           }}
         >
@@ -2039,7 +2039,7 @@ function EditMeal({history, ...props}) {
           position: "absolute",
           top: "125px",
           left: "700px",
-          color: "#F26522"
+          color: "#E7404A"
         }}>
           Cusines
         </div>
@@ -2058,7 +2058,7 @@ function EditMeal({history, ...props}) {
           position: "absolute",
           top: "125px",
           left: "900px",
-          color: "#F26522"
+          color: "#E7404A"
         }}>
           Business Hours
         </div>
@@ -2149,20 +2149,20 @@ function EditMeal({history, ...props}) {
 
         <table width="100%">
           <tr width="100%">
-            <th style={{color: '#F26522', marginLeft: "27px", textAlign:"center", display:"inline-block"}} width = "7%">Meal Name</th>
-            <th style={{color: '#F26522', margin: "auto", textAlign:"center", display:"inline-block"}} width = "7%">Picture</th>
-            <th style={{color: '#F26522', margin: "auto", textAlign:"center", display:"inline-block"}} width = "7%">Meal Description</th>
-            <th style={{color: '#F26522', margin: "auto", textAlign:"center", display:"inline-block"}} width = "7%">Meal Category</th>
-            <th style={{color: '#F26522', margin: "auto", textAlign:"center", display:"inline-block"}} width = "7%">Meal Hint</th>
-            <th style={{color: '#F26522', margin: "auto", textAlign:"center", display:"inline-block"}} width = "7%">Calories</th>
-            <th style={{color: '#F26522', margin: "auto", textAlign:"center", display:"inline-block"}} width = "7%">Protein</th>
-            <th style={{color: '#F26522', margin: "auto", textAlign:"center", display:"inline-block"}} width = "7%">Carbs</th>
-            <th style={{color: '#F26522', margin: "auto", textAlign:"center", display:"inline-block"}} width = "7%">Fiber</th>
-            <th style={{color: '#F26522', margin: "auto", textAlign:"center", display:"inline-block"}} width = "7%">Sugar</th>
-            <th style={{color: '#F26522', margin: "auto", textAlign:"center", display:"inline-block"}} width = "7%">Fats</th>
-            <th style={{color: '#F26522', margin: "auto", textAlign:"center", display:"inline-block"}} width = "7%">Sat</th>
-            <th style={{color: '#F26522', margin: "auto", textAlign:"center", display:"inline-block"}} width = "7%">Status</th>
-            {/* <th style={{color: '#F26522', paddingLeft: "67px", textAlign:"center", display:"inline-block"}} ></th> */}
+            <th style={{color: '#E7404A', marginLeft: "27px", textAlign:"center", display:"inline-block"}} width = "7%">Meal Name</th>
+            <th style={{color: '#E7404A', margin: "auto", textAlign:"center", display:"inline-block"}} width = "7%">Picture</th>
+            <th style={{color: '#E7404A', margin: "auto", textAlign:"center", display:"inline-block"}} width = "7%">Meal Description</th>
+            <th style={{color: '#E7404A', margin: "auto", textAlign:"center", display:"inline-block"}} width = "7%">Meal Category</th>
+            <th style={{color: '#E7404A', margin: "auto", textAlign:"center", display:"inline-block"}} width = "7%">Meal Hint</th>
+            <th style={{color: '#E7404A', margin: "auto", textAlign:"center", display:"inline-block"}} width = "7%">Calories</th>
+            <th style={{color: '#E7404A', margin: "auto", textAlign:"center", display:"inline-block"}} width = "7%">Protein</th>
+            <th style={{color: '#E7404A', margin: "auto", textAlign:"center", display:"inline-block"}} width = "7%">Carbs</th>
+            <th style={{color: '#E7404A', margin: "auto", textAlign:"center", display:"inline-block"}} width = "7%">Fiber</th>
+            <th style={{color: '#E7404A', margin: "auto", textAlign:"center", display:"inline-block"}} width = "7%">Sugar</th>
+            <th style={{color: '#E7404A', margin: "auto", textAlign:"center", display:"inline-block"}} width = "7%">Fats</th>
+            <th style={{color: '#E7404A', margin: "auto", textAlign:"center", display:"inline-block"}} width = "7%">Sat</th>
+            <th style={{color: '#E7404A', margin: "auto", textAlign:"center", display:"inline-block"}} width = "7%">Status</th>
+            {/* <th style={{color: '#E7404A', paddingLeft: "67px", textAlign:"center", display:"inline-block"}} ></th> */}
           </tr>
         </table>
 

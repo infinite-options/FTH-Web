@@ -221,10 +221,10 @@ function NavBar(props) {
                     }
               }
             >
-              Businesses & Meals
+              Food Banks
             </a>
 
-            <a
+            {/* <a
               href="/admin/ingredients-units"
               className={styles.navLink}
               style={
@@ -239,7 +239,7 @@ function NavBar(props) {
               }
             >
               Ingredients & Units
-            </a>
+            </a> */}
 
             <a
               href="/admin/customers"
@@ -257,24 +257,9 @@ function NavBar(props) {
             >
               Customers
             </a>
-            <a
-              href="/admin/notifications"
-              className={styles.navLink}
-              style={
-                props.currentPage === "notifications"
-                  ? {
-                      color: "black",
-                      width: LINK_WIDTH.notifications,
-                    }
-                  : {
-                      width: LINK_WIDTH.notifications,
-                    }
-              }
-            >
-              Notifications
-            </a>
+            
 
-            <a
+            {/* <a
               href="/admin/plans-coupons"
               className={styles.navLink}
               style={
@@ -289,7 +274,7 @@ function NavBar(props) {
               }
             >
               Coupons
-            </a>
+            </a> */}
 
             <a
               href="/admin/zones"
@@ -323,6 +308,23 @@ function NavBar(props) {
               }
             >
               Analytics
+            </a>
+
+            <a
+              href="/admin/notifications"
+              className={styles.navLink}
+              style={
+                props.currentPage === "notifications"
+                  ? {
+                      color: "black",
+                      width: LINK_WIDTH.notifications,
+                    }
+                  : {
+                      width: LINK_WIDTH.notifications,
+                    }
+              }
+            >
+              Notifications
             </a>
           </div>
         </div>

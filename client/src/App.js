@@ -124,6 +124,7 @@ function App() {
             <AppliedRoute exact path="/congrats" component={Congrats} />
             {/*<AppliedRoute exact path='/edit-plan' component={EditPlan} />*/}
             <AppliedRoute exact path="/update-plan" component={UpdatePlan} />
+            
 
             {/* <AppliedRoute exact path='/test' component={MapTest} /> */}
 

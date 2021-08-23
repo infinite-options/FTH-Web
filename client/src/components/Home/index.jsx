@@ -496,7 +496,7 @@ class Home extends Component {
             return (
                 <div style = {{display: 'inline-flex', width: '100%', marginTop: '30px'}}>				              
                 <div className = {styles.stepsHeader}>
-                  <h6 className = {styles.stepsTitle2}>Who has time?</h6>
+                  <h6 className = {styles.stepsTitle2}>Testing</h6>
                   <h6 className = {styles.stepsText2}>Save time and money! Ready to heat meal come to your doors and you can order 10 deliveries in advance so you know what's coming and don't have to think about it again.</h6>
                 </div>
                 <div className = {styles.stepsHeader}>
