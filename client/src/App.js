@@ -50,7 +50,7 @@ import CreatePassword from './components/ServingNow/CreatePassword';
 import Confirmation from './components/ServingNow/Confirmation';
 import ClientForm from './components/ServingNow/ClientForm';
 import PickItems from './components/ServingNow/PickItems';
-
+import Cart from './components/ServingNow/Cart';
 
 
 // import MapTest from './components/MapTest';
@@ -184,6 +184,9 @@ function App() {
             </Route>
             <Route exact path="/pickitems">
               <PickItems/>
+            </Route>
+            <Route exact path="/cart">
+              <Cart/>
             </Route>
             
             <AppliedRoute path='*' component={NotFound} />
