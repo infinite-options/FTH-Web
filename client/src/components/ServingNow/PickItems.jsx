@@ -31,46 +31,73 @@ function PickItems() {
     ])
 
     return (
-         <div>
+        <>
+            <div
+                style={{
+                    border: 'dashed',
+                    height: '80px',
+                    width: '100vw',
+                    maxWidth: '100%',
+                    backgroundColor: '#e7404a'
+                }}
+            >
 
-            <img src={foodBankPic} alt="" class="foodBankPic"/>
-            {/* <img src={itemsList} alt="" class="itemsList"/> */}
+                {/* <img src={foodBankPic} alt="" class="foodBankPic"/>
 
-            <div class="header">
-                <h5> <b>Serving Now</b> </h5>
+                <div class="header">
+                    <h5> <b>Serving Now</b> </h5>
+                </div>
+
+                <div class="rectangle1"> </div>
+
+                <div class="foodbanksbutton">
+                    <button style={{color: "white", background: "none", border:"none", textAlign:"center"}}> Food Banks </button>
+                </div>
+
+                <div class="shopButton">
+                    <button style={{color: "#E7404A", background: "white", border:"none", textAlign:"center"}}> Shop </button>
+                </div>
+
+                <div class="profileButton">
+                    <button style={{color: "white", background: "none", border:"none", textAlign:"center"}}> Profile </button>
+                </div>
+
+                <div class="myordersButton">
+                    <button style={{color: "white", background: "none", border:"none", textAlign:"center"}}> My Orders </button>
+                </div>
+
+                <div class="helplineButton">
+                    <button style={{color: "white", background: "none", border:"none", textAlign:"center"}}> Helpline </button>
+                </div>
+
+                <div class="foodbankHeader"> </div>
+
+                <div class="foodBankText">
+                    <h5 style={{fontSize: "23px", letterSpacing: "0.25px", color: "black"}}> <b> Feeding Orange County</b></h5>
+                    <h6 style={{fontSize: "16px", letterSpacing: "0.18px", }}> 5.3 miles away</h6>
+                </div>
+
+                <div class="itemLimitText">
+                    <h5> <b>You can pick any 5 items</b> </h5>
+                </div> */}
             </div>
 
-            <div class="rectangle1"> </div>
+            <div class="foodbankHeader">
+                <img src={foodBankPic} alt="" class="foodBankPic"/>
 
-            <div class="foodbanksbutton">
-                <button style={{color: "white", background: "none", border:"none", textAlign:"center"}}> Food Banks </button>
-            </div>
+                <div class="foodBankText">
+                    <h5 style={{fontSize: "23px", letterSpacing: "0.25px", color: "black"}}> <b> Feeding Orange County</b></h5>
+                    <h6 style={{fontSize: "16px", letterSpacing: "0.18px", }}> 5.3 miles away</h6>
+                </div>
 
-            <div class="shopButton">
-                <button style={{color: "#E7404A", background: "white", border:"none", textAlign:"center"}}> Shop </button>
-            </div>
-
-            <div class="profileButton">
-                <button style={{color: "white", background: "none", border:"none", textAlign:"center"}}> Profile </button>
-            </div>
-
-            <div class="myordersButton">
-                <button style={{color: "white", background: "none", border:"none", textAlign:"center"}}> My Orders </button>
-            </div>
-
-            <div class="helplineButton">
-                <button style={{color: "white", background: "none", border:"none", textAlign:"center"}}> Helpline </button>
-            </div>
-
-            <div class="foodbankHeader"> </div>
-
-            <div class="foodBankText">
-                <h5 style={{fontSize: "23px", letterSpacing: "0.25px", color: "black"}}> <b> Feeding Orange County</b></h5>
-                <h6 style={{fontSize: "16px", letterSpacing: "0.18px", }}> 5.3 miles away</h6>
-            </div>
-
-            <div class="itemLimitText">
-                <h5> <b>You can pick any 5 items</b> </h5>
+                {/* <div class="itemLimitText">
+                    <h5> <b>You can pick any 5 items</b> </h5>
+                </div> */}
+                <div class="itemLimitWrapper">
+                    <div class="itemLimitText">
+                        <h5> <b>You can pick any 5 items</b> </h5>
+                    </div>
+                </div>
             </div>
 
             {/* <div class="beverages">
@@ -105,13 +132,23 @@ function PickItems() {
                 <button style={{color: "#E7404A", background: "white", border: "none", textAlign:"center"}}> <b> Snacks </b> </button>
             </div> */}
 
-            <div class="shoppingcart">
+            {/* <div 
+                class="shoppingcart"
+                style={{
+                    border: 'solid blue'
+                }}
+            >
                 <button style={{color: "#E7404A", background: "white", border: "none", textAlign:"center"}}>
                     <img src={shoppingcart} alt="" class="shoppingcart"/>
                 </button>
-            </div>
+            </div> */}
 
-            <div class="productsList"> 
+            {/* <div 
+                class="productsList"
+                style={{
+                    border: 'solid red'
+                }}
+            > 
             {products.map(product => (
                 <>
                     <div>
@@ -122,9 +159,10 @@ function PickItems() {
                     </div>
                 </>
             ))}
-            </div>
+            </div> */}
 
-        </div>
+        {/* </div> */}
+        </>
     )
 }
 

@@ -18,7 +18,8 @@
   position: absolute;
   /* width: 1800px; */
   height: 80px;
-  background-color: #e7404a;
+  /* background-color: #e7404a; */
+  background-color: green;
   top: 0px;
   left: 0px;
   z-index: -1;

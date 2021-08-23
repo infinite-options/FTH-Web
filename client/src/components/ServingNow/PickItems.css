@@ -55,7 +55,7 @@
   font-size: 18px;
 }
 
-.foodbankHeader {
+/* .foodbankHeader {
   position: absolute;
   top: 91px;
   left: 470px;
@@ -65,32 +65,91 @@
   border: 2px solid #e7404a;
   border-radius: 20px;
   opacity: 1;
+} */
+.foodbankHeader {
+  /* position: absolute; */
+  position: relative;
+  /* top: 91px;
+  left: 470px; */
+  /* width: 980px; */
+  margin-left: 2%;
+  margin-right: 2%;
+  width: 96%;
+  margin-top: 20px;
+  height: 181px;
+  background-color: white;
+  border: 2px solid #e7404a;
+  border-radius: 20px;
+  opacity: 1;
 }
 
-.foodBankPic {
+/* .foodBankPic {
   position: absolute;
   top: 110px;
   left: 526px;
   width: 118px;
   height: 118px;
   z-index: 1;
+} */
+.foodBankPic {
+  position: absolute;
+  /* top: 110px;
+  left: 526px; */
+  top: 10px;
+  left: 50px;
+  width: 118px;
+  height: 118px;
+  z-index: 1;
 }
 
-.foodBankText {
+/* .foodBankText {
   position: absolute;
   top: 146px;
   left: 670px;
   width: 328px;
   height: 28px;
   z-index: 1;
+} */
+.foodBankText {
+  /* position: absolute; */
+  /* top: 146px;
+  left: 670px; */
+  position: absolute;
+  top: 30px;
+  left: 200px;
+  /* border: dashed; */
+  width: 328px;
+  height: 28px;
+  z-index: 1;
 }
 
-.itemLimitText {
+/* .itemLimitText {
   position: absolute;
   top: 221px;
   left: 840px;
   width: 261px;
   height: 28px;
+} */
+.itemLimitWrapper{
+  /* border: solid red; */
+  width: 100%;
+  height: 100%;
+}
+.itemLimitText {
+  position: absolute;
+  /* top: 221px;
+  left: 840px;
+  width: 261px;
+  height: 28px; */
+  /* border: dashed; */
+  width: 100%;
+  bottom: 0;
+  /* height: 100%; */
+  display: flex;
+  justify-content: center;
+  /* align-items: b; */
+  /* height: 300px;
+  align-items: center; */
 }
 
 /* .itemsList {
@@ -281,7 +340,7 @@
   height: 3px;
 }
 
-.shoppingcart {
+/* .shoppingcart {
   position: absolute;
   width: 90px;
   height: 51px;
@@ -290,6 +349,18 @@
   border-radius: 39px;
   opacity: 1;
   transform: translate(1300px, -50px);
+  z-index: 1;
+  text-align: center;
+} */
+.shoppingcart {
+  position: absolute;
+  width: 90px;
+  height: 51px;
+  box-shadow: 0px 3px 6px #00000029;
+  border: 1px solid #e7404a;
+  border-radius: 39px;
+  opacity: 1;
+  /* transform: translate(1300px, -50px); */
   z-index: 1;
   text-align: center;
 }
