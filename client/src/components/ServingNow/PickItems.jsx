@@ -13,54 +13,164 @@ import shoppingcart from '../Assets/shoppingcart.svg';
 
 function PickItems() {
 
-    const[filter, setFilter] = useState(null);
+    const[filter, setFilter] = useState([]);
     const[products, setProducts] = useState([
         {
             name: 'Apples (2)',
             image: apples,
             component: component, 
+            category: 'Fruits'
         },
         {
             name: 'Red Apples (2)', 
             image: apples,
             component: component, 
+            category: 'Fruits'
         },
         {
             name: 'Green Apples (2)', 
             image: apples,
             component: component, 
+            category: 'Fruits'
         },
         {
             name: 'Fuji Apples (2)',
             image: apples,
             component: component, 
+            category: 'Fruits'
         },
         {
             name: 'Washington Apples (2)', 
             image: apples,
             component: component, 
+            category: 'Fruits'
         },
         {
             name: 'Crab Apples (2)', 
             image: apples,
             component: component, 
+            category: 'Fruits'
         },
         {
-            name: 'Dem Apples (2)',
+            name: 'Them Apples (2)',
             image: apples,
             component: component, 
+            category: 'Fruits'
         },
         {
             name: 'Apples Not Oranges (2)', 
             image: apples,
             component: component, 
+            category: 'Fruits'
         },
         {
             name: 'Hungry for Apples? (2)', 
             image: apples,
             component: component, 
+            category: 'Fruits'
+        },
+        {
+            name: 'Not a Fruit', 
+            image: shoppingcart,
+            component: component, 
+            category: 'Meals'
         },
     ]);
+
+    const applyFilter = (clickedCategory) => {
+        let newFilter = [...filter];
+
+        console.log(" ");
+        console.log("clicked product: ", clickedCategory)
+        console.log("filter before: ", filter);
+
+        
+        if(filter.includes(clickedCategory)) {
+            console.log("\n====================");
+            let deleteIndex = filter.findIndex((category) => {
+                // console.log("product: ", product);
+                
+                console.log("category: ", category);
+                console.log("clickedCategory: ", clickedCategory);
+                return category === clickedCategory
+            });
+            console.log("delete index: ", deleteIndex)
+            newFilter.splice(deleteIndex, 1);
+            console.log("====================\n\n");
+        } else {
+            newFilter.push(clickedCategory);
+        }
+        // console.log("====================\n");
+        console.log("filter after: ", newFilter);
+
+        setFilter(newFilter);
+    }
+
+    const displayProducts = () => {
+        let filteredProducts = [];
+        
+        products.forEach(product => {
+            if(filter.includes(product.category) || filter.length === 0) {
+                filteredProducts.push(
+                    <div
+                        style={{
+                            height: '220px',
+                            display: 'flex',
+                            justifyContent: 'center'
+                        }}
+                    >
+                        <div
+                            style={{
+                                marginTop: '10px',
+                                marginBottom: '10px',
+                                width: '150px',
+                                borderRadius: '15px',
+                                boxShadow: '0px 3px 6px #00000029',
+                                position: 'relative'
+                            }}
+                        >
+                            <div
+                                style={{
+                                    marginTop: '15px',
+                                    height: '100px',
+                                    display: 'flex',
+                                    alignItems: 'center'
+                                }}
+                            >
+                                <img src={product.image} alt="" class="product_image"/>
+                            </div>
+                            <div
+                                style={{
+                                    height: '40px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                }}
+                            >
+                                {product.name}
+                            </div>
+                            <div
+                                style={{
+                                    position: 'absolute',
+                                    bottom: '0px',
+                                    borderRadius: '0px 0px 15px 15px',
+                                    backgroundColor: '#e7404a',
+                                    height: '40px',
+                                    width: '100%',
+                                    display: 'flex',
+                                    alignItems: 'center'
+                                }}
+                            >
+                                <Counter class="counter"> </Counter>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+        });
+
+        return filteredProducts;
+    }
 
     return (
         <>
@@ -142,12 +252,14 @@ function PickItems() {
             >
                 <div class="filterButtonWrapper">
                     <button 
-                        class={filter === "Beverages" ? (
+                        class={filter.includes("Beverages") ? (
                             "filterButton_selected"
                         ) : (
                             "filterButton"
                         )}
-                        onClick={() => {setFilter("Beverages")}}
+                        onClick={() => {
+                            applyFilter("Beverages")
+                        }}
                     > 
                         Beverages
                     </button>
@@ -155,12 +267,14 @@ function PickItems() {
 
                 <div class="filterButtonWrapper">
                     <button 
-                        class={filter === "Fruits" ? (
+                        class={filter.includes("Fruits") ? (
                             "filterButton_selected"
                         ) : (
                             "filterButton"
                         )}
-                        onClick={() => {setFilter("Fruits")}}
+                        onClick={() => {
+                            applyFilter("Fruits")
+                        }}
                     > 
                         Fruits
                     </button>
@@ -168,12 +282,14 @@ function PickItems() {
 
                 <div class="filterButtonWrapper">
                     <button 
-                        class={filter === "Vegetables" ? (
+                        class={filter.includes("Vegetables") ? (
                             "filterButton_selected"
                         ) : (
                             "filterButton"
                         )}
-                        onClick={() => {setFilter("Vegetables")}}
+                        onClick={() => {
+                            applyFilter("Vegetables")
+                        }}
                     > 
                         Vegetables
                     </button>
@@ -181,12 +297,14 @@ function PickItems() {
 
                 <div class="filterButtonWrapper">
                     <button 
-                        class={filter === "Meals" ? (
+                        class={filter.includes("Meals") ? (
                             "filterButton_selected"
                         ) : (
                             "filterButton"
                         )}
-                        onClick={() => {setFilter("Meals")}}
+                        onClick={() => {
+                            applyFilter("Meals")
+                        }}
                     > 
                         Meals
                     </button>
@@ -194,12 +312,14 @@ function PickItems() {
 
                 <div class="filterButtonWrapper">
                     <button 
-                        class={filter === "Desserts" ? (
+                        class={filter.includes("Desserts") ? (
                             "filterButton_selected"
                         ) : (
                             "filterButton"
                         )}
-                        onClick={() => {setFilter("Desserts")}}
+                        onClick={() => {
+                            applyFilter("Desserts")
+                        }}
                     > 
                         Desserts
                     </button>
@@ -207,12 +327,14 @@ function PickItems() {
 
                 <div class="filterButtonWrapper">
                     <button 
-                        class={filter === "Canned" ? (
+                        class={filter.includes("Canned") ? (
                             "filterButton_selected"
                         ) : (
                             "filterButton"
                         )}
-                        onClick={() => {setFilter("Canned")}}
+                        onClick={() => {
+                            applyFilter("Canned")
+                        }}
                     > 
                         Canned
                     </button>
@@ -220,12 +342,14 @@ function PickItems() {
 
                 <div class="filterButtonWrapper">
                     <button 
-                        class={filter === "Dairy" ? (
+                        class={filter.includes("Dairy") ? (
                             "filterButton_selected"
                         ) : (
                             "filterButton"
                         )}
-                        onClick={() => {setFilter("Dairy")}}
+                        onClick={() => {
+                            applyFilter("Dairy")
+                        }}
                     > 
                         Dairy
                     </button>
@@ -233,12 +357,14 @@ function PickItems() {
 
                 <div class="filterButtonWrapper">
                     <button 
-                        class={filter === "Snacks" ? (
+                        class={filter.includes("Snacks") ? (
                             "filterButton_selected"
                         ) : (
                             "filterButton"
                         )}
-                        onClick={() => {setFilter("Snacks")}}
+                        onClick={() => {
+                            applyFilter("Snacks")
+                        }}
                     > 
                         Snacks
                     </button>
@@ -262,25 +388,17 @@ function PickItems() {
                         width: 'calc(100% - 40px)'
                     }}
                 > 
-                {products.map(product => (
+                {displayProducts()}
+                {/* {products.map(product => (
                     <div
                         style={{
-                            // border: '1px solid blue',
-                            // width: '100px',
-                            // minWidth: '0px',
                             height: '220px',
                             display: 'flex',
                             justifyContent: 'center'
                         }}
                     >
-                        {/* APPLES */}
-                        {/* <h5 style={{fontFamily: "SF Pro Display"}} class="name">{product.name}</h5> */}
-                        {/* <img src={product.image} alt="" class="apple_fruit"/> */}
-                        {/* <img src={product.component} alt="" class="component"/> */}
-                        {/* <Counter class="counter"> </Counter> */}
                         <div
                             style={{
-                                // border: '1px solid green',
                                 marginTop: '10px',
                                 marginBottom: '10px',
                                 width: '150px',
@@ -291,7 +409,6 @@ function PickItems() {
                         >
                             <div
                                 style={{
-                                    // border: '1px dashed',
                                     marginTop: '15px',
                                     height: '100px',
                                     display: 'flex',
@@ -302,8 +419,6 @@ function PickItems() {
                             </div>
                             <div
                                 style={{
-                                    // border: '1px dashed',
-                                    // marginTop: '15px',
                                     height: '40px',
                                     display: 'flex',
                                     alignItems: 'center',
@@ -316,30 +431,19 @@ function PickItems() {
                                 style={{
                                     position: 'absolute',
                                     bottom: '0px',
-                                    // border: '1px dashed',
                                     borderRadius: '0px 0px 15px 15px',
                                     backgroundColor: '#e7404a',
-                                    // marginTop: '15px',
                                     height: '40px',
                                     width: '100%',
                                     display: 'flex',
                                     alignItems: 'center'
                                 }}
                             >
-                                {/* <div>
-                                    -
-                                </div>
-                                <div>
-
-                                </div>
-                                <div>
-                                    +
-                                </div> */}
                                 <Counter class="counter"> </Counter>
                             </div>
                         </div>
                     </div>
-                ))}
+                ))} */}
                 </div>
             </div>
 
