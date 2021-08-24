@@ -12,53 +12,55 @@ import shoppingcart from '../Assets/shoppingcart.svg';
 // import itemsList from '../Assets/itemsList.png';
 
 function PickItems() {
-    const[products] = useState([
+
+    const[filter, setFilter] = useState(null);
+    const[products, setProducts] = useState([
         {
             name: 'Apples (2)',
             image: apples,
             component: component, 
         },
         {
-            name: 'Apples (2)', 
+            name: 'Red Apples (2)', 
             image: apples,
             component: component, 
         },
         {
-            name: 'Apples (2)', 
+            name: 'Green Apples (2)', 
             image: apples,
             component: component, 
         },
         {
-            name: 'Apples (2)',
+            name: 'Fuji Apples (2)',
             image: apples,
             component: component, 
         },
         {
-            name: 'Apples (2)', 
+            name: 'Washington Apples (2)', 
             image: apples,
             component: component, 
         },
         {
-            name: 'Apples (2)', 
+            name: 'Crab Apples (2)', 
             image: apples,
             component: component, 
         },
         {
-            name: 'Apples (2)',
+            name: 'Dem Apples (2)',
             image: apples,
             component: component, 
         },
         {
-            name: 'Apples (2)', 
+            name: 'Apples Not Oranges (2)', 
             image: apples,
             component: component, 
         },
         {
-            name: 'Apples (2)', 
+            name: 'Hungry for Apples? (2)', 
             image: apples,
             component: component, 
         },
-    ])
+    ]);
 
     return (
         <>
@@ -140,7 +142,12 @@ function PickItems() {
             >
                 <div class="filterButtonWrapper">
                     <button 
-                        class="filterButton"
+                        class={filter === "Beverages" ? (
+                            "filterButton_selected"
+                        ) : (
+                            "filterButton"
+                        )}
+                        onClick={() => {setFilter("Beverages")}}
                     > 
                         Beverages
                     </button>
@@ -148,7 +155,12 @@ function PickItems() {
 
                 <div class="filterButtonWrapper">
                     <button 
-                        class="filterButton"
+                        class={filter === "Fruits" ? (
+                            "filterButton_selected"
+                        ) : (
+                            "filterButton"
+                        )}
+                        onClick={() => {setFilter("Fruits")}}
                     > 
                         Fruits
                     </button>
@@ -156,7 +168,12 @@ function PickItems() {
 
                 <div class="filterButtonWrapper">
                     <button 
-                        class="filterButton"
+                        class={filter === "Vegetables" ? (
+                            "filterButton_selected"
+                        ) : (
+                            "filterButton"
+                        )}
+                        onClick={() => {setFilter("Vegetables")}}
                     > 
                         Vegetables
                     </button>
@@ -164,7 +181,12 @@ function PickItems() {
 
                 <div class="filterButtonWrapper">
                     <button 
-                        class="filterButton"
+                        class={filter === "Meals" ? (
+                            "filterButton_selected"
+                        ) : (
+                            "filterButton"
+                        )}
+                        onClick={() => {setFilter("Meals")}}
                     > 
                         Meals
                     </button>
@@ -172,7 +194,12 @@ function PickItems() {
 
                 <div class="filterButtonWrapper">
                     <button 
-                        class="filterButton"
+                        class={filter === "Desserts" ? (
+                            "filterButton_selected"
+                        ) : (
+                            "filterButton"
+                        )}
+                        onClick={() => {setFilter("Desserts")}}
                     > 
                         Desserts
                     </button>
@@ -180,7 +207,12 @@ function PickItems() {
 
                 <div class="filterButtonWrapper">
                     <button 
-                        class="filterButton"
+                        class={filter === "Canned" ? (
+                            "filterButton_selected"
+                        ) : (
+                            "filterButton"
+                        )}
+                        onClick={() => {setFilter("Canned")}}
                     > 
                         Canned
                     </button>
@@ -188,7 +220,12 @@ function PickItems() {
 
                 <div class="filterButtonWrapper">
                     <button 
-                        class="filterButton"
+                        class={filter === "Dairy" ? (
+                            "filterButton_selected"
+                        ) : (
+                            "filterButton"
+                        )}
+                        onClick={() => {setFilter("Dairy")}}
                     > 
                         Dairy
                     </button>
@@ -196,7 +233,12 @@ function PickItems() {
 
                 <div class="filterButtonWrapper">
                     <button 
-                        class="filterButton"
+                        class={filter === "Snacks" ? (
+                            "filterButton_selected"
+                        ) : (
+                            "filterButton"
+                        )}
+                        onClick={() => {setFilter("Snacks")}}
                     > 
                         Snacks
                     </button>

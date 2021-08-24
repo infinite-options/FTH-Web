@@ -219,6 +219,19 @@
   box-shadow: 0px 3px 6px #00000029;
 }
 
+.filterButton_selected {
+  width: 96px;
+  height: 30px;
+  border-radius: 39px;
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  background: #E7404A;
+  border: 2px solid #e7404a;
+  text-align: center;
+  box-shadow: 0px 3px 6px #00000029;
+}
+
 .fruits {
   width: 98px;
   height: 30px;
