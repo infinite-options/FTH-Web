@@ -245,12 +245,21 @@ function PickItems() {
             <div
                 style={{
                     // border: 'dashed',
+                    width: 'calc(100vw - 40px)',
+                    marginLeft: '20px',
+                    marginRight: '20px',
+                    maxWidth: 'calc(100% - 40px)',
                     marginTop: '20px',
                     height: '60px',
                     display: 'flex'
                 }}
             >
-                <div class="filterButtonWrapper">
+                <div 
+                    class="filterButtonWrapper"
+                    style={{
+                        marginLeft: '2%'
+                    }}
+                >
                     <button 
                         class={filter.includes("Beverages") ? (
                             "filterButton_selected"
@@ -355,7 +364,12 @@ function PickItems() {
                     </button>
                 </div>
 
-                <div class="filterButtonWrapper">
+                <div 
+                    class="filterButtonWrapper"
+                    style={{
+                        marginRight: '2%'
+                    }}
+                >
                     <button 
                         class={filter.includes("Snacks") ? (
                             "filterButton_selected"
