@@ -226,7 +226,7 @@ function PickItems() {
                             // border: '1px solid blue',
                             // width: '100px',
                             // minWidth: '0px',
-                            height: '200px',
+                            height: '220px',
                             display: 'flex',
                             justifyContent: 'center'
                         }}
@@ -251,12 +251,24 @@ function PickItems() {
                                 style={{
                                     // border: '1px dashed',
                                     marginTop: '15px',
-                                    height: '120px',
+                                    height: '100px',
                                     display: 'flex',
                                     alignItems: 'center'
                                 }}
                             >
                                 <img src={product.image} alt="" class="product_image"/>
+                            </div>
+                            <div
+                                style={{
+                                    // border: '1px dashed',
+                                    // marginTop: '15px',
+                                    height: '40px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                }}
+                            >
+                                {product.name}
                             </div>
                             <div
                                 style={{

@@ -410,6 +410,7 @@
   height: 100%;
   display: flex;
   /* border: 1px dashed; */
+  /* align-items: center; */
   justify-content: center;
 }
 

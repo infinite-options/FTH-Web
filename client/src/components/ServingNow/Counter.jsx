@@ -43,9 +43,51 @@ class Counter extends Component {
     render() {
         return (
             <div class="counter"> 
-                <button onClick={this.decrement} style={{fontSize: "40px", color: "white", background: "none", border:"none", textAlign:"center"}}> - </button>
-                <h2 style={{fontSize: "40px", color:"white"}}> {this.state.count} </h2>
-                <button onClick={this.increment} style={{fontSize: "40px", color: "white", background: "none", border:"none", textAlign:"center"}}> + </button>
+                <button 
+                  onClick={this.decrement} 
+                  style={{
+                    fontSize: "40px", 
+                    color: "white", 
+                    background: "none", 
+                    border:"none", 
+                    // border: "1px solid cyan",
+                    textAlign:"center",
+                    width: "40%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    // paddingBottom: "5px"
+                  }}
+                > - </button>
+                <div
+                  style={{
+                    fontSize: "40px", 
+                    // fontWeight: "600",
+                    color:"white",
+                    // border:"none", 
+                    // border: "1px solid cyan",
+                    width: "20%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center"
+                  }}
+                > {this.state.count} </div>
+                <button 
+                  onClick={this.increment} 
+                  style={{
+                    fontSize: "40px", 
+                    color: "white", 
+                    background: "none", 
+                    border:"none", 
+                    // border: "1px solid cyan",
+                    textAlign:"center",
+                    width: "40%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center"
+                    // paddingBottom: "8px"
+                  }}
+                > + </button>
             </div>
         )
     }
