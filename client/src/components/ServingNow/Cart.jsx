@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import "../ServingNow/Cart.css";
 import CounterCart from '../ServingNow/CounterCart'
@@ -17,80 +17,226 @@ import { Grid } from '@material-ui/core';
 function Cart() {
     const cart = useSelector(state => state.subscribe.cart);
     const dispatch = useDispatch();
-    // const[products, setProducts] = useState([
-    //     {
-    //         name: 'Apples (2)',
-    //         image: apples,
-    //         component2: component2, 
-    //     },
-    //     {
-    //         name: 'Red Apples (2)', 
-    //         image: apples,
-    //         component2: component2, 
-    //     },
-    //     {
-    //         name: 'Green Apples (2)', 
-    //         image: apples,
-    //         component2: component2, 
-    //     },
-    //     {
-    //         name: 'Fuji Apples (2)',
-    //         image: apples,
-    //         component2: component2, 
-    //     },
-    // ]);
-    const[products, setProducts] = useState([
-    ]);
-    const[itemCounter, setItemCounter] = useState(0);
+
+    const[itemCounter, setItemCounter] = useState(() => {
+        let initialCount = 0;
+        cart.forEach((item) => {
+            initialCount = initialCount + item.qty;
+        });
+        return initialCount;
+    });
+
+    useEffect(() => {
+        console.log("global cart: ", cart);
+    }, [cart]);
+
     const increment = (uid) => {
-        console.log("increment product uid: ", uid);
+
         if(itemCounter < 5) {
-            let productsCopy = [...products];
-            let productIndex = products.findIndex((prod) => {
+            let productsCopy = [...cart];
+            let productIndex = cart.findIndex((prod) => {
                 return prod.item_uid === uid
             });
-            console.log("(increment) productIndex: ", productIndex);
 
             setItemCounter(itemCounter + 1);
 
             let tempProduct = productsCopy[productIndex];
 
-            tempProduct.qty = tempProduct.qt
-            productsCopy[productIndex] = tempProduct;
+            tempProduct.qty = tempProduct.qty + 1;
 
-            setProducts(productsCopy);
+            productsCopy[productIndex] = tempProduct;
 
             dispatch({
                 type: "SET_CART",
-                payload: products
+                payload: productsCopy
             });
         }
     };
+
     const decrement = (uid) => {
-        console.log("decrement product uid: ", uid);
+
         if(itemCounter > 0) {
-            let productsCopy = [...products];
-            let productIndex = products.findIndex((prod) => {
+            let productsCopy = [...cart];
+            let productIndex = cart.findIndex((prod) => {
                 return prod.item_uid === uid
             });
-            console.log("(increment) productIndex: ", productIndex);
-
-            setItemCounter(itemCounter - 1);
 
             let tempProduct = productsCopy[productIndex];
 
-            tempProduct.qty = tempProduct.qty - 1;
+            if(tempProduct.qty > 0) {
+                setItemCounter(itemCounter - 1);
 
-            productsCopy[productIndex] = tempProduct;
+                tempProduct.qty = tempProduct.qty - 1;
 
-            setProducts(productsCopy);
+                productsCopy[productIndex] = tempProduct;
 
-            dispatch({
-                type: "SET_CART",
-                payload: products
-            });
+                dispatch({
+                    type: "SET_CART",
+                    payload: productsCopy
+                });
+            }
         }
     };
+
+    const displayProducts = () => {
+        let nonzeroProducts = [];
+        
+        cart.forEach(product => {
+            if(product.qty > 0) {
+                nonzeroProducts.push(
+                    <div
+                        style={{
+                            // border: '1px solid blue',
+                            // width: '100px',
+                            // minWidth: '0px',
+                            height: '120px',
+                            display: 'flex',
+                            justifyContent: 'center'
+                        }}
+                    >
+                        {console.log("render cart: ", cart)}
+                        {console.log("render product: ", product)}
+                        <div
+                            style={{
+                                // border: '1px solid green',
+                                marginTop: '10px',
+                                marginBottom: '10px',
+                                height: '97px',
+                                width: '100%',
+                                borderRadius: '15px',
+                                boxShadow: '0px 3px 6px #00000029',
+                                position: 'relative',
+                                display: 'flex'
+                            }}
+                        >
+                            <div
+                                style={{
+                                    border: '1px dashed',
+                                    // marginTop: '50px',
+                                    // height: '100px',
+                                    height: '100%',
+                                    width: '140px',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center'
+                                }}
+                            >
+                                {console.log("img url: ", product.image)}
+                                <img 
+                                    src={product.item_photo} alt="" 
+                                    // class="product_image2"
+                                    style={{
+                                        maxHeight: '90%',
+                                        maxWidth: '90%'
+                                    }}
+                                />
+                            </div>
+                            
+                            <div
+                                // class="productName"
+                                style={{
+                                    border: '1px dashed',
+                                    // marginTop: '50px',
+                                    // marginLeft: '50px',
+                                    // height: '29px',
+                                    height: '100%',
+                                    padding: '10px',
+                                    width: '200px',
+                                    // width: '50px'
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    // justifyContent: 'left',
+                                }}
+                            >
+                                {product.item_name}
+                            </div>
+
+                            <div
+                                class="productName"
+                                style={{
+                                    // border: '1px dashed',
+                                    // marginTop: '50px',
+                                    marginLeft: '20px',
+                                    // height: '29px',
+                                    display: 'flex',
+                                    // alignItems: 'left',
+                                    justifyContent: 'left',
+                                }}
+                            >
+                                {/* <img src={deleteProduct} alt="" class="delete"/> */}
+                            </div>
+
+                            <div
+                                style={{
+                                    position: 'absolute',
+                                    bottom: '0px',
+                                    border: '1px dashed',
+                                    // marginTop: '15px',
+                                    height: '40px',
+                                    // width: '40%',
+                                    display: 'flex',
+                                    marginLeft: '1245px',
+                                    marginBottom: '25px'
+                                    // alignItems: 'center'
+                                }}
+                            >
+                                {/* <CounterCart class="countercart"> </CounterCart> */}
+                                <div class="counter"> 
+                                    <button 
+                                    onClick={() => decrement(product.item_uid)} 
+                                    style={{
+                                        fontSize: "40px", 
+                                        color: "white", 
+                                        background: '#E7404A', 
+                                        border:"none", 
+                                        borderRadius: '25px',
+                                        textAlign:"center",
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        padding: '15px',
+                                        marginRight: '5px'
+                                    }}
+                                    > - </button>
+                                    <div
+                                    style={{
+                                        fontSize: "40px", 
+                                        color:"#E7404A",
+                                        border: '1px solid #E7404A',
+                                        borderRadius: '22px',
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        padding: '15px',
+                                        font: 'normal normal bold 23px/28px SF Pro Display',
+                                        marginRight: '5px'
+                                    }}
+                                    > {product.qty} </div>
+                                    <button 
+                                    onClick={() => increment(product.item_uid)} 
+                                    style={{
+                                        fontSize: "30px", 
+                                        color: "white", 
+                                        background: "#E7404A", 
+                                        border:"none", 
+                                        borderRadius: '25px',
+                                        textAlign:"center",
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        padding: '15px',
+                                    }}
+                                    > + </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+        });
+
+        return nonzeroProducts;
+    }
 
     return (
         <>
@@ -186,7 +332,8 @@ function Cart() {
                         display: 'inline-block',
                     }}
                 > 
-                {products.map(product => (
+                {displayProducts()}
+                {/* {cart.map(product => (
                     <div
                         style={{
                             // border: '1px solid blue',
@@ -197,6 +344,8 @@ function Cart() {
                             justifyContent: 'center'
                         }}
                     >
+                        {console.log("render cart: ", cart)}
+                        {console.log("render product: ", product)}
                         <div
                             style={{
                                 // border: '1px solid green',
@@ -206,34 +355,50 @@ function Cart() {
                                 width: '100%',
                                 borderRadius: '15px',
                                 boxShadow: '0px 3px 6px #00000029',
-                                position: 'relative'
+                                position: 'relative',
+                                display: 'flex'
                             }}
                         >
                             <div
                                 style={{
-                                    // border: '1px dashed',
-                                    marginTop: '50px',
-                                    height: '100px',
+                                    border: '1px dashed',
+                                    // marginTop: '50px',
+                                    // height: '100px',
+                                    height: '100%',
+                                    width: '140px',
                                     display: 'flex',
+                                    justifyContent: 'center',
                                     alignItems: 'center'
                                 }}
                             >
-                                <img src={product.image} alt="" class="product_image2"/>
+                                {console.log("img url: ", product.image)}
+                                <img 
+                                    src={product.item_photo} alt="" 
+                                    // class="product_image2"
+                                    style={{
+                                        maxHeight: '90%',
+                                        maxWidth: '90%'
+                                    }}
+                                />
                             </div>
                             
                             <div
-                                class="productName"
+                                // class="productName"
                                 style={{
-                                    // border: '1px dashed',
+                                    border: '1px dashed',
                                     // marginTop: '50px',
-                                    marginLeft: '50px',
+                                    // marginLeft: '50px',
                                     // height: '29px',
+                                    height: '100%',
+                                    padding: '10px',
+                                    width: '200px',
+                                    // width: '50px'
                                     display: 'flex',
-                                    // alignItems: 'left',
-                                    justifyContent: 'left',
+                                    alignItems: 'center',
+                                    // justifyContent: 'left',
                                 }}
                             >
-                                {product.name}
+                                {product.item_name}
                             </div>
 
                             <div
@@ -248,14 +413,13 @@ function Cart() {
                                     justifyContent: 'left',
                                 }}
                             >
-                                {/* <img src={deleteProduct} alt="" class="delete"/> */}
                             </div>
 
                             <div
                                 style={{
                                     position: 'absolute',
                                     bottom: '0px',
-                                    // border: '1px dashed',
+                                    border: '1px dashed',
                                     // marginTop: '15px',
                                     height: '40px',
                                     // width: '40%',
@@ -265,11 +429,57 @@ function Cart() {
                                     // alignItems: 'center'
                                 }}
                             >
-                                <CounterCart class="countercart"> </CounterCart>
+                                <div class="counter"> 
+                                    <button 
+                                    onClick={() => decrement(product.item_uid)} 
+                                    style={{
+                                        fontSize: "40px", 
+                                        color: "white", 
+                                        background: '#E7404A', 
+                                        border:"none", 
+                                        borderRadius: '25px',
+                                        textAlign:"center",
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        padding: '15px',
+                                        marginRight: '5px'
+                                    }}
+                                    > - </button>
+                                    <div
+                                    style={{
+                                        fontSize: "40px", 
+                                        color:"#E7404A",
+                                        border: '1px solid #E7404A',
+                                        borderRadius: '22px',
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        padding: '15px',
+                                        font: 'normal normal bold 23px/28px SF Pro Display',
+                                        marginRight: '5px'
+                                    }}
+                                    > {product.qty} </div>
+                                    <button 
+                                    onClick={() => increment(product.item_uid)} 
+                                    style={{
+                                        fontSize: "30px", 
+                                        color: "white", 
+                                        background: "#E7404A", 
+                                        border:"none", 
+                                        borderRadius: '25px',
+                                        textAlign:"center",
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        padding: '15px',
+                                    }}
+                                    > + </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                ))}
+                ))} */}
                 </div>
                 
                 <div class="continueCartButton">

@@ -8,15 +8,19 @@ import apples from '../Assets/apple.png';
 import component from '../Assets/component.png';
 import shoppingcart from '../Assets/shoppingcart.svg';
 
+import { useHistory } from "react-router";
+
 // import itemsList from '../Assets/itemsList.png';
 
 function PickItems() {
+
+    const history = useHistory();
 
     const cart = useSelector(state => state.subscribe.cart);
     const dispatch = useDispatch();
 
     const[filter, setFilter] = useState([]);
-    const[products, setProducts] = useState([]);
+    // const[products, setProducts] = useState([]);
     const[itemCounter, setItemCounter] = useState(0);
 
     useEffect(() => {
@@ -38,17 +42,21 @@ function PickItems() {
                     products_with_qty.push(prod);
                 });
                 console.log("(getItems) res 2: ", products_with_qty);
-                setProducts(products_with_qty);
+                // setProducts(products_with_qty);
+                dispatch({
+                    type: "SET_CART",
+                    payload: products_with_qty
+                });
             })
             .catch((err) => {
                 if (err.response) {
                     console.log(err.response);
                 }
                 console.log(err);
-                dispatch({
-                    type: "SET_CART",
-                    payload: ["STUFF"]
-                });
+                // dispatch({
+                //     type: "SET_CART",
+                //     payload: ["STUFF"]
+                // });
             });
     }, []);
 
@@ -86,13 +94,12 @@ function PickItems() {
     }
 
     const increment = (uid) => {
-        console.log("increment product uid: ", uid);
+
         if(itemCounter < 5) {
-            let productsCopy = [...products];
-            let productIndex = products.findIndex((prod) => {
+            let productsCopy = [...cart];
+            let productIndex = cart.findIndex((prod) => {
                 return prod.item_uid === uid
             });
-            console.log("(increment) productIndex: ", productIndex);
 
             setItemCounter(itemCounter + 1);
 
@@ -102,45 +109,42 @@ function PickItems() {
 
             productsCopy[productIndex] = tempProduct;
 
-            setProducts(productsCopy);
-
             dispatch({
                 type: "SET_CART",
-                payload: products
+                payload: productsCopy
             });
         }
     };
 
     const decrement = (uid) => {
-        console.log("decrement product uid: ", uid);
+
         if(itemCounter > 0) {
-            let productsCopy = [...products];
-            let productIndex = products.findIndex((prod) => {
+            let productsCopy = [...cart];
+            let productIndex = cart.findIndex((prod) => {
                 return prod.item_uid === uid
             });
-            console.log("(increment) productIndex: ", productIndex);
-
-            setItemCounter(itemCounter - 1);
 
             let tempProduct = productsCopy[productIndex];
 
-            tempProduct.qty = tempProduct.qty - 1;
+            if(tempProduct.qty > 0) {
+                setItemCounter(itemCounter - 1);
 
-            productsCopy[productIndex] = tempProduct;
+                tempProduct.qty = tempProduct.qty - 1;
 
-            setProducts(productsCopy);
+                productsCopy[productIndex] = tempProduct;
 
-            dispatch({
-                type: "SET_CART",
-                payload: products
-            });
+                dispatch({
+                    type: "SET_CART",
+                    payload: productsCopy
+                });
+            }
         }
     };
 
     const displayProducts = () => {
         let filteredProducts = [];
         
-        products.forEach(product => {
+        cart.forEach(product => {
             // if(filter.includes(product.category) || filter.length === 0) {
             if(filter.includes(product.item_type) || filter.length === 0) {
                 filteredProducts.push(
@@ -482,126 +486,17 @@ function PickItems() {
                     }}
                 > 
                 {displayProducts()}
-                {/* {products.map(product => (
-                    <div
-                        style={{
-                            height: '220px',
-                            display: 'flex',
-                            justifyContent: 'center'
-                        }}
-                    >
-                        <div
-                            style={{
-                                marginTop: '10px',
-                                marginBottom: '10px',
-                                width: '150px',
-                                borderRadius: '15px',
-                                boxShadow: '0px 3px 6px #00000029',
-                                position: 'relative'
-                            }}
-                        >
-                            <div
-                                style={{
-                                    marginTop: '15px',
-                                    height: '100px',
-                                    display: 'flex',
-                                    alignItems: 'center'
-                                }}
-                            >
-                                <img src={product.image} alt="" class="product_image"/>
-                            </div>
-                            <div
-                                style={{
-                                    height: '40px',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center'
-                                }}
-                            >
-                                {product.name}
-                            </div>
-                            <div
-                                style={{
-                                    position: 'absolute',
-                                    bottom: '0px',
-                                    borderRadius: '0px 0px 15px 15px',
-                                    backgroundColor: '#e7404a',
-                                    height: '40px',
-                                    width: '100%',
-                                    display: 'flex',
-                                    alignItems: 'center'
-                                }}
-                            >
-                                <Counter class="counter"> </Counter>
-                            </div>
-                        </div>
-                    </div>
-                ))} */}
+                
                 </div>
             </div>
-
-            {/* <div class="beverages">
-                <button style={{color: "#E7404A", background: "white", border: "none", textAlign:"center"}}> <b> Beverages </b> </button>
-            </div>
-
-            <div class="fruits">
-                <button style={{color: "white", background: "#E7404A", border: "none", textAlign:"center"}}> <b> Fruits </b> </button>
-            </div>
-
-            <div class="vegetables">
-                <button style={{color: "#E7404A", background: "white", border: "none", textAlign:"center"}}> <b> Vegetables </b> </button>
-            </div>
-
-            <div class="meals">
-                <button style={{color: "#E7404A", background: "white", border: "none", textAlign:"center"}}> <b> Meals </b> </button>
-            </div>
-
-            <div class="desserts">
-                <button style={{color: "#E7404A", background: "white", border: "none", textAlign:"center"}}> <b> Desserts </b> </button>
-            </div>
-
-            <div class="canned">
-                <button style={{color: "#E7404A", background: "white", border: "none", textAlign:"center"}}> <b> Canned </b> </button>
-            </div>
-
-            <div class="dairy">
-                <button style={{color: "#E7404A", background: "white", border: "none", textAlign:"center"}}> <b> Dairy </b> </button>
-            </div>
-
-            <div class="snacks">
-                <button style={{color: "#E7404A", background: "white", border: "none", textAlign:"center"}}> <b> Snacks </b> </button>
-            </div> */}
-
-            {/* <div 
-                class="shoppingcart"
-                style={{
-                    border: 'solid blue'
-                }}
+            
+            {/* For testing since navbar isn't implemented yet */}
+            <button
+                onClick={() => history.push('cart')}
             >
-                <button style={{color: "#E7404A", background: "white", border: "none", textAlign:"center"}}>
-                    <img src={shoppingcart} alt="" class="shoppingcart"/>
-                </button>
-            </div> */}
-
-            {/* <div 
-                class="productsList"
-                style={{
-                    border: 'solid red'
-                }}
-            > 
-            {products.map(product => (
-                <>
-                    <div>
-                        <h5 style={{fontFamily: "SF Pro Display"}} class="name">{product.name}</h5>
-                        <img src={product.image} alt="" class="apple"/>
-                        <img src={product.component} alt="" class="component"/>
-                        <Counter class="counter"> </Counter>
-                    </div>
-                </>
-            ))}
-            </div> */}
-
-        {/* </div> */}
+                Go To Cart
+            </button>
+            
         </>
     )
 }
