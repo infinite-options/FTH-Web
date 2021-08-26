@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
-
+import { useEffect, useState } from 'react';
+import axios from "axios";
 import "../ServingNow/PickItems.css";
 import Counter from '../ServingNow/Counter'
-
 import foodBankPic from '../Assets/foodBankPic.png';
 import apples from '../Assets/apple.png';
 import component from '../Assets/component.png';
@@ -14,68 +13,97 @@ import shoppingcart from '../Assets/shoppingcart.svg';
 function PickItems() {
 
     const[filter, setFilter] = useState([]);
-    const[products, setProducts] = useState([
-        {
-            name: 'Apples (2)',
-            image: apples,
-            component: component, 
-            category: 'Fruits'
-        },
-        {
-            name: 'Red Apples (2)', 
-            image: apples,
-            component: component, 
-            category: 'Fruits'
-        },
-        {
-            name: 'Green Apples (2)', 
-            image: apples,
-            component: component, 
-            category: 'Fruits'
-        },
-        {
-            name: 'Fuji Apples (2)',
-            image: apples,
-            component: component, 
-            category: 'Fruits'
-        },
-        {
-            name: 'Washington Apples (2)', 
-            image: apples,
-            component: component, 
-            category: 'Fruits'
-        },
-        {
-            name: 'Crab Apples (2)', 
-            image: apples,
-            component: component, 
-            category: 'Fruits'
-        },
-        {
-            name: 'Them Apples (2)',
-            image: apples,
-            component: component, 
-            category: 'Fruits'
-        },
-        {
-            name: 'Apples Not Oranges (2)', 
-            image: apples,
-            component: component, 
-            category: 'Fruits'
-        },
-        {
-            name: 'Hungry for Apples? (2)', 
-            image: apples,
-            component: component, 
-            category: 'Fruits'
-        },
-        {
-            name: 'Not a Fruit', 
-            image: shoppingcart,
-            component: component, 
-            category: 'Meals'
-        },
-    ]);
+    // const[products, setProducts] = useState([
+    //     {
+    //         name: 'Apples (2)',
+    //         image: apples,
+    //         component: component, 
+    //         category: 'Fruits'
+    //     },
+    //     {
+    //         name: 'Red Apples (2)', 
+    //         image: apples,
+    //         component: component, 
+    //         category: 'Fruits'
+    //     },
+    //     {
+    //         name: 'Green Apples (2)', 
+    //         image: apples,
+    //         component: component, 
+    //         category: 'Fruits'
+    //     },
+    //     {
+    //         name: 'Fuji Apples (2)',
+    //         image: apples,
+    //         component: component, 
+    //         category: 'Fruits'
+    //     },
+    //     {
+    //         name: 'Washington Apples (2)', 
+    //         image: apples,
+    //         component: component, 
+    //         category: 'Fruits'
+    //     },
+    //     {
+    //         name: 'Crab Apples (2)', 
+    //         image: apples,
+    //         component: component, 
+    //         category: 'Fruits'
+    //     },
+    //     {
+    //         name: 'Them Apples (2)',
+    //         image: apples,
+    //         component: component, 
+    //         category: 'Fruits'
+    //     },
+    //     {
+    //         name: 'Apples Not Oranges (2)', 
+    //         image: apples,
+    //         component: component, 
+    //         category: 'Fruits'
+    //     },
+    //     {
+    //         name: 'Hungry for Apples? (2)', 
+    //         image: apples,
+    //         component: component, 
+    //         category: 'Fruits'
+    //     },
+    //     {
+    //         name: 'Not a Fruit', 
+    //         image: shoppingcart,
+    //         component: component, 
+    //         category: 'Meals'
+    //     },
+    // ]);
+    const[products, setProducts] = useState([]);
+    const[itemCounter, setItemCounter] = useState(0);
+
+    useEffect(() => {
+        axios
+            .post('https://c1zwsl05s5.execute-api.us-west-1.amazonaws.com/dev/api/v2/getItems',
+                {
+                    type: ["fruit", "desert", "vegetable", "other"],
+                    ids: ["200-000019"]
+                }
+            )
+            .then((res) => {
+                console.log("(getItems) res: ", res);
+                let products_with_qty = [];
+                res.data.result.forEach(prod => {
+                    console.log("(getItems) prod: ", prod)
+                    prod['qty'] = 0;
+                    products_with_qty.push(prod);
+                });
+                console.log("(getItems) res 2: ", products_with_qty);
+                setProducts(products_with_qty);
+            })
+            .catch((err) => {
+                if (err.response) {
+                    console.log(err.response);
+                }
+                console.log(err);
+            });
+      }, []);
 
     const applyFilter = (clickedCategory) => {
         let newFilter = [...filter];
@@ -106,11 +134,35 @@ function PickItems() {
         setFilter(newFilter);
     }
 
+    const increment = (uid) => {
+        console.log("increment product uid: ", uid);
+        if(itemCounter < 5) {
+            let productsCopy = [...products];
+            let productIndex = products.find((prod) => {
+                // console.log("product: ", product);
+                
+                // console.log("category: ", category);
+                // console.log("clickedCategory: ", clickedCategory);
+
+                return prod.item_uid === uid
+            });
+            console.log("(increment) productIndex: ", productIndex);
+        }
+    };
+
+    const decrement = (prod) => {
+        console.log("decrement product: ", prod);
+        if(itemCounter > 0) {
+
+        }
+    };
+
     const displayProducts = () => {
         let filteredProducts = [];
         
         products.forEach(product => {
-            if(filter.includes(product.category) || filter.length === 0) {
+            // if(filter.includes(product.category) || filter.length === 0) {
+            if(filter.includes(product.item_type) || filter.length === 0) {
                 filteredProducts.push(
                     <div
                         style={{
@@ -137,7 +189,7 @@ function PickItems() {
                                     alignItems: 'center'
                                 }}
                             >
-                                <img src={product.image} alt="" class="product_image"/>
+                                <img src={product.item_photo} alt="" class="product_image"/>
                             </div>
                             <div
                                 style={{
@@ -147,7 +199,7 @@ function PickItems() {
                                     justifyContent: 'center'
                                 }}
                             >
-                                {product.name}
+                                {product.item_name}
                             </div>
                             <div
                                 style={{
@@ -161,7 +213,54 @@ function PickItems() {
                                     alignItems: 'center'
                                 }}
                             >
-                                <Counter class="counter"> </Counter>
+                                {/* <Counter class="counter"> </Counter> */}
+                                <div class="counter"> 
+                                    <button 
+                                        onClick={() => decrement(product.item_uid)} 
+                                        style={{
+                                            fontSize: "40px", 
+                                            color: "white", 
+                                            background: "none", 
+                                            border:"none", 
+                                            // border: "1px solid cyan",
+                                            textAlign:"center",
+                                            width: "40%",
+                                            display: "flex",
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                            // paddingBottom: "5px"
+                                        }}
+                                    > - </button>
+                                    <div
+                                        style={{
+                                            fontSize: "40px", 
+                                            // fontWeight: "600",
+                                            color:"white",
+                                            // border:"none", 
+                                            // border: "1px solid cyan",
+                                            width: "20%",
+                                            display: "flex",
+                                            justifyContent: "center",
+                                            alignItems: "center"
+                                        }}
+                                    > {product.qty} </div>
+                                    <button 
+                                        onClick={() => increment(product.item_uid)} 
+                                        style={{
+                                            fontSize: "40px", 
+                                            color: "white", 
+                                            background: "none", 
+                                            border:"none", 
+                                            // border: "1px solid cyan",
+                                            textAlign:"center",
+                                            width: "40%",
+                                            display: "flex",
+                                            justifyContent: "center",
+                                            alignItems: "center"
+                                            // paddingBottom: "8px"
+                                        }}
+                                    > + </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -249,8 +348,8 @@ function PickItems() {
                     marginLeft: '20px',
                     marginRight: '20px',
                     maxWidth: 'calc(100% - 40px)',
-                    marginTop: '20px',
-                    height: '60px',
+                    marginTop: '10px',
+                    height: '40px',
                     display: 'flex'
                 }}
             >
@@ -261,13 +360,13 @@ function PickItems() {
                     }}
                 >
                     <button 
-                        class={filter.includes("Beverages") ? (
+                        class={filter.includes("beverage") ? (
                             "filterButton_selected"
                         ) : (
                             "filterButton"
                         )}
                         onClick={() => {
-                            applyFilter("Beverages")
+                            applyFilter("beverage")
                         }}
                     > 
                         Beverages
@@ -276,13 +375,13 @@ function PickItems() {
 
                 <div class="filterButtonWrapper">
                     <button 
-                        class={filter.includes("Fruits") ? (
+                        class={filter.includes("fruit") ? (
                             "filterButton_selected"
                         ) : (
                             "filterButton"
                         )}
                         onClick={() => {
-                            applyFilter("Fruits")
+                            applyFilter("fruit")
                         }}
                     > 
                         Fruits
@@ -291,13 +390,13 @@ function PickItems() {
 
                 <div class="filterButtonWrapper">
                     <button 
-                        class={filter.includes("Vegetables") ? (
+                        class={filter.includes("vegetable") ? (
                             "filterButton_selected"
                         ) : (
                             "filterButton"
                         )}
                         onClick={() => {
-                            applyFilter("Vegetables")
+                            applyFilter("vegetable")
                         }}
                     > 
                         Vegetables
@@ -306,13 +405,13 @@ function PickItems() {
 
                 <div class="filterButtonWrapper">
                     <button 
-                        class={filter.includes("Meals") ? (
+                        class={filter.includes("meal") ? (
                             "filterButton_selected"
                         ) : (
                             "filterButton"
                         )}
                         onClick={() => {
-                            applyFilter("Meals")
+                            applyFilter("meal")
                         }}
                     > 
                         Meals
@@ -321,13 +420,13 @@ function PickItems() {
 
                 <div class="filterButtonWrapper">
                     <button 
-                        class={filter.includes("Desserts") ? (
+                        class={filter.includes("dessert") ? (
                             "filterButton_selected"
                         ) : (
                             "filterButton"
                         )}
                         onClick={() => {
-                            applyFilter("Desserts")
+                            applyFilter("dessert")
                         }}
                     > 
                         Desserts
@@ -336,13 +435,13 @@ function PickItems() {
 
                 <div class="filterButtonWrapper">
                     <button 
-                        class={filter.includes("Canned") ? (
+                        class={filter.includes("canned") ? (
                             "filterButton_selected"
                         ) : (
                             "filterButton"
                         )}
                         onClick={() => {
-                            applyFilter("Canned")
+                            applyFilter("canned")
                         }}
                     > 
                         Canned
@@ -351,13 +450,13 @@ function PickItems() {
 
                 <div class="filterButtonWrapper">
                     <button 
-                        class={filter.includes("Dairy") ? (
+                        class={filter.includes("dairy") ? (
                             "filterButton_selected"
                         ) : (
                             "filterButton"
                         )}
                         onClick={() => {
-                            applyFilter("Dairy")
+                            applyFilter("dairy")
                         }}
                     > 
                         Dairy
@@ -371,13 +470,13 @@ function PickItems() {
                     }}
                 >
                     <button 
-                        class={filter.includes("Snacks") ? (
+                        class={filter.includes("snack") ? (
                             "filterButton_selected"
                         ) : (
                             "filterButton"
                         )}
                         onClick={() => {
-                            applyFilter("Snacks")
+                            applyFilter("snack")
                         }}
                     > 
                         Snacks
