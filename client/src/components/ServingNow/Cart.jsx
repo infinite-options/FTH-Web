@@ -32,11 +32,17 @@ function Cart() {
 
     const increment = (uid) => {
 
+        console.log("(increment) min cart: ", minimizedCart);
+        console.log("(increment) uid: ", uid);
+
         if(itemCounter < 5) {
-            let productsCopy = [...cart];
-            let productIndex = cart.findIndex((prod) => {
+            let productsCopy = [...minimizedCart];
+            let productIndex = minimizedCart.findIndex((prod) => {
                 return prod.item_uid === uid
             });
+
+            // console.log("(increment) min cart: ", minimizedCart);
+            // console.log("(increment) uid: ", uid);
 
             setItemCounter(itemCounter + 1);
 
@@ -46,18 +52,23 @@ function Cart() {
 
             productsCopy[productIndex] = tempProduct;
 
-            dispatch({
-                type: "SET_CART",
-                payload: productsCopy
-            });
+            setMinCart(productsCopy);
+
+            // dispatch({
+            //     type: "SET_CART",
+            //     payload: productsCopy
+            // });
         }
     };
 
     const decrement = (uid) => {
 
+        console.log("(decrement) min cart: ", minimizedCart);
+        console.log("(decrement) uid: ", uid);
+
         if(itemCounter > 0) {
-            let productsCopy = [...cart];
-            let productIndex = cart.findIndex((prod) => {
+            let productsCopy = [...minimizedCart];
+            let productIndex = minimizedCart.findIndex((prod) => {
                 return prod.item_uid === uid
             });
 
@@ -70,173 +81,179 @@ function Cart() {
 
                 productsCopy[productIndex] = tempProduct;
 
-                dispatch({
-                    type: "SET_CART",
-                    payload: productsCopy
-                });
+                setMinCart(productsCopy);
+
+                // dispatch({
+                //     type: "SET_CART",
+                //     payload: productsCopy
+                // });
             }
         }
     };
 
-    const displayProducts = () => {
+    // const displayProducts = () => {
+    const [minimizedCart, setMinCart] = useState(() => {
         let nonzeroProducts = [];
         
         cart.forEach(product => {
             if(product.qty > 0) {
                 nonzeroProducts.push(
-                    <div
-                        style={{
-                            // border: '1px solid blue',
-                            // width: '100px',
-                            // minWidth: '0px',
-                            height: '120px',
-                            display: 'flex',
-                            justifyContent: 'center'
-                        }}
-                    >
-                        {console.log("render cart: ", cart)}
-                        {console.log("render product: ", product)}
-                        <div
-                            style={{
-                                // border: '1px solid green',
-                                marginTop: '10px',
-                                marginBottom: '10px',
-                                height: '97px',
-                                width: '100%',
-                                borderRadius: '15px',
-                                boxShadow: '0px 3px 6px #00000029',
-                                position: 'relative',
-                                display: 'flex'
-                            }}
-                        >
-                            <div
-                                style={{
-                                    border: '1px dashed',
-                                    // marginTop: '50px',
-                                    // height: '100px',
-                                    height: '100%',
-                                    width: '140px',
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                    alignItems: 'center'
-                                }}
-                            >
-                                {console.log("img url: ", product.image)}
-                                <img 
-                                    src={product.item_photo} alt="" 
-                                    // class="product_image2"
-                                    style={{
-                                        maxHeight: '90%',
-                                        maxWidth: '90%'
-                                    }}
-                                />
-                            </div>
-                            
-                            <div
-                                // class="productName"
-                                style={{
-                                    border: '1px dashed',
-                                    // marginTop: '50px',
-                                    // marginLeft: '50px',
-                                    // height: '29px',
-                                    height: '100%',
-                                    padding: '10px',
-                                    width: '200px',
-                                    // width: '50px'
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    // justifyContent: 'left',
-                                }}
-                            >
-                                {product.item_name}
-                            </div>
-
-                            <div
-                                class="productName"
-                                style={{
-                                    // border: '1px dashed',
-                                    // marginTop: '50px',
-                                    marginLeft: '20px',
-                                    // height: '29px',
-                                    display: 'flex',
-                                    // alignItems: 'left',
-                                    justifyContent: 'left',
-                                }}
-                            >
-                                {/* <img src={deleteProduct} alt="" class="delete"/> */}
-                            </div>
-
-                            <div
-                                style={{
-                                    position: 'absolute',
-                                    bottom: '0px',
-                                    border: '1px dashed',
-                                    // marginTop: '15px',
-                                    height: '40px',
-                                    // width: '40%',
-                                    display: 'flex',
-                                    marginLeft: '1245px',
-                                    marginBottom: '25px'
-                                    // alignItems: 'center'
-                                }}
-                            >
-                                {/* <CounterCart class="countercart"> </CounterCart> */}
-                                <div class="counter"> 
-                                    <button 
-                                    onClick={() => decrement(product.item_uid)} 
-                                    style={{
-                                        fontSize: "40px", 
-                                        color: "white", 
-                                        background: '#E7404A', 
-                                        border:"none", 
-                                        borderRadius: '25px',
-                                        textAlign:"center",
-                                        display: "flex",
-                                        justifyContent: "center",
-                                        alignItems: "center",
-                                        padding: '15px',
-                                        marginRight: '5px'
-                                    }}
-                                    > - </button>
-                                    <div
-                                    style={{
-                                        fontSize: "40px", 
-                                        color:"#E7404A",
-                                        border: '1px solid #E7404A',
-                                        borderRadius: '22px',
-                                        display: "flex",
-                                        justifyContent: "center",
-                                        alignItems: "center",
-                                        padding: '15px',
-                                        font: 'normal normal bold 23px/28px SF Pro Display',
-                                        marginRight: '5px'
-                                    }}
-                                    > {product.qty} </div>
-                                    <button 
-                                    onClick={() => increment(product.item_uid)} 
-                                    style={{
-                                        fontSize: "30px", 
-                                        color: "white", 
-                                        background: "#E7404A", 
-                                        border:"none", 
-                                        borderRadius: '25px',
-                                        textAlign:"center",
-                                        display: "flex",
-                                        justifyContent: "center",
-                                        alignItems: "center",
-                                        padding: '15px',
-                                    }}
-                                    > + </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    product
                 );
+                // nonzeroProducts.push(
+                //     <div
+                //         style={{
+                //             // border: '1px solid blue',
+                //             // width: '100px',
+                //             // minWidth: '0px',
+                //             height: '120px',
+                //             display: 'flex',
+                //             justifyContent: 'center'
+                //         }}
+                //     >
+                //         {console.log("render cart: ", cart)}
+                //         {console.log("render product: ", product)}
+                //         <div
+                //             style={{
+                //                 // border: '1px solid green',
+                //                 marginTop: '10px',
+                //                 marginBottom: '10px',
+                //                 height: '97px',
+                //                 width: '100%',
+                //                 borderRadius: '15px',
+                //                 boxShadow: '0px 3px 6px #00000029',
+                //                 position: 'relative',
+                //                 display: 'flex'
+                //             }}
+                //         >
+                //             <div
+                //                 style={{
+                //                     border: '1px dashed',
+                //                     // marginTop: '50px',
+                //                     // height: '100px',
+                //                     height: '100%',
+                //                     width: '140px',
+                //                     display: 'flex',
+                //                     justifyContent: 'center',
+                //                     alignItems: 'center'
+                //                 }}
+                //             >
+                //                 {console.log("img url: ", product.image)}
+                //                 <img 
+                //                     src={product.item_photo} alt="" 
+                //                     // class="product_image2"
+                //                     style={{
+                //                         maxHeight: '90%',
+                //                         maxWidth: '90%'
+                //                     }}
+                //                 />
+                //             </div>
+                            
+                //             <div
+                //                 // class="productName"
+                //                 style={{
+                //                     border: '1px dashed',
+                //                     // marginTop: '50px',
+                //                     // marginLeft: '50px',
+                //                     // height: '29px',
+                //                     height: '100%',
+                //                     padding: '10px',
+                //                     width: '200px',
+                //                     // width: '50px'
+                //                     display: 'flex',
+                //                     alignItems: 'center',
+                //                     // justifyContent: 'left',
+                //                 }}
+                //             >
+                //                 {product.item_name}
+                //             </div>
+
+                //             <div
+                //                 class="productName"
+                //                 style={{
+                //                     // border: '1px dashed',
+                //                     // marginTop: '50px',
+                //                     marginLeft: '20px',
+                //                     // height: '29px',
+                //                     display: 'flex',
+                //                     // alignItems: 'left',
+                //                     justifyContent: 'left',
+                //                 }}
+                //             >
+                //                 {/* <img src={deleteProduct} alt="" class="delete"/> */}
+                //             </div>
+
+                //             <div
+                //                 style={{
+                //                     position: 'absolute',
+                //                     bottom: '0px',
+                //                     border: '1px dashed',
+                //                     // marginTop: '15px',
+                //                     height: '40px',
+                //                     // width: '40%',
+                //                     display: 'flex',
+                //                     marginLeft: '1245px',
+                //                     marginBottom: '25px'
+                //                     // alignItems: 'center'
+                //                 }}
+                //             >
+                //                 {/* <CounterCart class="countercart"> </CounterCart> */}
+                //                 <div class="counter"> 
+                //                     <button 
+                //                     onClick={() => decrement(product.item_uid)} 
+                //                     style={{
+                //                         fontSize: "40px", 
+                //                         color: "white", 
+                //                         background: '#E7404A', 
+                //                         border:"none", 
+                //                         borderRadius: '25px',
+                //                         textAlign:"center",
+                //                         display: "flex",
+                //                         justifyContent: "center",
+                //                         alignItems: "center",
+                //                         padding: '15px',
+                //                         marginRight: '5px'
+                //                     }}
+                //                     > - </button>
+                //                     <div
+                //                     style={{
+                //                         fontSize: "40px", 
+                //                         color:"#E7404A",
+                //                         border: '1px solid #E7404A',
+                //                         borderRadius: '22px',
+                //                         display: "flex",
+                //                         justifyContent: "center",
+                //                         alignItems: "center",
+                //                         padding: '15px',
+                //                         font: 'normal normal bold 23px/28px SF Pro Display',
+                //                         marginRight: '5px'
+                //                     }}
+                //                     > {product.qty} </div>
+                //                     <button 
+                //                     onClick={() => increment(product.item_uid)} 
+                //                     style={{
+                //                         fontSize: "30px", 
+                //                         color: "white", 
+                //                         background: "#E7404A", 
+                //                         border:"none", 
+                //                         borderRadius: '25px',
+                //                         textAlign:"center",
+                //                         display: "flex",
+                //                         justifyContent: "center",
+                //                         alignItems: "center",
+                //                         padding: '15px',
+                //                     }}
+                //                     > + </button>
+                //                 </div>
+                //             </div>
+                //         </div>
+                //     </div>
+                // );
             }
         });
 
         return nonzeroProducts;
-    }
+    });
 
     return (
         <>
@@ -332,8 +349,9 @@ function Cart() {
                         display: 'inline-block',
                     }}
                 > 
-                {displayProducts()}
-                {/* {cart.map(product => (
+                {/* {displayProducts()} */}
+                {/* {minimizedCart} */}
+                {minimizedCart.map(product => (
                     <div
                         style={{
                             // border: '1px solid blue',
@@ -479,7 +497,7 @@ function Cart() {
                             </div>
                         </div>
                     </div>
-                ))} */}
+                ))}
                 </div>
                 
                 <div class="continueCartButton">
