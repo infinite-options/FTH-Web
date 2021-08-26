@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import axios from "axios";
 import "../ServingNow/PickItems.css";
 import Counter from '../ServingNow/Counter'
@@ -7,83 +8,25 @@ import apples from '../Assets/apple.png';
 import component from '../Assets/component.png';
 import shoppingcart from '../Assets/shoppingcart.svg';
 
-
 // import itemsList from '../Assets/itemsList.png';
 
 function PickItems() {
 
+    const cart = useSelector(state => state.subscribe.cart);
+    const dispatch = useDispatch();
+
     const[filter, setFilter] = useState([]);
-    // const[products, setProducts] = useState([
-    //     {
-    //         name: 'Apples (2)',
-    //         image: apples,
-    //         component: component, 
-    //         category: 'Fruits'
-    //     },
-    //     {
-    //         name: 'Red Apples (2)', 
-    //         image: apples,
-    //         component: component, 
-    //         category: 'Fruits'
-    //     },
-    //     {
-    //         name: 'Green Apples (2)', 
-    //         image: apples,
-    //         component: component, 
-    //         category: 'Fruits'
-    //     },
-    //     {
-    //         name: 'Fuji Apples (2)',
-    //         image: apples,
-    //         component: component, 
-    //         category: 'Fruits'
-    //     },
-    //     {
-    //         name: 'Washington Apples (2)', 
-    //         image: apples,
-    //         component: component, 
-    //         category: 'Fruits'
-    //     },
-    //     {
-    //         name: 'Crab Apples (2)', 
-    //         image: apples,
-    //         component: component, 
-    //         category: 'Fruits'
-    //     },
-    //     {
-    //         name: 'Them Apples (2)',
-    //         image: apples,
-    //         component: component, 
-    //         category: 'Fruits'
-    //     },
-    //     {
-    //         name: 'Apples Not Oranges (2)', 
-    //         image: apples,
-    //         component: component, 
-    //         category: 'Fruits'
-    //     },
-    //     {
-    //         name: 'Hungry for Apples? (2)', 
-    //         image: apples,
-    //         component: component, 
-    //         category: 'Fruits'
-    //     },
-    //     {
-    //         name: 'Not a Fruit', 
-    //         image: shoppingcart,
-    //         component: component, 
-    //         category: 'Meals'
-    //     },
-    // ]);
     const[products, setProducts] = useState([]);
     const[itemCounter, setItemCounter] = useState(0);
 
     useEffect(() => {
+        console.log("(UE -- redux) cart: ", cart);
+
         axios
             .post('https://c1zwsl05s5.execute-api.us-west-1.amazonaws.com/dev/api/v2/getItems',
                 {
-                    type: ["fruit", "desert", "vegetable", "other"],
-                    ids: ["200-000019"]
+                    type: ["fruit", "dessert", "vegetable", "beverage", "canned", "dairy", "meals"],
+                    ids: ["200-000042"]
                 }
             )
             .then((res) => {
@@ -102,8 +45,16 @@ function PickItems() {
                     console.log(err.response);
                 }
                 console.log(err);
+                dispatch({
+                    type: "SET_CART",
+                    payload: ["STUFF"]
+                });
             });
-      }, []);
+    }, []);
+
+    useEffect(() => {
+        console.log("redux cart: ", cart);
+    }, [cart])
 
     const applyFilter = (clickedCategory) => {
         let newFilter = [...filter];
@@ -138,22 +89,51 @@ function PickItems() {
         console.log("increment product uid: ", uid);
         if(itemCounter < 5) {
             let productsCopy = [...products];
-            let productIndex = products.find((prod) => {
-                // console.log("product: ", product);
-                
-                // console.log("category: ", category);
-                // console.log("clickedCategory: ", clickedCategory);
-
+            let productIndex = products.findIndex((prod) => {
                 return prod.item_uid === uid
             });
             console.log("(increment) productIndex: ", productIndex);
+
+            setItemCounter(itemCounter + 1);
+
+            let tempProduct = productsCopy[productIndex];
+
+            tempProduct.qty = tempProduct.qty + 1;
+
+            productsCopy[productIndex] = tempProduct;
+
+            setProducts(productsCopy);
+
+            dispatch({
+                type: "SET_CART",
+                payload: products
+            });
         }
     };
 
-    const decrement = (prod) => {
-        console.log("decrement product: ", prod);
+    const decrement = (uid) => {
+        console.log("decrement product uid: ", uid);
         if(itemCounter > 0) {
+            let productsCopy = [...products];
+            let productIndex = products.findIndex((prod) => {
+                return prod.item_uid === uid
+            });
+            console.log("(increment) productIndex: ", productIndex);
 
+            setItemCounter(itemCounter - 1);
+
+            let tempProduct = productsCopy[productIndex];
+
+            tempProduct.qty = tempProduct.qty - 1;
+
+            productsCopy[productIndex] = tempProduct;
+
+            setProducts(productsCopy);
+
+            dispatch({
+                type: "SET_CART",
+                payload: products
+            });
         }
     };
 
@@ -405,13 +385,13 @@ function PickItems() {
 
                 <div class="filterButtonWrapper">
                     <button 
-                        class={filter.includes("meal") ? (
+                        class={filter.includes("meals") ? (
                             "filterButton_selected"
                         ) : (
                             "filterButton"
                         )}
                         onClick={() => {
-                            applyFilter("meal")
+                            applyFilter("meals")
                         }}
                     > 
                         Meals
@@ -626,4 +606,13 @@ function PickItems() {
     )
 }
 
+// export default PickItems
+
+// function mapStateToProps(state) {
+//     return { propOne: state.propOne };
+//   } 
+
+// export default connect(mapStateToProps, {
+//     setCart
+// })(withRouter(PickItems));
 export default PickItems
