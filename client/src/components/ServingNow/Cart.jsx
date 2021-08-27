@@ -139,15 +139,17 @@ function Cart() {
 
             <div
                 style={{
-                    // border: '1px dashed',
-                    marginTop: '20px',
-                    marginLeft: '20px',
-                    marginRight: '20px',
+                    // border: '1px solid red',
+                    // marginTop: '20px',
+                    // marginLeft: '20px',
+                    // marginRight: '20px',
+                    margin: '20px',
+                    marginBottom: '50px',
                     position: 'relative',
                     // height: '28px',
 
                     display: 'flex',
-                    alignItems: 'center'
+                    // alignItems: 'center'
                 }}
             >
                 {/* <div 
@@ -155,32 +157,43 @@ function Cart() {
                 >
                     <h5> <b> My Shopping Cart </b> </h5>
                 </div> */}
-                <div style={{fontSize: '20px', fontWeight: 'bold'}}>
-                    My Shopping Cart
+                <div 
+                    style={{
+                        fontSize: '20px', 
+                        fontWeight: 'bold',
+                        borderBottom: 'solid',
+                        // border: '1px dashed',
+                        // height: '40px',
+                        width: '300px',
+                        maxWidth: '60%'
+                    }}
+                >
+                    <h5> <b> My Shopping Cart </b> </h5>
                 </div>
 
                 {/* <div class="continueShoppingButton"> */}
                 {/* <div> */}
-                    <button 
-                        class="continueShoppingButton"
-                        onClick={() => history.push('pickitems')}
-                        // style={{
-                        //     color: "#E7404A", 
-                        //     background: "white", 
-                        //     border: 'none', 
-                        //     display: 'flex',
-                        //     justifyContent: 'center',
-                        //     alignItems: 'center'
-                        // }}
-                    > 
-                        Continue Shopping
-                    </button>
+                <button 
+                    class="continueShoppingButton"
+                    onClick={() => history.push('pickitems')}
+                    // style={{
+                    //     color: "#E7404A", 
+                    //     background: "white", 
+                    //     border: 'none', 
+                    //     display: 'flex',
+                    //     justifyContent: 'center',
+                    //     alignItems: 'center'
+                    // }}
+                > 
+                    Continue Shopping
+                </button>
                 {/* </div> */}
             </div>
 
             <div
                 style={{
                     // border: '1px dashed',
+                    borderBottom: 'solid',
                     marginTop: '20px',
                     marginLeft: '20px',
                     marginRight: '20px',
