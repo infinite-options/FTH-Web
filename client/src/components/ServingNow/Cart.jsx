@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import foodBankPic from '../Assets/foodBankPic.png';
 // import apples from '../Assets/apple.png';
 // import component2 from '../Assets/component2.png';
-// import deleteProduct from '../Assets/delete.svg';
+import deleteProduct from '../Assets/delete.svg';
 // import line2 from '../Assets/line2.png';
 import { Grid } from '@material-ui/core';
 
@@ -283,40 +283,84 @@ function Cart() {
 
             <div
                 style={{
-                    // border: 'dashed',
+                    // border: '1px dashed',
                     marginTop: '20px',
                     marginLeft: '20px',
-                    height: '28px',
-                    display: 'flex'
+                    marginRight: '20px',
+                    position: 'relative',
+                    // height: '28px',
+
+                    display: 'flex',
+                    alignItems: 'center'
                 }}
             >
-                <div class="header2">
+                {/* <div 
+                    class="header2"
+                >
                     <h5> <b> My Shopping Cart </b> </h5>
+                </div> */}
+                <div style={{fontSize: '20px', fontWeight: 'bold'}}>
+                    My Shopping Cart
                 </div>
 
-                <div class="continueShoppingButton">
-                    <button style={{color: "#E7404A", background: "white", border: 'none', textAlign:"center"}}> <b> Continue Shopping </b> </button>
-                </div>
+                {/* <div class="continueShoppingButton"> */}
+                {/* <div> */}
+                    <button 
+                        class="continueShoppingButton"
+                        // style={{
+                        //     color: "#E7404A", 
+                        //     background: "white", 
+                        //     border: 'none', 
+                        //     display: 'flex',
+                        //     justifyContent: 'center',
+                        //     alignItems: 'center'
+                        // }}
+                    > 
+                        Continue Shopping
+                    </button>
+                {/* </div> */}
             </div>
 
             <div
                 style={{
-                    // border: 'dashed',
+                    // border: '1px dashed',
                     marginTop: '20px',
                     marginLeft: '20px',
+                    marginRight: '20px',
                     height: '28px',
-                    display: 'flex'
+                    display: 'flex',
+                    position: 'relative'
                 }}
             >
-                <div class="product">
+                <div 
+                    // class="product"
+                >
                     <h5> <b> Product </b> </h5>
                 </div>
 
-                <div class="quantity">
+                <div 
+                    // class="quantity"
+                    style={{
+                        // border: '1px dashed',
+                        width: '200px',
+                        textAlign: 'center',
+                        position: 'absolute',
+                        right: '200px'
+                    }}
+                >
                     <h5> <b> Quantity </b> </h5>
                 </div>
 
-                <div class="remove">
+                <div 
+                    // class="remove"
+                    style={{
+                        // border: '1px dashed',
+                        width: '200px',
+                        textAlign: 'center',
+                        position: 'absolute',
+                        right: '0px'
+                    }}
+                >
                     <h5> <b> Remove </b> </h5>
                 </div>
             </div>
@@ -379,7 +423,7 @@ function Cart() {
                         >
                             <div
                                 style={{
-                                    border: '1px dashed',
+                                    // border: '1px dashed',
                                     // marginTop: '50px',
                                     // height: '100px',
                                     height: '100%',
@@ -403,13 +447,14 @@ function Cart() {
                             <div
                                 // class="productName"
                                 style={{
-                                    border: '1px dashed',
+                                    // border: '1px dashed',
                                     // marginTop: '50px',
                                     // marginLeft: '50px',
                                     // height: '29px',
                                     height: '100%',
                                     padding: '10px',
                                     width: '200px',
+                                    // maxWidth: '23.6%',
                                     // width: '50px'
                                     display: 'flex',
                                     alignItems: 'center',
@@ -436,72 +481,159 @@ function Cart() {
                             <div
                                 style={{
                                     position: 'absolute',
-                                    bottom: '0px',
-                                    border: '1px dashed',
+                                    right: '200px',
+                                    // bottom: '0px',
+                                    // border: '1px dashed',
                                     // marginTop: '15px',
-                                    height: '40px',
+                                    // height: '40px',
+                                    height: '100%',
+                                    width: '200px',
                                     // width: '40%',
                                     display: 'flex',
-                                    marginLeft: '1245px',
-                                    marginBottom: '25px'
-                                    // alignItems: 'center'
+                                    justifyContent: 'center',
+                                    // marginLeft: '1245px',
+                                    // marginBottom: '25px'
+                                    alignItems: 'center'
                                 }}
                             >
-                                <div class="counter"> 
+                                {/* <div class="counter">  */}
                                     <button 
                                     onClick={() => decrement(product.item_uid)} 
                                     style={{
-                                        fontSize: "40px", 
+                                        // fontSize: "40px", 
+                                        // color: "white", 
+                                        // background: '#E7404A', 
+                                        // border:"none", 
+                                        // borderRadius: '25px',
+                                        // textAlign:"center",
+                                        // display: "flex",
+                                        // justifyContent: "center",
+                                        // alignItems: "center",
+                                        // padding: '15px',
+                                        // marginRight: '5px'
+                                        // fontSize: "30px", 
+                                        fontSize: '30px',
                                         color: "white", 
-                                        background: '#E7404A', 
+                                        background: "#E7404A", 
                                         border:"none", 
-                                        borderRadius: '25px',
-                                        textAlign:"center",
+                                        // borderRadius: '25px',
+                                        borderRadius: '50%',
+                                        // textAlign:"center",
+                                        width: '40px',
+                                        height: '40px',
                                         display: "flex",
                                         justifyContent: "center",
                                         alignItems: "center",
-                                        padding: '15px',
-                                        marginRight: '5px'
+                                        // padding: '15px',
+                                        paddingBottom: '6px',
+                                        marginRight: '10px'
                                     }}
                                     > - </button>
                                     <div
                                     style={{
-                                        fontSize: "40px", 
+                                        fontSize: "30px", 
+                                        fontWeight: 'bold',
                                         color:"#E7404A",
                                         border: '1px solid #E7404A',
-                                        borderRadius: '22px',
+                                        height: '55px',
+                                        width: '70px',
+                                        // borderRadius: '22px',
+                                        borderRadius: '30px',
                                         display: "flex",
                                         justifyContent: "center",
                                         alignItems: "center",
-                                        padding: '15px',
-                                        font: 'normal normal bold 23px/28px SF Pro Display',
-                                        marginRight: '5px'
+                                        // padding: '15px',
+                                        // font: 'normal normal bold 23px/28px SF Pro Display',
+                                        marginRight: '10px'
                                     }}
                                     > {product.qty} </div>
                                     <button 
                                     onClick={() => increment(product.item_uid)} 
                                     style={{
-                                        fontSize: "30px", 
+                                        // fontSize: "30px", 
+                                        fontSize: '30px',
                                         color: "white", 
                                         background: "#E7404A", 
                                         border:"none", 
-                                        borderRadius: '25px',
-                                        textAlign:"center",
+                                        // borderRadius: '25px',
+                                        borderRadius: '50%',
+                                        // textAlign:"center",
+                                        width: '40px',
+                                        height: '40px',
                                         display: "flex",
                                         justifyContent: "center",
                                         alignItems: "center",
-                                        padding: '15px',
+                                        // padding: '15px',
+                                        paddingBottom: '6px'
                                     }}
                                     > + </button>
-                                </div>
+                                {/* </div> */}
+                            </div>
+                            <div
+                                style={{
+                                    position: 'absolute',
+                                    right: '0px',
+                                    // bottom: '0px',
+                                    // border: '1px dashed',
+                                    // marginTop: '15px',
+                                    // height: '40px',
+                                    height: '100%',
+                                    width: '200px',
+                                    // width: '40%',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    // marginLeft: '1245px',
+                                    // marginBottom: '25px'
+                                    alignItems: 'center'
+                                }}
+                            >
+                                <img 
+                                    src={deleteProduct} 
+                                    alt="" 
+                                    class="trashPic"
+                                />
                             </div>
                         </div>
                     </div>
                 ))}
                 </div>
                 
-                <div class="continueCartButton">
-                    <button style={{color: "white", background: "#E7404A", border: 'none', textAlign:"center"}}> <h5><b> Continue to Checkout</b></h5> </button>
+                {/* <div class="continueCartButton">
+                    <button 
+                        style={{
+                            color: "white", 
+                            background: "#E7404A", 
+                            border: 'none', 
+                            textAlign:"center"
+                        }}
+                    > 
+                        <h5><b> Continue to Checkout</b></h5> 
+                    </button>
+                </div> */}
+                <div
+                    style={{
+                        // border: '1px solid green',
+                        display: 'flex',
+                        justifyContent: 'center'
+                    }}
+                >
+                    <button 
+                        style={{
+                            color: "white", 
+                            background: "#E7404A", 
+                            border: 'none', 
+                            textAlign:"center",
+                            width: '280px',
+                            height: '38px',
+                            borderRadius: '39px',
+                            marginTop: '20px',
+                            marginBottom: '20px',
+                            fontWeight: 'bold',
+                            fontSize: '20px'
+                        }}
+                    > 
+                        Continue to Checkout
+                    </button>
                 </div>
 
             </div>

@@ -29,7 +29,7 @@ function PickItems() {
         axios
             .post('https://c1zwsl05s5.execute-api.us-west-1.amazonaws.com/dev/api/v2/getItems',
                 {
-                    type: ["fruit", "dessert", "vegetable", "beverage", "canned", "dairy", "meals"],
+                    types: [],
                     ids: ["200-000042"]
                 }
             )
@@ -454,13 +454,13 @@ function PickItems() {
                     }}
                 >
                     <button 
-                        class={filter.includes("snack") ? (
+                        class={filter.includes("snacks") ? (
                             "filterButton_selected"
                         ) : (
                             "filterButton"
                         )}
                         onClick={() => {
-                            applyFilter("snack")
+                            applyFilter("snacks")
                         }}
                     > 
                         Snacks
