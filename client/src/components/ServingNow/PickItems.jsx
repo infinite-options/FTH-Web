@@ -26,38 +26,40 @@ function PickItems() {
     useEffect(() => {
         console.log("(UE -- redux) cart: ", cart);
 
-        axios
-            .post('https://c1zwsl05s5.execute-api.us-west-1.amazonaws.com/dev/api/v2/getItems',
-                {
-                    types: [],
-                    ids: ["200-000042"]
-                }
-            )
-            .then((res) => {
-                console.log("(getItems) res: ", res);
-                let products_with_qty = [];
-                res.data.result.forEach(prod => {
-                    console.log("(getItems) prod: ", prod)
-                    prod['qty'] = 0;
-                    products_with_qty.push(prod);
+        if(cart.length === 0) {
+            axios
+                .post('https://c1zwsl05s5.execute-api.us-west-1.amazonaws.com/dev/api/v2/getItems',
+                    {
+                        types: [],
+                        ids: ["200-000042"]
+                    }
+                )
+                .then((res) => {
+                    console.log("(getItems) res: ", res);
+                    let products_with_qty = [];
+                    res.data.result.forEach(prod => {
+                        console.log("(getItems) prod: ", prod)
+                        prod['qty'] = 0;
+                        products_with_qty.push(prod);
+                    });
+                    console.log("(getItems) res 2: ", products_with_qty);
+                    // setProducts(products_with_qty);
+                    dispatch({
+                        type: "SET_CART",
+                        payload: products_with_qty
+                    });
+                })
+                .catch((err) => {
+                    if (err.response) {
+                        console.log(err.response);
+                    }
+                    console.log(err);
+                    // dispatch({
+                    //     type: "SET_CART",
+                    //     payload: ["STUFF"]
+                    // });
                 });
-                console.log("(getItems) res 2: ", products_with_qty);
-                // setProducts(products_with_qty);
-                dispatch({
-                    type: "SET_CART",
-                    payload: products_with_qty
-                });
-            })
-            .catch((err) => {
-                if (err.response) {
-                    console.log(err.response);
-                }
-                console.log(err);
-                // dispatch({
-                //     type: "SET_CART",
-                //     payload: ["STUFF"]
-                // });
-            });
+        }
     }, []);
 
     useEffect(() => {
