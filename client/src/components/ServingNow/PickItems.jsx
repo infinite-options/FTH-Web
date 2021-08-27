@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from "axios";
 import "../ServingNow/PickItems.css";
-import Counter from '../ServingNow/Counter'
+// import Counter from '../ServingNow/Counter'
+import NavBar from '../ServingNow/NavBar'
 import foodBankPic from '../Assets/foodBankPic.png';
 import apples from '../Assets/apple.png';
 import component from '../Assets/component.png';
@@ -268,45 +269,7 @@ function PickItems() {
                     backgroundColor: '#e7404a'
                 }}
             >
-
-                {/* <img src={foodBankPic} alt="" class="foodBankPic"/>
-
-                <div class="header">
-                    <h5> <b>Serving Now</b> </h5>
-                </div>
-
-                <div class="rectangle1"> </div>
-
-                <div class="foodbanksbutton">
-                    <button style={{color: "white", background: "none", border:"none", textAlign:"center"}}> Food Banks </button>
-                </div>
-
-                <div class="shopButton">
-                    <button style={{color: "#E7404A", background: "white", border:"none", textAlign:"center"}}> Shop </button>
-                </div>
-
-                <div class="profileButton">
-                    <button style={{color: "white", background: "none", border:"none", textAlign:"center"}}> Profile </button>
-                </div>
-
-                <div class="myordersButton">
-                    <button style={{color: "white", background: "none", border:"none", textAlign:"center"}}> My Orders </button>
-                </div>
-
-                <div class="helplineButton">
-                    <button style={{color: "white", background: "none", border:"none", textAlign:"center"}}> Helpline </button>
-                </div>
-
-                <div class="foodbankHeader"> </div>
-
-                <div class="foodBankText">
-                    <h5 style={{fontSize: "23px", letterSpacing: "0.25px", color: "black"}}> <b> Feeding Orange County</b></h5>
-                    <h6 style={{fontSize: "16px", letterSpacing: "0.18px", }}> 5.3 miles away</h6>
-                </div>
-
-                <div class="itemLimitText">
-                    <h5> <b>You can pick any 5 items</b> </h5>
-                </div> */}
+                <NavBar> </NavBar>
             </div>
 
             <div class="foodbankHeader">
