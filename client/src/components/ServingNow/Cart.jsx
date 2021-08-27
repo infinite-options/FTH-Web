@@ -10,11 +10,15 @@ import foodBankPic from '../Assets/foodBankPic.png';
 import deleteProduct from '../Assets/delete.svg';
 // import line2 from '../Assets/line2.png';
 import { Grid } from '@material-ui/core';
+import { useHistory } from "react-router";
 
 
 // import itemsList from '../Assets/itemsList.png';
 
 function Cart() {
+
+    const history = useHistory();
+
     const cart = useSelector(state => state.subscribe.cart);
     const dispatch = useDispatch();
 
@@ -27,13 +31,13 @@ function Cart() {
     });
 
     useEffect(() => {
-        console.log("global cart: ", cart);
+        // console.log("global cart: ", cart);
     }, [cart]);
 
     const increment = (uid) => {
 
-        console.log("(increment) min cart: ", minimizedCart);
-        console.log("(increment) uid: ", uid);
+        // console.log("(increment) min cart: ", minimizedCart);
+        // console.log("(increment) uid: ", uid);
 
         if(itemCounter < 5) {
             let productsCopy = [...minimizedCart];
@@ -44,6 +48,7 @@ function Cart() {
             // console.log("(increment) min cart: ", minimizedCart);
             // console.log("(increment) uid: ", uid);
 
+            // console.log("(increment) itemCounter: ", itemCounter);
             setItemCounter(itemCounter + 1);
 
             let tempProduct = productsCopy[productIndex];
@@ -63,8 +68,8 @@ function Cart() {
 
     const decrement = (uid) => {
 
-        console.log("(decrement) min cart: ", minimizedCart);
-        console.log("(decrement) uid: ", uid);
+        // console.log("(decrement) min cart: ", minimizedCart);
+        // console.log("(decrement) uid: ", uid);
 
         if(itemCounter > 0) {
             let productsCopy = [...minimizedCart];
@@ -100,155 +105,6 @@ function Cart() {
                 nonzeroProducts.push(
                     product
                 );
-                // nonzeroProducts.push(
-                //     <div
-                //         style={{
-                //             // border: '1px solid blue',
-                //             // width: '100px',
-                //             // minWidth: '0px',
-                //             height: '120px',
-                //             display: 'flex',
-                //             justifyContent: 'center'
-                //         }}
-                //     >
-                //         {console.log("render cart: ", cart)}
-                //         {console.log("render product: ", product)}
-                //         <div
-                //             style={{
-                //                 // border: '1px solid green',
-                //                 marginTop: '10px',
-                //                 marginBottom: '10px',
-                //                 height: '97px',
-                //                 width: '100%',
-                //                 borderRadius: '15px',
-                //                 boxShadow: '0px 3px 6px #00000029',
-                //                 position: 'relative',
-                //                 display: 'flex'
-                //             }}
-                //         >
-                //             <div
-                //                 style={{
-                //                     border: '1px dashed',
-                //                     // marginTop: '50px',
-                //                     // height: '100px',
-                //                     height: '100%',
-                //                     width: '140px',
-                //                     display: 'flex',
-                //                     justifyContent: 'center',
-                //                     alignItems: 'center'
-                //                 }}
-                //             >
-                //                 {console.log("img url: ", product.image)}
-                //                 <img 
-                //                     src={product.item_photo} alt="" 
-                //                     // class="product_image2"
-                //                     style={{
-                //                         maxHeight: '90%',
-                //                         maxWidth: '90%'
-                //                     }}
-                //                 />
-                //             </div>
-                            
-                //             <div
-                //                 // class="productName"
-                //                 style={{
-                //                     border: '1px dashed',
-                //                     // marginTop: '50px',
-                //                     // marginLeft: '50px',
-                //                     // height: '29px',
-                //                     height: '100%',
-                //                     padding: '10px',
-                //                     width: '200px',
-                //                     // width: '50px'
-                //                     display: 'flex',
-                //                     alignItems: 'center',
-                //                     // justifyContent: 'left',
-                //                 }}
-                //             >
-                //                 {product.item_name}
-                //             </div>
-
-                //             <div
-                //                 class="productName"
-                //                 style={{
-                //                     // border: '1px dashed',
-                //                     // marginTop: '50px',
-                //                     marginLeft: '20px',
-                //                     // height: '29px',
-                //                     display: 'flex',
-                //                     // alignItems: 'left',
-                //                     justifyContent: 'left',
-                //                 }}
-                //             >
-                //                 {/* <img src={deleteProduct} alt="" class="delete"/> */}
-                //             </div>
-
-                //             <div
-                //                 style={{
-                //                     position: 'absolute',
-                //                     bottom: '0px',
-                //                     border: '1px dashed',
-                //                     // marginTop: '15px',
-                //                     height: '40px',
-                //                     // width: '40%',
-                //                     display: 'flex',
-                //                     marginLeft: '1245px',
-                //                     marginBottom: '25px'
-                //                     // alignItems: 'center'
-                //                 }}
-                //             >
-                //                 {/* <CounterCart class="countercart"> </CounterCart> */}
-                //                 <div class="counter"> 
-                //                     <button 
-                //                     onClick={() => decrement(product.item_uid)} 
-                //                     style={{
-                //                         fontSize: "40px", 
-                //                         color: "white", 
-                //                         background: '#E7404A', 
-                //                         border:"none", 
-                //                         borderRadius: '25px',
-                //                         textAlign:"center",
-                //                         display: "flex",
-                //                         justifyContent: "center",
-                //                         alignItems: "center",
-                //                         padding: '15px',
-                //                         marginRight: '5px'
-                //                     }}
-                //                     > - </button>
-                //                     <div
-                //                     style={{
-                //                         fontSize: "40px", 
-                //                         color:"#E7404A",
-                //                         border: '1px solid #E7404A',
-                //                         borderRadius: '22px',
-                //                         display: "flex",
-                //                         justifyContent: "center",
-                //                         alignItems: "center",
-                //                         padding: '15px',
-                //                         font: 'normal normal bold 23px/28px SF Pro Display',
-                //                         marginRight: '5px'
-                //                     }}
-                //                     > {product.qty} </div>
-                //                     <button 
-                //                     onClick={() => increment(product.item_uid)} 
-                //                     style={{
-                //                         fontSize: "30px", 
-                //                         color: "white", 
-                //                         background: "#E7404A", 
-                //                         border:"none", 
-                //                         borderRadius: '25px',
-                //                         textAlign:"center",
-                //                         display: "flex",
-                //                         justifyContent: "center",
-                //                         alignItems: "center",
-                //                         padding: '15px',
-                //                     }}
-                //                     > + </button>
-                //                 </div>
-                //             </div>
-                //         </div>
-                //     </div>
-                // );
             }
         });
 
@@ -307,6 +163,7 @@ function Cart() {
                 {/* <div> */}
                     <button 
                         class="continueShoppingButton"
+                        onClick={() => history.push('pickitems')}
                         // style={{
                         //     color: "#E7404A", 
                         //     background: "white", 
@@ -406,8 +263,8 @@ function Cart() {
                             justifyContent: 'center'
                         }}
                     >
-                        {console.log("render cart: ", cart)}
-                        {console.log("render product: ", product)}
+                        {/* {console.log("render cart: ", cart)}
+                        {console.log("render product: ", product)} */}
                         <div
                             style={{
                                 // border: '1px solid green',
@@ -433,7 +290,7 @@ function Cart() {
                                     alignItems: 'center'
                                 }}
                             >
-                                {console.log("img url: ", product.image)}
+                                {/* {console.log("img url: ", product.image)} */}
                                 <img 
                                     src={product.item_photo} alt="" 
                                     // class="product_image2"
@@ -570,6 +427,27 @@ function Cart() {
                                 {/* </div> */}
                             </div>
                             <div
+                                onClick={() => {
+                                    // console.log("delete uid: ", product.item_uid);
+                                    // console.log("(increment) before itemCounter: ", itemCounter);
+                                    setMinCart(() => {
+                                        let remainingProducts = [];
+                                        
+                                        minimizedCart.forEach(currProd => {
+                                            if(currProd.item_uid === product.item_uid) {
+                                                // console.log("");
+                                                setItemCounter(itemCounter - currProd.qty);
+                                            } else {
+                                                remainingProducts.push(
+                                                    currProd
+                                                );
+                                            }
+                                        });
+                                
+                                        return remainingProducts;
+                                    });
+                                    // console.log("(deletion) after itemCounter: ", itemCounter);
+                                }}
                                 style={{
                                     position: 'absolute',
                                     right: '0px',
@@ -618,6 +496,7 @@ function Cart() {
                     }}
                 >
                     <button 
+                        // onClick={() => history.push('checkout')}
                         style={{
                             color: "white", 
                             background: "#E7404A", 
