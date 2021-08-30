@@ -41,7 +41,9 @@ function Cart() {
     // ]);
     const[products, setProducts] = useState([
     ]);
+    
     const[itemCounter, setItemCounter] = useState(0);
+    
     const increment = (uid) => {
         console.log("increment product uid: ", uid);
         if(itemCounter < 5) {
@@ -273,7 +275,17 @@ function Cart() {
                 </div>
                 
                 <div class="continueCartButton">
-                    <button style={{color: "white", background: "#E7404A", border: 'none', textAlign:"center"}}> <h5><b> Continue to Checkout</b></h5> </button>
+                    <a href="checkout"> 
+                    <button style={{
+                        color: "white", 
+                        background: "none", 
+                        border: 'none', 
+                        textAlign:"center",
+                        marginLeft: "25px"
+                        }}> 
+                        <h5><b> Continue to Checkout</b></h5> 
+                    </button>
+                    </a>
                 </div>
 
             </div>
