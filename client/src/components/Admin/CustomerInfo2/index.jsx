@@ -1,16 +1,16 @@
-import React, { useContext, useState, useEffect } from 'react';
-import axios from 'axios';
-import clsx from 'clsx';
-import moment from 'moment';
+import React, { useContext, useState, useEffect } from "react";
+import axios from "axios";
+import clsx from "clsx";
+import moment from "moment";
 //import { AuthContext } from '../../auth/AuthContext';
-import Popover from '@material-ui/core/Popover';
-import IconButton from '@material-ui/core/IconButton';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
+import Popover from "@material-ui/core/Popover";
+import IconButton from "@material-ui/core/IconButton";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import TableSortLabel from "@material-ui/core/TableSortLabel";
 import {
   Grid,
   Typography,
@@ -18,280 +18,291 @@ import {
   Avatar,
   Paper,
   ClickAwayListener,
-} from '@material-ui/core';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
-import CustomerSrc from '../../../images/Polygon1.svg';
+} from "@material-ui/core";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import { withStyles, makeStyles } from "@material-ui/core/styles";
+import CustomerSrc from "../../../images/Polygon 10.svg";
 //import appColors from '../../styles/AppColors';
-import Delivered from '../../../images/delivered.svg';
-import couponUnavaliable from '../../../images/couponUnavaliable.svg';
+import Delivered from "../../../images/delivered.svg";
+import couponUnavaliable from "../../../images/couponUnavaliable.svg";
 
 import AdminNavBar from "../AdminNavBar";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    backgroundColor: 'white',
-    padding: '2rem',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    backgroundColor: "white",
+    padding: "2rem",
   },
   search: {
-    position: 'relative',
-    width: '100%',
+    position: "relative",
+    width: "100%",
   },
   inputRoot: {
-    color: '#E7404A',
+    color: "#E7404A",
   },
   inputInput: {
-    background: '#FFFFFF 0% 0% no-repeat padding-box',
-    border: '1px solid #E7404A',
-    borderRadius: ' 8px',
+    background: "#FFFFFF 0% 0% no-repeat padding-box",
+    border: "1px solid #E7404A",
+    borderRadius: " 8px",
     opacity: 1,
-    width: '189px',
-    height: '25px',
-    padding: '5px',
+    width: "189px",
+    height: "25px",
+    padding: "5px",
   },
   usrInfo: {
-    display: 'flex',
-    backgroundClip: 'context-box',
-    backgroundColor: '#E8D1BD',
-    borderRadius: '20px',
-    width: 'auto',
-    height: '500px',
-    overflowY: 'auto',
-    boxShadow:
-      ' -30px 20px 70px -30px rgba(51, 51, 51, 0.7), 0 50px 100px 0 rgba(51, 51, 51, 0.2)',
+    display: "flex",
+    justifyContent: "space-evenly",
+    backgroundClip: "context-box",
+    background: "#FFE3E5 0% 0% no-repeat padding-box",
+    borderRadius: "20px",
+    width: "auto",
+    height: "500px",
+    overflowY: "auto",
   },
   currUserPic: {
-    margin: '5px',
+    margin: "5px",
     width: theme.spacing(5),
     height: theme.spacing(5),
   },
   usrTitle: {
-    textAlign: 'center',
-    fontSize: '0.9rem',
-    fontWeight: 'bold',
-    letterSpacing: '0.25px',
-    color: '#E7404A',
+    textAlign: "center",
+    fontSize: "0.9rem",
+    fontWeight: "bold",
+    letterSpacing: "0.25px",
+    color: "#E7404A",
     opacity: 1,
-    justifyContent: 'start',
-    padding: '10px',
-    borderBottom: '1px solid #747474',
+    justifyContent: "start",
+    padding: "10px",
   },
   usrDesc: {
-    textAlign: 'center',
-    fontSize: '0.9rem',
-    letterSpacing: '-0.48px',
+    textAlign: "center",
+    fontSize: "0.9rem",
+    letterSpacing: "-0.48px",
     opacity: 1,
-    alignItems: 'center',
-    padding: '10px',
+    alignItems: "center",
+    padding: "10px",
+    color: "#000000",
+    borderBottom: "1px solid #E7404A",
   },
   infoTable: {
-    marginLeft: '20px',
-    borderCollapse: 'collapse',
-    backgroundColor: 'transparent',
+    margin: "10px",
+    borderCollapse: "collapse",
+    backgroundColor: "transparent",
+    justifyContent: "space-evenly",
+    width: "100%",
   },
   infoRow: {
-    color: '#E7404A',
-    '&:active': {
-      boxShadow: 'none',
-      backgroundColor: '#E7404A',
-      color: 'white',
+    color: "#000000",
+    "&:active": {
+      boxShadow: "none",
+      backgroundColor: "#E7404A",
+      color: "white",
     },
   },
   currUserInf: {
-    display: 'flex',
-    alignItems: 'center',
+    display: "flex",
+    alignItems: "center",
   },
   infoTitle: {
-    textAlign: 'center',
-    font: 'normal normal 600 16px SF Pro Display',
-    letterSpacing: '0.25px',
-    color: ' #E7404A',
+    textAlign: "center",
+    font: "normal normal 600 16px SF Pro Display",
+    letterSpacing: "0.25px",
+    color: " #E7404A",
     opacity: 1,
-    padding: '5px 5px',
-    fontSize: '14px',
+    padding: "5px 5px",
+    fontSize: "14px",
   },
   desc: {
-    textAlign: 'center',
-    font: 'normal normal 600 16px SF Pro Text',
-    letterSpacing: '-0.48px',
-    color: '#000000D9',
+    textAlign: "center",
+    font: "normal normal 600 16px SF Pro Text",
+    letterSpacing: "-0.48px",
+    color: "#000000D9",
     opacity: 1,
-    alignItems: 'center',
-    padding: '5px 16px',
-    fontSize: '14px',
+    alignItems: "center",
+    padding: "5px 16px",
+    fontSize: "14px",
   },
   header: {
-    textAlign: 'left',
-    font: 'normal normal bold 20px/28px SF Pro Display',
-    letterSpacing: '0.32px',
-    color: '#F5841F',
+    textAlign: "left",
+    font: "normal normal bold 20px/28px SF Pro Display",
+    letterSpacing: "0.32px",
+    color: "#000000",
     opacity: 1,
   },
-  paymentTable: { borderCollapse: 'collapse', margin: '10px' },
+  paymentTable: { borderCollapse: "collapse" },
   paymentHeader: {
-    textAlign: 'center',
-    fontSize: '14px',
+    textAlign: "center",
+    fontSize: "14px",
     fontWeight: 600,
-    font: 'SF Pro Text',
-    letterSpacing: '-0.34px',
-    color: '#000000',
+    font: "SF Pro Text",
+    letterSpacing: "-0.34px",
+    color: "#E7404A",
     opacity: 1,
+    width:'100%'
   },
   paymentInfo: {
-    textAlign: 'center',
-    fontSize: '14px',
-    fontWeight: 'medium',
-    font: 'SF Pro Text',
-    letterSpacing: ' -0.34px',
-    color: '#000000D9',
+    textAlign: "center",
+    fontSize: "14px",
+    fontWeight: "medium",
+    font: "SF Pro Text",
+    letterSpacing: " -0.34px",
+    color: "#000000D9",
     opacity: 1,
-    borderBottom: ' 1px solid #0000001A',
-    cursor: 'pointer',
-    '&:active': {
-      boxShadow: 'none',
-      backgroundColor: '#E7404A',
-      borderColor: '#005cbf',
-      color: 'white',
+    borderBottom: " 1px solid #E7404A",
+    "&:active": {
+      borderBottom: " 1px solid #ffffff",
     },
   },
+  activeInfo: {
+    textAlign: "center",
+    fontSize: "14px",
+    fontWeight: "medium",
+    font: "SF Pro Text",
+    letterSpacing: " -0.34px",
+    color: "#000000D9",
+    opacity: 1,
+     borderBottom: " 1px solid #ffffff",
+  },
   td: {
-    padding: '10px',
+    padding: "10px",
+    maxWidth: "4rem",
+    minWidth:"3rem"
   },
   activePayment: {
-    background: ' #E7404A 0% 0% no-repeat padding-box',
+    background: " #E7404A 0% 0% no-repeat padding-box",
     opacity: 1,
-    color: 'white',
+    color: "white",
   },
   card: {
-    borderBottom: '6px solid',
-    marginTop: '20px',
-    marginBottom: '20px',
-    paddingBottom: '20px',
-    fontSize: '10px',
+    borderBottom: "6px solid",
+    marginTop: "20px",
+    marginBottom: "20px",
+    paddingBottom: "20px",
+    fontSize: "10px",
   },
   title: {
-    textAlign: 'left',
-    fontSize: '16px',
+    textAlign: "left",
+    fontSize: "16px",
     //color: appColors.paragraphText,
-    marginBottom: '10px',
+    marginBottom: "10px",
   },
   delivered: {
-    textAlign: 'left',
-    color: '#136D74',
-    marginBottom: '10px',
-    fontSize: '20px',
-    font: 'SFProText-Semibold',
+    textAlign: "left",
+    color: "#136D74",
+    marginBottom: "10px",
+    fontSize: "20px",
+    font: "SFProText-Semibold",
   },
   date: {
-    textAlign: 'left',
-    fontSize: '16px',
+    textAlign: "left",
+    fontSize: "16px",
     //color: appColors.paragraphText,
-    marginBottom: '10px',
+    marginBottom: "10px",
   },
   items: {
-    fontSize: '14px',
-    padding: '10px',
+    fontSize: "14px",
+    padding: "10px",
     //borderBottom: '1px solid' + appColors.checkoutSectionBorder,
   },
-  total: { fontWeight: 'bold' },
+  total: { fontWeight: "bold" },
   savingDetails: {
-    fontSize: '14px',
-    font: 'SFProText-Medium',
+    fontSize: "14px",
+    font: "SFProText-Medium",
   },
   section: {
-    borderBottom: '1px solid',
-    paddingTop: '10px',
-    paddingBottom: '10px',
+    borderBottom: "1px solid",
+    paddingTop: "10px",
+    paddingBottom: "10px",
   },
   sectionHeader: {
-    borderBottom: '1px solid',
-    paddingTop: '10px',
-    paddingBottom: '10px',
-    textSlign: 'left',
-    font: 'normal normal 600 14px SF Pro Text',
-    fontSize: '14px',
-    letterSpacing: '-0.34px',
-    color: '#000000',
+    borderBottom: "1px solid",
+    paddingTop: "10px",
+    paddingBottom: "10px",
+    textSlign: "left",
+    font: "normal normal 600 14px SF Pro Text",
+    fontSize: "14px",
+    letterSpacing: "-0.34px",
+    color: "#000000",
     opacity: 1,
   },
   sectionItem: {
-    textAlign: 'left',
-    letterSpacing: '-0.34px',
-    color: '#000000',
+    textAlign: "left",
+    letterSpacing: "-0.34px",
+    color: "#000000",
     opacity: 1,
   },
   buttonRight: {
-    textAlign: 'left',
-    font: 'normal normal bold 20px/28px SF Pro Text',
-    letterSpacing: ' 0px',
-    color: '#F5841F',
+    textAlign: "left",
+    font: "normal normal bold 20px/28px SF Pro Text",
+    letterSpacing: " 0px",
+    color: "#F5841F",
     opacity: 1,
-    textTransform: 'none',
+    textTransform: "none",
   },
   couponInput: {
-    border: '1px solid',
-    width: '8rem',
-    height: '2rem',
-    padding: '3px',
-    fontSize: '14px',
-    borderRadius: '6px',
-    '&:focus': {
-      outline: 'none',
+    border: "1px solid",
+    width: "8rem",
+    height: "2rem",
+    padding: "3px",
+    fontSize: "14px",
+    borderRadius: "6px",
+    "&:focus": {
+      outline: "none",
     },
   },
   btn: {
-    background: ' #FF8500 0% 0% no-repeat padding-box',
-    borderRadius: '8px',
+    background: " #FF8500 0% 0% no-repeat padding-box",
+    borderRadius: "8px",
     opacity: 1,
-    color: 'white',
-    border: '1px solid #FF8500',
-    marginBottom: '20px',
-    width: '157px',
-    height: '33px',
-    fontSize: '16px',
+    color: "white",
+    border: "1px solid #FF8500",
+    marginBottom: "20px",
+    width: "157px",
+    height: "33px",
+    fontSize: "16px",
   },
   menuitem: {
-    color: 'red',
+    color: "red",
   },
   activePaymentInfo: {
-    textAlign: 'center',
-    fontSize: '14px',
-    fontWeight: 'medium',
-    font: 'SF Pro Text',
-    letterSpacing: ' -0.34px',
+    textAlign: "center",
+    fontSize: "14px",
+    fontWeight: "medium",
+    font: "SF Pro Text",
+    letterSpacing: " -0.34px",
     opacity: 1,
-    borderBottom: ' 1px solid #0000001A',
-    cursor: 'pointer',
-    boxShadow: 'none',
-    backgroundColor: '#E7404A',
-    borderColor: '#005cbf',
-    color: 'white',
-    outline: 'none',
+    borderBottom: " 1px solid #0000001A",
+    cursor: "pointer",
+    boxShadow: "none",
+    backgroundColor: "#E7404A",
+    borderColor: "#005cbf",
+    color: "white",
+    outline: "none",
   },
 }));
 
 const StyledTabs = withStyles({
   indicator: {
-    display: 'flex',
-    justifyContent: 'center',
-    backgroundColor: 'transparent',
-    color: '#F5841F',
-    '& > span': {
+    display: "flex",
+    justifyContent: "center",
+    backgroundColor: "transparent",
+    color: "#F5841F",
+    "& > span": {
       maxWidth: 80,
-      width: '100%',
-      backgroundColor: '#F5841F',
+      width: "100%",
+      backgroundColor: "#F5841F",
     },
   },
 })((props) => <Tabs {...props} TabIndicatorProps={{ children: <span /> }} />);
 
 const StyledTab = withStyles((theme) => ({
   root: {
-    textTransform: 'none',
-    color: '#F5841F',
+    textTransform: "none",
+    color: "#F5841F",
     opacity: 1,
     fontWeight: theme.typography.fontWeightRegular,
     fontSize: theme.typography.pxToRem(10),
@@ -300,9 +311,9 @@ const StyledTab = withStyles((theme) => ({
 
 function fetchCustomers(setPayments, id) {
   fetch(
-    `https://tsx3rnuidi.execute-api.us-west-1.amazonaws.com/dev/api/v2/payment_profit_customer/${id}`,
+    `https://c1zwsl05s5.execute-api.us-west-1.amazonaws.com/dev/api/v2/payment_profit_customer/${id}`,
     {
-      method: 'GET',
+      method: "GET",
     }
   )
     .then((response) => {
@@ -323,9 +334,9 @@ function fetchCustomers(setPayments, id) {
 }
 function fetchCustomerInfo(setSelectedCustomer, id) {
   fetch(
-    `https://tsx3rnuidi.execute-api.us-west-1.amazonaws.com/dev/api/v2/adminCustomerInfo/${id}`,
+    `https://c1zwsl05s5.execute-api.us-west-1.amazonaws.com/dev/api/v2/adminCustomerInfo/${id}`,
     {
-      method: 'GET',
+      method: "GET",
     }
   )
     .then((response) => {
@@ -345,9 +356,9 @@ function fetchCustomerInfo(setSelectedCustomer, id) {
 
 function fetchHistory(setHistory, id) {
   fetch(
-    `https://tsx3rnuidi.execute-api.us-west-1.amazonaws.com/dev/api/v2/history/${id}`,
+    `https://c1zwsl05s5.execute-api.us-west-1.amazonaws.com/dev/api/v2/history/${id}`,
     {
-      method: 'GET',
+      method: "GET",
     }
   )
     .then((response) => {
@@ -370,7 +381,7 @@ function fetchFarm(setFarms, id) {
   fetch(
     `https://tsx3rnuidi.execute-api.us-west-1.amazonaws.com/dev/api/v2/farms_supported/${id},all`,
     {
-      method: 'GET',
+      method: "GET",
     }
   )
     .then((response) => {
@@ -392,7 +403,7 @@ function fetchProduce(setProduceOrdered, id) {
   fetch(
     `https://tsx3rnuidi.execute-api.us-west-1.amazonaws.com/dev/api/v2/produce_ordered/${id},all`,
     {
-      method: 'GET',
+      method: "GET",
     }
   )
     .then((response) => {
@@ -414,7 +425,7 @@ function fetchCoupons(setCoupons, custEmail) {
   fetch(
     `https://tsx3rnuidi.execute-api.us-west-1.amazonaws.com/dev/api/v2/available_Coupons/${custEmail}`,
     {
-      method: 'GET',
+      method: "GET",
     }
   )
     .then((response) => {
@@ -440,15 +451,15 @@ function Customers() {
   useEffect(() => {
     farmerObj();
   }, []);
-  const [searchName, setSearchName] = useState('');
-  const [searchAddress, setSearchAddress] = useState('');
-  const [searchID, setSearchID] = useState('');
+  const [searchName, setSearchName] = useState("");
+  const [searchAddress, setSearchAddress] = useState("");
+  const [searchID, setSearchID] = useState("");
   const [selectedCustomer, setSelectedCustomer] = useState([]);
   const [payments, setPayments] = useState([]);
   const [history, setHistory] = useState([]);
   const [farms, setFarms] = useState([]);
   const [purchaseID, setPurchaseID] = useState([]);
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [rightTabChosen, setRightTabChosen] = useState(0);
   const [produceOrdered, setProduceOrdered] = useState([]);
   const [coupons, setCoupons] = useState([]);
@@ -457,11 +468,12 @@ function Customers() {
   const [orderBy, setOrderBy] = useState();
   const [clicked, setClicked] = useState([]);
   const [custClicked, setCustClicked] = useState([]);
-
+  const [toggle, setToggle] = useState(false);
+  console.log(toggle)
   const farmerObj = async () => {
     await axios
       .get(
-        'https://tsx3rnuidi.execute-api.us-west-1.amazonaws.com/dev/api/v2/adminCustomerInfo/all'
+        "https://c1zwsl05s5.execute-api.us-west-1.amazonaws.com/dev/api/v2/adminCustomerInfo/all"
       )
       .then((response) => {
         console.log(response.data.result);
@@ -485,13 +497,20 @@ function Customers() {
       });
   };
   const customerlist = () => {
-    if (1==1) {
+    if (1 == 1) {
       return (
-        <Grid lg={12} className={classes.usrInfo}>
-          <table className={classes.infoTable}>
-            <thead>
-              <tr>
-                <td className={classes.infoRow}> Search by</td>
+        <Grid
+          xs={12}
+          className={classes.usrInfo}
+          style={{ height: "50vh", width: "97vw", borderRadius: "0px" }}
+        >
+          
+            <table className={classes.infoTable}>
+              <thead>
+                <tr>
+                <td className={classes.infoRow} style={{ marginTop: "10px" }}>
+                  Search by
+                </td>
                 <td>
                   <input
                     type="text"
@@ -517,7 +536,7 @@ function Customers() {
                 <td>
                   <input
                     type="text"
-                    placeholder="Purchase ID"
+                    placeholder="ID Number"
                     className={classes.inputInput}
                     onChange={(event) => {
                       setSearchID(event.target.value);
@@ -525,108 +544,103 @@ function Customers() {
                   />
                 </td>
               </tr>
-              <tr className={classes.infoRow}>
-                <td className={classes.usrTitle}>Customer Name</td>
-                <td className={classes.usrTitle}>Email ID</td>
-                <td className={classes.usrTitle}>Purchase ID</td>
-                <td className={classes.usrTitle}>Last Order(date) </td>
-                <td className={classes.usrTitle}>Customer Since</td>
-                <td className={classes.usrTitle}>Address</td>
-                <td className={classes.usrTitle}>Delivery Zone</td>
-                <td className={classes.usrTitle}>Zip Code</td>
-                <td className={classes.usrTitle}>Phone</td>
-              </tr>
-            </thead>
-            {custList
-              .filter((val) => {
-                if (searchName === '') {
-                  return val;
-                } else if (
-                  val.customer_first_name
-                    .toLowerCase()
-                    .includes(searchName.toLowerCase())
-                ) {
-                  return val;
-                }
-              })
-              .filter((val) => {
-                if (searchAddress === '') {
-                  return val;
-                } else if (
-                  val.customer_address
-                    .toLowerCase()
-                    .includes(searchAddress.toLowerCase())
-                ) {
-                  return val;
-                }
-              })
-              .filter((val) => {
-                if (searchID === '') {
-                  return val;
-                } else if (
-                  val.purchase_id.toLowerCase().includes(searchID.toLowerCase())
-                ) {
-                  return val;
-                }
-              })
-              .map((profile) => (
-                <tbody>
-                  <tr
-                    key={profile.customer_uid}
-                    className={
-                      custClicked == profile.customer_uid
-                        ? `${classes.activePaymentInfo}`
-                        : `${classes.infoRow}`
-                    }
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => {
-                      fetchCustomers(setPayments, profile.customer_uid);
-                      fetchHistory(setHistory, profile.customer_uid);
-                      fetchCustomerInfo(
-                        setSelectedCustomer,
-                        profile.customer_uid
-                      );
-                      fetchFarm(setFarms, profile.customer_uid);
-                      fetchProduce(setProduceOrdered, profile.customer_uid);
-                      fetchCoupons(setCoupons, profile.customer_email);
-                      setEmail(profile.customer_email);
-                      setCustClicked(profile.customer_uid);
-                      handleClose();
-                      setSearchName('');
-                      setSearchAddress('');
-                      setSearchID('');
-                    }}
-                  >
-                    <td className={classes.usrDesc}>
-                      {profile.customer_first_name}&nbsp;
-                      {profile.customer_last_name}
-                    </td>
-                    <td className={classes.usrDesc}>
-                      {profile.customer_email}
-                    </td>
-                    <td className={classes.usrDesc}>
-                      #{profile.purchase_id.substring(4)}
-                    </td>
-                    <td className={classes.usrDesc}>
-                      {moment(profile.last_order_date).format('LL')}
-                    </td>
-                    <td className={classes.usrDesc}>
-                      {moment(profile.customer_created_at).format('LL')}
-                    </td>
-                    <td className={classes.usrDesc}>
-                      {profile.customer_address},&nbsp;
-                      <br /> {profile.customer_city},&nbsp;{' '}
-                      {profile.customer_state}
-                    </td>
-                    <td className={classes.usrDesc}>{profile.zone}</td>
-                    <td className={classes.usrDesc}>{profile.customer_zip}</td>
-                    <td className={classes.usrDesc}>
-                      {profile.customer_phone_num}
-                    </td>
-                  </tr>
-                </tbody>
-              ))}
-          </table>
+                <tr className={classes.infoRow}>
+                  <td className={classes.usrTitle}>Customer Name</td>
+                  <td className={classes.usrTitle}>Address</td>
+                  <td className={classes.usrTitle}>Zip Code</td>
+                  <td className={classes.usrTitle}>Phone Number</td>
+                  <td className={classes.usrTitle}>Last Order(date)</td>
+                  <td className={classes.usrTitle}>Customer ID</td>
+                </tr>
+              </thead>
+              {custList
+                .filter((val) => {
+                  if (searchName === "") {
+                    return val;
+                  } else if (
+                    val.customer_first_name
+                      .toLowerCase()
+                      .includes(searchName.toLowerCase())
+                  ) {
+                    return val;
+                  }
+                })
+                .filter((val) => {
+                  if (searchAddress === "") {
+                    return val;
+                  } else if (
+                    val.customer_address
+                      .toLowerCase()
+                      .includes(searchAddress.toLowerCase())
+                  ) {
+                    return val;
+                  }
+                })
+                .filter((val) => {
+                  if (searchID === "") {
+                    return val;
+                  } else if (
+                    val.customer_uid
+                      .toLowerCase()
+                      .includes(searchID.toLowerCase())
+                  ) {
+                    return val;
+                  }
+                })
+                .map((profile) => (
+                  <tbody>
+                    <tr
+                      key={profile.customer_uid}
+                      className={
+                        custClicked == profile.customer_uid
+                          ? `${classes.activePaymentInfo}`
+                          : `${classes.infoRow}`
+                      }
+                      style={{ cursor: "pointer" }}
+                      onClick={() => {
+                        fetchCustomers(setPayments, profile.customer_uid);
+                        fetchHistory(setHistory, profile.customer_uid);
+                        fetchCustomerInfo(
+                          setSelectedCustomer,
+                          profile.customer_uid
+                        );
+                        fetchFarm(setFarms, profile.customer_uid);
+                        fetchProduce(setProduceOrdered, profile.customer_uid);
+                        fetchCoupons(setCoupons, profile.customer_email);
+                        setEmail(profile.customer_email);
+                        setCustClicked(profile.customer_uid);
+                        handleClose();
+                        setSearchName("");
+                        setSearchAddress("");
+                        setSearchID("");
+                      }}
+                    >
+                      <td className={classes.usrDesc}>
+                        {profile.customer_first_name}&nbsp;
+                        {profile.customer_last_name}
+                      </td>
+                      <td className={classes.usrDesc}>
+                        {profile.customer_address},&nbsp;
+                        <br /> {profile.customer_city},&nbsp;{" "}
+                        {profile.customer_state}
+                      </td>
+                      <td className={classes.usrDesc}>
+                        {profile.customer_zip}
+                      </td>
+                      <td className={classes.usrDesc}>
+                        {profile.customer_phone_num}
+                      </td>
+                      <td className={classes.usrDesc}>
+                        {moment(profile.last_order_date).format("LL")}
+                      </td>
+                      <td className={classes.usrDesc}>
+                        {profile.customer_uid}{" "}
+                      </td>
+                    </tr>
+                  </tbody>
+                ))}
+            </table>
+         
         </Grid>
       );
     }
@@ -648,7 +662,7 @@ function Customers() {
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
+  const id = open ? "simple-popover" : undefined;
 
   //right tabs
   const handleChange = (event, newValue) => {
@@ -658,7 +672,7 @@ function Customers() {
   const filterOnClick = (setPurchaseID, pid) => {
     const purchaseID = pid;
     setPurchaseID(purchaseID);
-    console.log('PurchasID:', purchaseID);
+    console.log("PurchasID:", purchaseID);
   };
 
   const historyView =
@@ -668,8 +682,8 @@ function Customers() {
 
   //sorting stats
   const handleSortRequest = (cellId) => {
-    const isAsc = orderBy === cellId && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
+    const isAsc = orderBy === cellId && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
     setOrderBy(cellId);
   };
 
@@ -684,7 +698,7 @@ function Customers() {
   }
 
   function getComparator(order, orderBy) {
-    return order === 'desc'
+    return order === "desc"
       ? (a, b) => descendingComparator(a, b, orderBy)
       : (a, b) => -descendingComparator(a, b, orderBy);
   }
@@ -708,22 +722,22 @@ function Customers() {
 
   //posting to update_Coupons/crate
   const url =
-    'https://tsx3rnuidi.execute-api.us-west-1.amazonaws.com/dev/api/v2/update_Coupons/create';
+    "https://tsx3rnuidi.execute-api.us-west-1.amazonaws.com/dev/api/v2/update_Coupons/create";
   const [createCoupon, setCreateCoupon] = useState({
-    coupon_id: '',
-    valid: '',
-    threshold: '',
-    discount_percent: '',
-    discount_amount: '',
-    discount_shipping: '',
-    expire_date: '',
-    limits: '',
-    coupon_title: '',
-    notes: '',
-    num_used: '0',
-    recurring: 'T',
+    coupon_id: "",
+    valid: "",
+    threshold: "",
+    discount_percent: "",
+    discount_amount: "",
+    discount_shipping: "",
+    expire_date: "",
+    limits: "",
+    coupon_title: "",
+    notes: "",
+    num_used: "0",
+    recurring: "T",
     email_id: email,
-    cup_business_uid: '200-000002',
+    cup_business_uid: "200-000002",
   });
 
   function submit(e, email) {
@@ -746,18 +760,18 @@ function Customers() {
         cup_business_uid: createCoupon.cup_business_uid,
       })
       .then((response) => {
-        alert('Coupon created');
+        alert("Coupon created");
         console.log(response.data);
-        createCoupon.coupon_id = '';
-        createCoupon.valid = '';
-        createCoupon.threshold = '';
-        createCoupon.discount_percent = '';
-        createCoupon.discount_amount = '';
-        createCoupon.discount_shipping = '';
-        createCoupon.expire_date = '';
-        createCoupon.limits = '';
-        createCoupon.coupon_title = '';
-        createCoupon.notes = '';
+        createCoupon.coupon_id = "";
+        createCoupon.valid = "";
+        createCoupon.threshold = "";
+        createCoupon.discount_percent = "";
+        createCoupon.discount_amount = "";
+        createCoupon.discount_shipping = "";
+        createCoupon.expire_date = "";
+        createCoupon.limits = "";
+        createCoupon.coupon_title = "";
+        createCoupon.notes = "";
       });
   }
   function handle(e) {
@@ -767,21 +781,21 @@ function Customers() {
   }
   //farm stats table head
   const farmHead = [
-    { id: 'business_image', label: '' },
-    { id: 'business_name', label: 'Farm Name' },
-    { id: 'total_orders', label: 'Total orders' },
-    { id: 'Revenue', label: 'Revenue' },
+    { id: "business_image", label: "" },
+    { id: "business_name", label: "Farm Name" },
+    { id: "total_orders", label: "Total orders" },
+    { id: "Revenue", label: "Revenue" },
   ];
 
   //produce stats table head
   const produceHead = [
-    { id: 'img', label: '' },
-    { id: 'name', label: 'Produce Name' },
-    { id: 'quantity', label: 'Qty' },
-    { id: 'revenue', label: 'Revenue' },
+    { id: "img", label: "" },
+    { id: "name", label: "Produce Name" },
+    { id: "quantity", label: "Qty" },
+    { id: "revenue", label: "Revenue" },
   ];
   const handleClickAway = () => {
-    setClicked('');
+    setClicked("");
     setPurchaseID([]);
   };
 
@@ -797,154 +811,237 @@ function Customers() {
               item
               xs={12}
               style={{
-                display: 'flex',
-                flexDirection: 'column',
-                marginBottom: '3rem',
-                background: '#FFFFFF 0% 0% no-repeat padding-box',
-                borderRadius: '20px',
+                display: "flex",
+                flexDirection: "column",
+                border: "1px solid #E7404A",
+                borderRadius: "20px",
                 opacity: 1,
+                margin: "0px 10px 30px 10px",
               }}
             >
-              <div>
-                <Box className={classes.currUserInf}>
-                  <Avatar src={'no-link'} className={classes.currUserPic}>
-                    {selectedCustomer.map((info) => (
-                      <Typography style={{ fontSize: '30px' }}>
-                        {info.customer_first_name || info.customer_last_name
-                          ? `${info.customer_first_name[0]}${info.customer_last_name[0]}`
-                          : 'JD'}
-                      </Typography>
-                    ))}
-                  </Avatar>
-                  <Box>
-                    <Box>
+              <Grid
+                item
+                xs={12}
+                style={{ display: "flex", flexDirection: "row", opacity: 1 }}
+              >
+                <Grid
+                  item
+                  xs={3}
+                  style={{ display: "flex", flexDirection: "row", opacity: 1 }}
+                >
+                  <div className={classes.currUserInf}>
+                    <Avatar src={"no-link"} className={classes.currUserPic}>
                       {selectedCustomer.map((info) => (
-                        <Typography
-                          variant="caption"
-                          style={{
-                            textAlign: 'left',
-                            font: 'normal normal 600 20px SF Pro Display',
-                            color: '#E7404A',
-                            opacity: 1,
-                          }}
-                        >
-                          {info.customer_first_name} {info.customer_last_name}
+                        <Typography style={{ fontSize: "30px" }}>
+                          {info.customer_first_name || info.customer_last_name
+                            ? `${info.customer_first_name[0]}${info.customer_last_name[0]}`
+                            : "JD"}
                         </Typography>
                       ))}
-                      <IconButton
-                        aria-describedby={id}
-                        variant="contained"
-                        color="primary"
-                        onClick={(e) => {
-                          handleClick(setPurchaseID, e);
-                        }}
-                      >
-                        <img src={CustomerSrc} alt="user pic" />
-                      </IconButton>
-                      <Popover
-                        id={id}
-                        open={open}
-                        anchorEl={anchorEl}
-                        onClose={handleClose}
-                        anchorReference="anchorPosition"
-                        anchorPosition={{ top: 700, left: 1000 }}
-                        anchorOrigin={{
-                          vertical: 'center',
-                          horizontal: 'right',
-                        }}
-                        transformOrigin={{
-                          vertical: 'bottom',
-                          horizontal: 'center',
-                        }}
+                    </Avatar>
+                    <Box style={{ marginLeft: "1rem" }}>
+                      <Box>
+                        {selectedCustomer.map((info) => (
+                          <Typography
+                            variant="caption"
+                            style={{
+                              textAlign: "left",
+                              font: "normal normal 600 20px SF Pro Display",
+                              color: "#000000",
+                              opacity: 1,
+                            }}
+                          >
+                            {info.customer_first_name} {info.customer_last_name}
+                          </Typography>
+                        ))}
+                        <IconButton
+                          aria-describedby={id}
+                          variant="contained"
+                          color="primary"
+                          onClick={(e) => {
+                            handleClick(setPurchaseID, e);
+                          }}
+                        >
+                          <img src={CustomerSrc} alt="user pic" />
+                        </IconButton>
+                        <Popover
+                          id={id}
+                          open={open}
+                          anchorEl={anchorEl}
+                          onClose={handleClose}
+                          anchorReference="anchorPosition"
+                          anchorPosition={{ top: 650, left: 700 }}
+                          anchorOrigin={{
+                            vertical: "center",
+                            horizontal: "left",
+                          }}
+                          transformOrigin={{
+                            vertical: "bottom",
+                            horizontal: "center",
+                          }}
+                          style={{
+                            backgroundClip: "context-box",
+                            borderRadius: "20px",
+                          }}
+                          style={{
+                            marginLeft: "15px",
+                            marginRight: "15px",
+                          }}
+                        >
+                          {customerlist()}
+                        </Popover>
+                      </Box>
+                      <Typography
+                        variant="title"
                         style={{
-                          backgroundClip: 'context-box',
-                          borderRadius: '20px',
+                          letterSpacing: "0.25px",
+                          color: " #E7404A",
+                          opacity: 1,
+                          fontSize: "12px",
+                          textDecoration: "underline",
                         }}
                       >
-                        {customerlist()}
-                      </Popover>
+                        <a
+                          href="/admin/messages"
+                          style={{
+                            color: " #E7404A",
+                          }}
+                        >
+                          Send Message
+                        </a>
+                      </Typography>
                     </Box>
-                    <Typography
-                      variant="title"
-                      style={{
-                        textTransform: 'none',
-                        textDecorationColor: 'none',
-                        letterSpacing: '0.25px',
-                        color: ' #E7404A',
-                        opacity: 1,
-                      }}
-                    >
-                      <a
-                        href="/admin/messages"
-                        style={{
-                          textTransform: 'none',
-                          textDecorationColor: 'none',
-                          color: ' #E7404A',
-                        }}
-                      >
-                        Send Message
-                      </a>
-                      &nbsp;
-                      <a
-                        onClick={() => {
-                          setRightTabChosen(1);
-                        }}
-                        style={{
-                          textDecoration: 'underline',
-                          cursor: 'pointer',
-                        }}
-                      >
-                        Issue Coupon
-                      </a>
-                    </Typography>
-                  </Box>
-                  <Box
+                  </div>
+                </Grid>
+                <Grid
+                  item
+                  xs={9}
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-evenly",
+                    opacity: 1,
+                  }}
+                >
+                  <Grid item xs={2} className={classes.infoTitle}>
+                    Contact Info
+                  </Grid>
+                  <Grid item xs={2} className={classes.infoTitle}>
+                    Delivery Address
+                  </Grid>
+                  <Grid item xs={2} className={classes.infoTitle}>
+                    Total no. of Orders
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  opacity: 1,
+                  marginTop: "-1.5rem",
+                }}
+              >
+                <Grid item xs={3}></Grid>
+                {selectedCustomer.map((info) => (
+                  <Grid
+                    item
+                    xs={9}
                     style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-between',
-                      marginLeft: '6rem',
+                      display: "flex",
+                      flexDirection: "row",
+                      opacity: 1,
+                      justifyContent: "space-evenly",
                     }}
                   >
-                    <table>
-                      <thead>
-                        <tr>
-                          <td className={classes.infoTitle}>Phone Number</td>
-                          <td className={classes.infoTitle}>Delivery Address </td>
-                          <td className={classes.infoTitle}>Delivery Zone</td>
-                          <td className={classes.infoTitle}>
-                            Last Order Received
-                          </td>
-                          <td className={classes.infoTitle}>
-                            Total no. of Orders
-                          </td>
-                          <td className={classes.infoTitle}>Total Revenue</td>
-                        </tr>
-                      </thead>
-                      {selectedCustomer.map((info) => (
-                        <tbody>
-                          <tr>
-                            <td className={classes.desc}>
-                              {info.customer_phone_num}
-                            </td>
-                            <td className={classes.desc}>
-                              {info.customer_address},&nbsp;
-                              <br /> {info.customer_city},&nbsp;{' '}
-                              {info.customer_state}&nbsp; {info.customer_zip}
-                            </td>
-                            <td className={classes.desc}>{info.zone}</td>
-                            <td className={classes.desc}>
-                              {moment(info.last_order_date).format('LL')}
-                            </td>
-                            <td className={classes.desc}>{info.total_orders} </td>
-                            <td className={classes.desc}>{info.total_revenue}</td>
-                          </tr>
-                        </tbody>
-                      ))}
-                    </table>
-                  </Box>
-                </Box>
-              </div>
+                    <Grid
+                      item
+                      xs={2}
+                      className={classes.desc}
+                      style={{ flexDirection: "column" }}
+                    >
+                      {info.customer_email}
+                      <br />
+                      {info.customer_phone_num}
+                    </Grid>
+                    <Grid item xs={2} className={classes.desc}>
+                      {info.customer_address},&nbsp;
+                      <br /> {info.customer_city},&nbsp; {info.customer_state}
+                    </Grid>
+                    <Grid item xs={2} className={classes.desc}>
+                      {info.total_orders}
+                    </Grid>
+                  </Grid>
+                ))}
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  opacity: 1,
+                  marginBottom: 0,
+                }}
+              >
+                <Grid item xs={3}></Grid>
+                <Grid
+                  item
+                  xs={9}
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    opacity: 1,
+                    justifyContent: "space-evenly",
+                  }}
+                >
+                  <Grid item xs={2} className={classes.infoTitle}>
+                    Last Order Received
+                  </Grid>
+                  <Grid item xs={2} className={classes.infoTitle}>
+                    Delivery Zone
+                  </Grid>
+                  <Grid item xs={2} className={classes.infoTitle}>
+                    Customer ID
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  opacity: 1,
+                  marginTop: "0rem",
+                }}
+              >
+                <Grid item xs={3}></Grid>
+                {selectedCustomer.map((info) => (
+                  <Grid
+                    item
+                    xs={9}
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      opacity: 1,
+                      justifyContent: "space-evenly",
+                    }}
+                  >
+                    <Grid item xs={2} className={classes.desc}>
+                      {moment(info.last_order_date).format("LL")}
+                    </Grid>
+                    <Grid item xs={2} className={classes.desc}>
+                      {info.zone}
+                    </Grid>
+                    <Grid item xs={2} className={classes.desc}>
+                      {info.customer_uid}
+                    </Grid>
+                  </Grid>
+                ))}
+              </Grid>
             </Grid>
           </Grid>
           <Grid container spacing={3}>
@@ -1093,103 +1190,114 @@ function Customers() {
               item
               xs={12}
               style={{
-                display: 'flex',
-                marginBottom: '1rem',
-                marginRight: '1rem',
-                flexDirection: 'column',
-                background: '#FFFFFF 0% 0% no-repeat padding-box',
-                borderRadius: '20px',
+                display: "flex",
+                flexDirection: "column",
+                background: "#FFFFFF 0% 0% no-repeat padding-box",
+                margin: "10px",
+                border: "1px solid #E7404A",
+                borderRadius: "20px",
                 opacity: 1,
               }}
             >
-              <Typography className={classes.header}>Payment Made</Typography>
+              <Typography style={{ color: "#000000" }}>
+                Purchase History
+              </Typography>
               <table className={classes.paymentTable}>
                 <thead>
                   <tr className={classes.paymentHeader}>
-                    <td className={classes.td}>Payment ID</td>
-                    <td className={classes.td}>Purchase ID</td>
+                    <td className={classes.td}>Food Bank</td>
+                    <td className={classes.td}>No. of Items</td>
+                    <td className={classes.td}>Order ID</td>
+                    <td className={classes.td}>Date of Order</td>
                     <td className={classes.td}>Delivery Date</td>
-                    <td className={classes.td}>COGS</td>
-                    <td className={classes.td}>Tip</td>
-                    <td className={classes.td}>Taxes</td>
-                    <td className={classes.td}>Profit</td>
-                    <td className={classes.td}>Payment</td>
                   </tr>
                 </thead>
                 <tbody>
                   {payments.map((payment) => (
                     <>
-                    <tr
-                      className={classes.paymentInfo}
-                      onClick={() => {
-                        filterOnClick(setPurchaseID, payment.purchase_id);
-                        setClicked(payment.purchase_id);
-                        console.log('click', JSON.parse(history.filter((hist) => hist.purchase_id == payment.purchase_id)[0].items))
-                        console.log('click 2', produceSort())
-                      }}
-                      className={
-                        clicked == payment.purchase_id
-                          ? `${classes.activePaymentInfo}`
-                          : `${classes.paymentInfo}`
-                      }
-                    >
-                      <td className={classes.td} >
-                        #{payment.payment_id.substring(4)}
-                      </td>
-                      <td className={classes.td}>
-                        #{payment.purchase_id.substring(4)}{' '}
-                      </td>
-                      <td className={classes.td}>
-                        {moment(payment.start_delivery_date).format('LL')}
-                      </td>
-                      <td className={classes.td}>
-                        ${payment.subtotal.toFixed(2)}
-                      </td>
-                      <td className={classes.td}>
-                        ${payment.driver_tip.toFixed(2)}{' '}
-                      </td>
-                      <td className={classes.td}>${payment.taxes.toFixed(2)}</td>
-                      <td className={classes.td}>${payment.profit.toFixed(2)}</td>
-                      <td className={classes.td}>
-                        ${payment.amount_paid.toFixed(2)}
-                      </td>
-                    </tr>
-                    
-                    <div style={{marginLeft:'50px',}}>
-                      {clicked == payment.purchase_id
-                        ? (JSON.parse(history.filter((hist) => hist.purchase_id == payment.purchase_id)[0].items).map((produce) => (
-                          <TableRow>
-                            <TableCell padding="none">
-                              <img
-                                src={produce.img}
-                                alt=""
-                                height="50"
-                                width="50"
-                                style={{
-                                  borderRadius: '10px',
-                                  marginRight: '5px',
-                                }}
-                              />
-                            </TableCell>
-                            <TableCell
-                              padding="none"
-                              align="left"
-                              style={{ paddingRight: '20px' }}
-                            >
-                              {produce.name}
-                            </TableCell>
+                      <tr
+                        className={classes.paymentInfo}
+                        className={
+                          clicked == payment.purchase_id
+                            ? `${classes.activeInfo}`
+                            : `${classes.paymentInfo}`
+                        }
+                      >
+                        <td className={classes.td}>{payment.food_banks}</td>
+                        <td className={classes.td}>
+                          {payment.total_qty}
+                          <IconButton
+                            aria-describedby={id}
+                            variant="contained"
+                            color="primary"
+                            onClick={() => {
+                              filterOnClick(setPurchaseID, payment.purchase_id);
+                              setClicked(payment.purchase_id);
+                              console.log(
+                                "click",
+                                JSON.parse(
+                                  history.filter(
+                                    (hist) =>
+                                      hist.purchase_id == payment.purchase_id
+                                  )[0].items
+                                )
+                              );
+                              setToggle(!toggle);
+                            }}
+                          >
+                            <img src={CustomerSrc} alt="user pic" />
+                          </IconButton>
+                        </td>
+                        <td>#{payment.purchase_id}</td>
+                        <td className={classes.td}>
+                          {moment(payment.purchase_date).format("LL")}
+                        </td>
+                        <td className={classes.td}>
+                          {moment(payment.start_delivery_date).format("LL")}
+                        </td>
+                      </tr>
+                      {toggle ? (
+                        <tr className={classes.paymentInfo}>
+                          <td className={classes.td}> </td>
+                          <td className={classes.td}>
+                            <div>
+                              {clicked == payment.purchase_id
+                                ? JSON.parse(
+                                    history.filter(
+                                      (hist) =>
+                                        hist.purchase_id == payment.purchase_id
+                                    )[0].items
+                                  ).map((produce) => (
+                                    
+                                    <tr>
+                                      <td style={{ padding: "none" }}>
+                                        {produce.qty}
+                                      </td>
 
-                            <TableCell padding="none">
-                              {produce.qty}
-                            </TableCell>
-                            <TableCell padding="none">
-                              ${produce.price.toFixed(2)}
-                            </TableCell>
-                          </TableRow>
-                        )))
-                        : null
-                      }
-                    </div>
+                                      <td style={{ paddingLeft: "10px" }}>
+                                        {produce.name}
+                                      </td>
+                                      <td style={{ padding: "none" }}>
+                                        <img
+                                          src={produce.img}
+                                          alt=""
+                                          height="50"
+                                          width="50"
+                                          style={{
+                                            borderRadius: "10px",
+                                          }}
+                                        />
+                                      </td>
+                                    </tr>
+                                  ))
+                                : null}
+                            </div>
+                          </td>
+                          <td className={classes.td}> </td>
+                          <td className={classes.td}> </td>
+                          <td className={classes.td}> </td>
+                        </tr>
+                      ) : null}
                     </>
                   ))}
                 </tbody>
