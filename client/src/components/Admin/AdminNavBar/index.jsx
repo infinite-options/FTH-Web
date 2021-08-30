@@ -257,6 +257,23 @@ function NavBar(props) {
             >
               Customers
             </a>
+
+            <a
+              href="/admin/customers2"
+              className={styles.navLink}
+              style={
+                props.currentPage === "customers2"
+                  ? {
+                      color: "black",
+                      width: LINK_WIDTH.customers,
+                    }
+                  : {
+                      width: LINK_WIDTH.customers,
+                    }
+              }
+            >
+              Customers 2
+            </a>
             
 
             {/* <a
@@ -453,6 +470,17 @@ function NavBar(props) {
                   }
                 >
                   Customers
+                </a>
+              </div>
+              <div className={styles.dropdownLink}>
+                <a
+                  href="/admin/customers2"
+                  className={styles.navLinkDD}
+                  style={
+                    props.currentPage === "customers2" ? { color: "black" } : {}
+                  }
+                >
+                  Customers2
                 </a>
               </div>
               <div className={styles.dropdownLink}>

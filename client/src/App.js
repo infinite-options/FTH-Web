@@ -1,11 +1,7 @@
 import { Provider } from "react-redux";
 import store from "./reducers/store";
 
-import {
-  Router,
-  Route,
-  Switch,
-} from "react-router-dom";
+import { Router, Route, Switch } from "react-router-dom";
 import AppliedRoute from "./components/AppliedRoute";
 
 import SignUp from "./components/SignUp";
@@ -59,7 +55,6 @@ import Congrats from "./components/Congrats";
 export const history = createBrowserHistory();
 
 function App() {
-
   /*kk
   const [auth, setAuth] = React.useState(false);
   const readCookie = () => {
@@ -84,7 +79,7 @@ function App() {
           <Switch>
             <AppliedRoute exact path="/home" component={Home} />
             <AppliedRoute exact path="/about" component={About} />
-            <AppliedRoute exact path="/" component={Home} />
+            <AppliedRoute exact path="/" component={Landing} />
             <AppliedRoute exact path="/sign-up" component={SignUp} />
             <AppliedRoute
               exact
@@ -124,7 +119,6 @@ function App() {
             <AppliedRoute exact path="/congrats" component={Congrats} />
             {/*<AppliedRoute exact path='/edit-plan' component={EditPlan} />*/}
             <AppliedRoute exact path="/update-plan" component={UpdatePlan} />
-            
 
             {/* <AppliedRoute exact path='/test' component={MapTest} /> */}
 
@@ -161,27 +155,30 @@ function App() {
             <Route exact path="/admin/customers">
               <AdminCustomerInfo />
             </Route>
+            <Route exact path="/admin/customers2">
+              <AdminCustomerInfo2 />
+            </Route>
             <Route exact path="/admin/ingredients-units">
               <AdminIngredientsUnits />
             </Route>
-            
+
             <Route exact path="/landing">
-              <Landing/>
+              <Landing />
             </Route>
             <Route exact path="/loginfth">
-              <LoginPage/>
+              <LoginPage />
             </Route>
             <Route exact path="/register">
-              <RegisterPage/>
+              <RegisterPage />
             </Route>
             <Route exact path="/createpassword">
-              <CreatePassword/>
+              <CreatePassword />
             </Route>
             <Route exact path="/confirmation">
-              <Confirmation/>
+              <Confirmation />
             </Route>
             <Route exact path="/clientform">
-              <ClientForm/>
+              <ClientForm />
             </Route>
             <Route exact path="/pickitems">
               <PickItems/>
