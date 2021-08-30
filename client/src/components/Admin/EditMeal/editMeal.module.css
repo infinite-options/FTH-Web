@@ -70,6 +70,42 @@
   background-position: right 5px top 50%;
 }
 
+.dropdownContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 200px;
+  padding: 5px 0px;
+}
+
+.dropdownSearchContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 600px;
+  padding: 10px 15px;
+}
+
+.dropdownSearch {
+  border-radius: 25px;
+  padding: 10px 15px;
+  border: 1px solid #707070;
+}
+
+.dropdownArrow {
+  background: url("./static/Polygon\ 10.svg") no-repeat;
+  width: 17px;
+  height: 17px;
+  border: none;
+  cursor: pointer;
+  padding: 0px;
+}
+
+.dropdownPopover {
+  border-radius: 20px;
+  background: #ffe3e5;
+}
+
 .restaurantSelector {
   display: flex;
   flex-direction: row;
