@@ -1880,7 +1880,7 @@ function EditMeal({ history, ...props }) {
                   }}
                 >
                   <Row style={{ padding: "5px 0px 5px 0px" }}>
-                    <FacebookIcon style={{ fill: "#F26522", margin: "5px" }} />
+                    <FacebookIcon style={{ fill: "#e7404a", margin: "5px" }} />
                     <Form.Control
                       as="input"
                       placeholder="Enter Facebook URL"
@@ -1895,7 +1895,7 @@ function EditMeal({ history, ...props }) {
                     />
                   </Row>
                   <Row style={{ padding: "5px 0px 5px 0px" }}>
-                    <InstagramIcon style={{ fill: "#F26522", margin: "5px" }} />
+                    <InstagramIcon style={{ fill: "#e7404a", margin: "5px" }} />
                     <Form.Control
                       as="input"
                       placeholder="Enter Instagram URL"
@@ -1910,7 +1910,7 @@ function EditMeal({ history, ...props }) {
                     />
                   </Row>
                   <Row style={{ padding: "5px 0px 5px 0px" }}>
-                    <TwitterIcon style={{ fill: "#F26522", margin: "5px" }} />
+                    <TwitterIcon style={{ fill: "#e7404a", margin: "5px" }} />
                     <Form.Control
                       as="input"
                       placeholder="Enter Twitter URL"
@@ -1922,7 +1922,7 @@ function EditMeal({ history, ...props }) {
                     />
                   </Row>
                   <Row style={{ padding: "5px 0px 5px 0px" }}>
-                    <GlobeIcon style={{ color: "#F26522", margin: "5px" }} />
+                    <GlobeIcon style={{ color: "#e7404a", margin: "5px" }} />
                     <Form.Control
                       as="input"
                       placeholder="Enter Business Website URL"
@@ -1936,17 +1936,25 @@ function EditMeal({ history, ...props }) {
                 </Form.Group>
               </div>
             </div>
-            <div style={{ textAlign: "center", paddingBottom: "10px" }}>
+            <div
+              style={{
+                textAlign: "center",
+                paddingBottom: "10px",
+                width: "100%",
+              }}
+            >
               <Button
                 variant="primary"
                 style={{
-                  backgroundColor: "#F26522",
-                  borderRadius: "15px",
-                  width: "257px",
-                  height: "48px",
+                  backgroundColor: "white",
+                  color: "#e7404a",
+                  borderRadius: "25px",
+                  width: "113px",
+                  height: "52px",
                   fontSize: "18px",
                   margin: "5px",
-                  border: "2px solid #F26522",
+                  padding: "0px",
+                  border: "1px solid #E7404A",
                 }}
                 // onClick={() => dispatch({ type: "TOGGLE_EDIT_BUSINESS" })}
               >
@@ -1955,13 +1963,13 @@ function EditMeal({ history, ...props }) {
               <Button
                 variant="primary"
                 style={{
-                  backgroundColor: "#F26522",
-                  borderRadius: "15px",
-                  width: "257px",
-                  height: "48px",
+                  backgroundColor: "#E7404A",
+                  borderRadius: "25px",
+                  width: "198px",
+                  height: "50px",
                   fontSize: "18px",
                   margin: "5px",
-                  border: "2px solid #F26522",
+                  border: "1px solid #E7404A",
                 }}
                 // onClick={() => saveBusinessData()}
               >
