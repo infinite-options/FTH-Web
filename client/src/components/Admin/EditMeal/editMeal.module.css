@@ -132,6 +132,7 @@
   padding: 0px !important;
   text-decoration: underline;
   font-weight: bold;
+  cursor: pointer;
 }
 
 .bold {

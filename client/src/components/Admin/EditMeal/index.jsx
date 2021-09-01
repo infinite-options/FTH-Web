@@ -34,6 +34,7 @@ import { ReactComponent as InstagramIcon } from "../../../images/instagramIconNo
 import { ReactComponent as GlobeIcon } from "../../../images/globeIconNoBorder.svg";
 import { ReactComponent as DeleteIcon } from "../../../images/delete.svg";
 import { ReactComponent as SaveIcon } from "../../../images/save.svg";
+import { ReactComponent as ModalCloseBtn } from "../../../images/ModalCloseRed.svg";
 import CanIconSVG from "../../../images/canIcon.svg";
 import SnackIconSVG from "../../../images/snackIcon.svg";
 import DairyIconSVG from "../../../images/dairyIcon.svg";
@@ -89,7 +90,15 @@ const initialState = {
     business_phone_num: "",
     business_phone_num2: "",
     business_email: "",
-    business_accepting_hours: null,
+    business_accepting_hours: {
+      Friday: ["N/A", "N/A"],
+      Monday: ["N/A", "N/A"],
+      Sunday: ["N/A", "N/A"],
+      Tuesday: ["N/A", "N/A"],
+      Saturday: ["N/A", "N/A"],
+      Thursday: ["N/A", "N/A"],
+      Wednesday: ["N/A", "N/A"],
+    },
     business_address: "",
     business_unit: "",
     business_city: "",
@@ -194,16 +203,16 @@ function reducer(state, action) {
         ...state,
         foodBankItems: action.payload,
       };
-    case "TOGGLE_SHOW_BUSINESS_DETAILS":
+    case "SET_SHOW_BUSINESS_DETAILS":
       return {
         ...state,
-        showEditBusinessDetails: !state.showEditBusinessDetails,
-        businessEditMode: action.payload,
+        showEditBusinessDetails: action.payload.showEditBusinessDetails,
+        businessEditMode: action.payload.businessEditMode,
       };
     case "TOGGLE_ADD_FOOD_BANK":
       return {
         ...state,
-        showAddFoodBank: !state.showAddBusiness,
+        showAddFoodBank: !state.showAddFoodBank,
       };
     case "EDIT_BUSINESS":
       return {
@@ -215,6 +224,7 @@ function reducer(state, action) {
         ...state,
         selectedFile: action.payload,
       };
+
     default:
       return state;
   }
@@ -457,7 +467,7 @@ function EditMeal({ history, ...props }) {
   };
 
   const parseItemTypes = (itemTypes) => {
-    if (itemTypes) {
+    if (itemTypes !== null && itemTypes !== "None") {
       return JSON.parse(itemTypes);
     } else {
       return {
@@ -470,6 +480,16 @@ function EditMeal({ history, ...props }) {
         snacks: 0,
         cannedFoods: 0,
       };
+    }
+  };
+
+  const goToLink = (link) => {
+    if (link !== "") {
+      if (link.startsWith("http://") || link.startsWith("http://")) {
+        window.open(link, "_blank");
+      } else {
+        window.open(`http://${link}`, "_blank");
+      }
     }
   };
 
@@ -490,7 +510,10 @@ function EditMeal({ history, ...props }) {
   };
 
   const displayBusinessHours = (day) => {
-    if (state.selectedBusinessData) {
+    if (
+      state.selectedBusinessData &&
+      state.selectedBusinessData.business_accepting_hours
+    ) {
       const hours = state.selectedBusinessData.business_accepting_hours[day];
       if (hours[0] !== "" && hours[1] !== "") {
         return hours[0] + " - " + hours[1];
@@ -724,6 +747,10 @@ function EditMeal({ history, ...props }) {
       // },
     };
 
+    if (modalMode !== "EDIT") {
+      delete businessData["business_uid"];
+    }
+
     let endpointURL = "";
     if (modalMode === "EDIT") {
       endpointURL = "business_details_update/Post";
@@ -736,19 +763,21 @@ function EditMeal({ history, ...props }) {
     axios
       .post(`${API_URL}${endpointURL}`, businessData)
       .then((res) => {
-        console.log(res);
-        // TODO - upload image
         businessDataStatus = res.status;
+        if (modalMode === "NEW") {
+          const newBusinessID = res.data.uid;
+          document.cookie = `last_active_business = ${newBusinessID}`;
+        }
         if (state.selectedFile) {
           const imageFormData = new FormData();
           imageFormData.append("bus_photo", state.selectedFile);
           imageFormData.append("uid", state.selectedBusinessID);
+
           return axios.post(`${API_URL}business_image_upload`, imageFormData);
         }
       })
       .then((res) => {
         if (res) {
-          console.log(res);
           imageUploadStatus = res.status;
         }
       })
@@ -762,7 +791,10 @@ function EditMeal({ history, ...props }) {
           (businessDataStatus === 200 && imageUploadStatus === 200) ||
           imageUploadStatus === null
         ) {
-          dispatch({ type: "TOGGLE_SHOW_BUSINESS_DETAILS" });
+          dispatch({
+            type: "SET_SHOW_BUSINESS_DETAILS",
+            payload: { showEditBusinessDetails: false, businessEditMode: "" },
+          });
           dispatch({ type: "CHANGE_SELECTED_FILE", payload: null });
           getBusinessAndMealData();
         }
@@ -770,15 +802,63 @@ function EditMeal({ history, ...props }) {
   };
 
   const handleAddFoodBank = () => {
+    const newFoodBankID = "";
+    const newSelectedFoodBankData = {
+      business_uid: "",
+      business_name: "New Food Bank",
+      business_type: "",
+      business_desc: "",
+      business_contact_first_name: "",
+      business_contact_last_name: "",
+      business_phone_num: "",
+      business_phone_num2: "",
+      business_email: "",
+      business_accepting_hours: {
+        Friday: ["N/A", "N/A"],
+        Monday: ["N/A", "N/A"],
+        Sunday: ["N/A", "N/A"],
+        Tuesday: ["N/A", "N/A"],
+        Saturday: ["N/A", "N/A"],
+        Thursday: ["N/A", "N/A"],
+        Wednesday: ["N/A", "N/A"],
+      },
+      business_address: "",
+      business_unit: "",
+      business_city: "",
+      business_state: "",
+      business_zip: "",
+      can_cancel: "",
+      delivery: "",
+      reusable: "",
+      business_image: "",
+      platform_fee: "",
+      transaction_fee: "",
+      revenue_sharing: "",
+      profit_sharing: "",
+      business_status: "",
+      business_facebook_url: "",
+      business_instagram_url: "",
+      business_twitter_url: "",
+      business_website_url: "",
+      limit_per_person: "",
+      item_types: null,
+    };
+    dispatch({
+      type: "SELECT_BUSINESS",
+      payload: {
+        selectedBusinessID: newFoodBankID,
+        selectedBusinessData: newSelectedFoodBankData,
+      },
+    });
     dispatch({ type: "SET_DROPDOWN_ANCHOR", payload: null });
-    dispatch({ type: "TOGGLE_ADD_FOOD_BANK" });
+    dispatch({
+      type: "SET_SHOW_BUSINESS_DETAILS",
+      payload: { showEditBusinessDetails: true, businessEditMode: "NEW" },
+    });
   };
 
   const renderFoodType = (type) => {
-    if (
-      state.selectedBusinessData &&
-      state.selectedBusinessData.item_types[type]
-    ) {
+    if (state.selectedBusinessData && state.selectedBusinessData.item_types) {
       return state.selectedBusinessData.item_types[type];
     }
     return 0;
@@ -1067,8 +1147,12 @@ function EditMeal({ history, ...props }) {
                           className={styles.restaurantLinkText}
                           onClick={() =>
                             dispatch({
-                              type: "TOGGLE_SHOW_BUSINESS_DETAILS",
-                              payload: "EDIT",
+                              type: "SET_SHOW_BUSINESS_DETAILS",
+                              payload: {
+                                showEditBusinessDetails:
+                                  !state.showEditBusinessDetails,
+                                businessEditMode: "EDIT",
+                              },
                             })
                           }
                         >
@@ -1226,10 +1310,32 @@ function EditMeal({ history, ...props }) {
                 <div>{getSelectedBusinessData("business_email")}</div>
                 <div>{getSelectedBusinessData("business_phone_num")}</div>
                 <div className={styles.socialLinkContainer}>
-                  <FacebookIcon style={{ fill: "#E7404A" }} />
-                  <InstagramIcon style={{ fill: "#E7404A" }} />
-                  <TwitterIcon style={{ fill: "#E7404A" }} />
-                  <GlobeIcon style={{ color: "#E7404A" }} />
+                  <FacebookIcon
+                    style={{ fill: "#E7404A", cursor: "pointer" }}
+                    onClick={() =>
+                      goToLink(getSelectedBusinessData("business_facebook_url"))
+                    }
+                  />
+                  <InstagramIcon
+                    style={{ fill: "#E7404A", cursor: "pointer" }}
+                    onClick={() =>
+                      goToLink(
+                        getSelectedBusinessData("business_instagram_url")
+                      )
+                    }
+                  />
+                  <TwitterIcon
+                    style={{ fill: "#E7404A", cursor: "pointer" }}
+                    onClick={() =>
+                      goToLink(getSelectedBusinessData("business_twitter_url"))
+                    }
+                  />
+                  <GlobeIcon
+                    style={{ color: "#E7404A", cursor: "pointer" }}
+                    onClick={() =>
+                      goToLink(getSelectedBusinessData("business_website_url"))
+                    }
+                  />
                 </div>
               </Col>
             </Row>
@@ -2355,8 +2461,11 @@ function EditMeal({ history, ...props }) {
                 onClick={() =>
                   // TODO - Reset edited business data
                   dispatch({
-                    type: "TOGGLE_SHOW_BUSINESS_DETAILS",
-                    payload: "",
+                    type: "SET_SHOW_BUSINESS_DETAILS",
+                    payload: {
+                      showEditBusinessDetails: false,
+                      businessEditMode: "",
+                    },
                   })
                 }
               >
@@ -2410,12 +2519,26 @@ function EditMeal({ history, ...props }) {
               }}
             >
               <div style={{ textAlign: "right", padding: "10px" }}>
-                {/* <ModalCloseBtn
-                style={{ cursor: "pointer" }}
-                onClick={() => {
-                  dispatch({ type: "CLOSE_MODAL" });
-                }}
-              /> */}
+                <ModalCloseBtn
+                  style={{ cursor: "pointer" }}
+                  onClick={() => {
+                    dispatch({ type: "TOGGLE_ADD_FOOD_BANK" });
+                    if (
+                      document.cookie
+                        .split(";")
+                        .some((item) =>
+                          item.trim().startsWith("last_active_business=")
+                        )
+                    ) {
+                      // Get last used business
+                      const saved_business_uid = document.cookie
+                        .split("; ")
+                        .find((row) => row.startsWith("last_active_business="))
+                        .split("=")[1];
+                      changeActiveBusiness(saved_business_uid);
+                    }
+                  }}
+                />
               </div>
               <div
                 style={{
@@ -2438,10 +2561,10 @@ function EditMeal({ history, ...props }) {
                     <Col sm={7}>
                       <Form.Control
                         placeholder="Enter Name"
-                        // value={state.editedMeal.meal_hint}
-                        // onChange={(event) => {
-                        //   editMeal("meal_hint", event.target.value);
-                        // }}
+                        value={state.editedBusinessData.business_name}
+                        onChange={(event) => {
+                          editBusiness("business_name", event.target.value);
+                        }}
                       />
                     </Col>
                   </Form.Group>
@@ -2453,30 +2576,25 @@ function EditMeal({ history, ...props }) {
                       <div
                         style={{ textAlign: "center", marginBottom: "15px" }}
                       >
-                        {/* {state.editedMeal.meal_photo_URL && (
+                        {state.editedBusinessData.business_image !== "" && (
                           <img
-                            // src={state.previewLink}
-                            src={state.editedMeal.meal_photo_URL}
                             height="150px"
                             width="150px"
+                            src={state.editedBusinessData.business_image}
                           ></img>
-                        )} */}
+                        )}
                       </div>
 
                       <input
                         type="file"
                         name="upload_file"
-                        // onChange={(e) => {
-                        //   state.selectedFile = e.target.files[0];
-                        //   dispatch({
-                        //     type: "SET_PREVIEW",
-                        //     payload: URL.createObjectURL(e.target.files[0]),
-                        //   });
-                        //   editMeal(
-                        //     "meal_photo_URL",
-                        //     URL.createObjectURL(e.target.files[0])
-                        //   );
-                        // }}
+                        onChange={(e) => {
+                          state.selectedFile = e.target.files[0];
+                          editBusiness(
+                            "business_image",
+                            URL.createObjectURL(e.target.files[0])
+                          );
+                        }}
                       />
                     </Col>
                   </Form.Group>
@@ -2487,10 +2605,10 @@ function EditMeal({ history, ...props }) {
                     <Col sm={7}>
                       <Form.Control
                         placeholder="Enter Address"
-                        // value={state.editedMeal.meal_hint}
-                        // onChange={(event) => {
-                        //   editMeal("meal_hint", event.target.value);
-                        // }}
+                        value={state.editedBusinessData.business_address}
+                        onChange={(event) => {
+                          editBusiness("business_address", event.target.value);
+                        }}
                       />
                     </Col>
                   </Form.Group>
@@ -2501,10 +2619,13 @@ function EditMeal({ history, ...props }) {
                     <Col sm={7}>
                       <Form.Control
                         placeholder="Enter Phone Number"
-                        // value={state.editedMeal.meal_hint}
-                        // onChange={(event) => {
-                        //   editMeal("meal_hint", event.target.value);
-                        // }}
+                        value={state.editedBusinessData.business_phone_num}
+                        onChange={(event) => {
+                          editBusiness(
+                            "business_phone_num",
+                            event.target.value
+                          );
+                        }}
                       />
                     </Col>
                   </Form.Group>
@@ -2529,10 +2650,10 @@ function EditMeal({ history, ...props }) {
                     <Col sm={7}>
                       <Form.Control
                         placeholder="Enter Item Limit"
-                        // value={state.editedMeal.meal_hint}
-                        // onChange={(event) => {
-                        //   editMeal("meal_hint", event.target.value);
-                        // }}
+                        value={state.editedBusinessData.limit_per_person}
+                        onChange={(event) => {
+                          editBusiness("limit_per_person", event.target.value);
+                        }}
                       />
                     </Col>
                   </Form.Group>
@@ -2543,10 +2664,10 @@ function EditMeal({ history, ...props }) {
                     <Col sm={7}>
                       <Form.Control
                         placeholder="Enter Email"
-                        // value={state.editedMeal.meal_hint}
-                        // onChange={(event) => {
-                        //   editMeal("meal_hint", event.target.value);
-                        // }}
+                        value={state.editedBusinessData.business_email}
+                        onChange={(event) => {
+                          editBusiness("business_email", event.target.value);
+                        }}
                       />
                     </Col>
                   </Form.Group>
@@ -2566,6 +2687,7 @@ function EditMeal({ history, ...props }) {
                     boxShadow: "0px 3px 6px #00000029",
                     fontWeight: "bold",
                   }}
+                  // onClick={() => saveNewFoodBank()}
                 >
                   Save Food Bank
                 </button>
