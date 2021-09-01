@@ -1,7 +1,15 @@
 import { useEffect, useReducer, useState, useRef, useMemo } from "react";
 import axios from "axios";
 import { API_URL } from "../../../reducers/constants";
-import { Breadcrumb, Container, Row, Col, Form, Button } from "react-bootstrap";
+import {
+  Breadcrumb,
+  Container,
+  Row,
+  Col,
+  Form,
+  Button,
+  Modal,
+} from "react-bootstrap";
 import {
   Table,
   TableContainer,
@@ -71,9 +79,43 @@ const initialState = {
   dateValid: true,
   selectedBusinessID: "",
   selectedBusinessData: null,
+  editedBusinessData: {
+    business_uid: "",
+    business_name: "",
+    business_type: "",
+    business_desc: "",
+    business_contact_first_name: "",
+    business_contact_last_name: "",
+    business_phone_num: "",
+    business_phone_num2: "",
+    business_email: "",
+    business_accepting_hours: null,
+    business_address: "",
+    business_unit: "",
+    business_city: "",
+    business_state: "",
+    business_zip: "",
+    can_cancel: 1,
+    delivery: 1,
+    reusable: 1,
+    business_image: "",
+    platform_fee: "",
+    transaction_fee: "",
+    revenue_sharing: "",
+    profit_sharing: "",
+    business_status: "",
+    business_facebook_url: "",
+    business_instagram_url: "",
+    business_twitter_url: "",
+    business_website_url: "",
+    limit_per_person: "0",
+    item_types: null,
+  },
+  businessEditMode: "",
   allMenuDates: [],
   menuDate: "",
   showEditBusinessDetails: false,
+  showAddFoodBank: false,
 };
 
 // styles used to customize material table
@@ -138,12 +180,14 @@ function reducer(state, action) {
         businessData: action.payload.businessData,
         selectedBusinessData: action.payload.selectedBusinessData,
         selectedBusinessID: action.payload.selectedBusinessID,
+        editedBusinessData: action.payload.selectedBusinessData,
       };
     case "SELECT_BUSINESS":
       return {
         ...state,
         selectedBusinessData: action.payload.selectedBusinessData,
         selectedBusinessID: action.payload.selectedBusinessID,
+        editedBusinessData: action.payload.selectedBusinessData,
       };
     case "UPDATE_FOOD_BANK_ITEMS":
       return {
@@ -154,6 +198,22 @@ function reducer(state, action) {
       return {
         ...state,
         showEditBusinessDetails: !state.showEditBusinessDetails,
+        businessEditMode: action.payload,
+      };
+    case "TOGGLE_ADD_FOOD_BANK":
+      return {
+        ...state,
+        showAddFoodBank: !state.showAddBusiness,
+      };
+    case "EDIT_BUSINESS":
+      return {
+        ...state,
+        editedBusinessData: action.payload,
+      };
+    case "CHANGE_SELECTED_FILE":
+      return {
+        ...state,
+        selectedFile: action.payload,
       };
     default:
       return state;
@@ -165,8 +225,6 @@ function EditMeal({ history, ...props }) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const carouselRef = useRef();
-
-  // PAGE INITIALIZATION
 
   // Check for log in
   useEffect(() => {
@@ -186,9 +244,9 @@ function EditMeal({ history, ...props }) {
           const role = response.data.result[0].role.toLowerCase();
           if (role === "admin") {
             // console.log("mounting")
-            console.log(state.mounted);
+            // console.log(state.mounted);
             dispatch({ type: "MOUNT" });
-            console.log("dispatch MOUNT");
+            // console.log("dispatch MOUNT");
           } else {
             history.push("/meal-plan");
           }
@@ -248,9 +306,16 @@ function EditMeal({ history, ...props }) {
   }, []);
 
   useEffect(() => {
+    getBusinessAndMealData();
+  }, []);
+
+  const getBusinessAndMealData = () => {
     axios
       .get(`${API_URL}businesses`)
       .then((response) => {
+        if (response.status !== 200) {
+          throw new Error("Business data could not be fetched");
+        }
         const allBusinessData = response.data.result.result;
         let activeBusinessData = null;
         let activeBusinessID = "";
@@ -274,6 +339,7 @@ function EditMeal({ history, ...props }) {
               business_accepting_hours: parseBusinessHours(
                 savedBusinessData.business_accepting_hours
               ),
+              item_types: parseItemTypes(savedBusinessData.item_types),
             };
           } else {
             // use first business as active business
@@ -282,6 +348,7 @@ function EditMeal({ history, ...props }) {
               business_accepting_hours: parseBusinessHours(
                 allBusinessData[0].business_accepting_hours
               ),
+              item_types: parseItemTypes(allBusinessData[0].item_types),
             };
           }
           activeBusinessID = activeBusinessData.business_uid;
@@ -308,9 +375,7 @@ function EditMeal({ history, ...props }) {
         // eslint-disable-next-line no-console
         console.log(err);
       });
-  }, []);
-
-  // DATE RELATED FUNCTIONS
+  };
 
   const menuDates = useMemo(() => {
     const menuDatesFormatted = state.allMenuDates.map((item) => {
@@ -391,7 +456,22 @@ function EditMeal({ history, ...props }) {
     );
   };
 
-  // FUNCTIONS TO GET STATE DATA
+  const parseItemTypes = (itemTypes) => {
+    if (itemTypes) {
+      return JSON.parse(itemTypes);
+    } else {
+      return {
+        fruits: 0,
+        vegetables: 0,
+        meals: 0,
+        desserts: 0,
+        beverages: 0,
+        dairy: 0,
+        snacks: 0,
+        cannedFoods: 0,
+      };
+    }
+  };
 
   const getBusinessDataByID = (id) => {
     if (state.businessData) {
@@ -420,7 +500,45 @@ function EditMeal({ history, ...props }) {
     }
   };
 
-  // FUNCTIONS TO MANINPULATE STATE / UPDATE DATABASE
+  const changeBusinessHours = (day, startTime, endTime) => {
+    const newHours = {
+      ...state.editedBusinessData.business_accepting_hours,
+      [day]: [startTime, endTime],
+    };
+
+    // hours[day][arrayIndex] = newTime;
+    editBusiness("business_accepting_hours", newHours);
+  };
+
+  const getEditedBusinessHours = () => {
+    if (state.editedBusinessData.business_accepting_hours)
+      return state.editedBusinessData.business_accepting_hours;
+    else
+      return {
+        Friday: ["N/A", "N/A"],
+        Monday: ["N/A", "N/A"],
+        Sunday: ["N/A", "N/A"],
+        Tuesday: ["N/A", "N/A"],
+        Saturday: ["N/A", "N/A"],
+        Thursday: ["N/A", "N/A"],
+        Wednesday: ["N/A", "N/A"],
+      };
+  };
+
+  const getEditedFoodTypes = (type) => {
+    if (
+      state.editedBusinessData &&
+      state.editedBusinessData.item_types !== null
+    ) {
+      return state.editedBusinessData.item_types[type];
+    } else {
+      return 0;
+    }
+
+    // return state.editedBusinessData.item_types
+    //   ? state.editedBusinessData.items_types[type]
+    //   : 0;
+  };
 
   const changeActiveBusiness = (id) => {
     const businessData = {
@@ -429,7 +547,9 @@ function EditMeal({ history, ...props }) {
     const parsedBusinessHours = parseBusinessHours(
       businessData.business_accepting_hours
     );
+    const parsedItemTypes = parseItemTypes(businessData.item_types);
     businessData.business_accepting_hours = parsedBusinessHours;
+    businessData.item_types = parsedItemTypes;
     document.cookie = `last_active_business = ${id}`;
 
     dispatch({
@@ -458,6 +578,21 @@ function EditMeal({ history, ...props }) {
     dispatch({ type: "SET_DROPDOWN_ANCHOR", payload: null });
   };
 
+  const editBusiness = (property, value) => {
+    if (property === "") {
+      const newBusiness = state.businessData.filter(
+        (business) => business.business_uid === value
+      )[0];
+      dispatch({ type: "EDIT_BUSINESS", payload: newBusiness });
+    } else {
+      const newBusiness = {
+        ...state.editedBusinessData,
+        [property]: value,
+      };
+      dispatch({ type: "EDIT_BUSINESS", payload: newBusiness });
+    }
+  };
+
   // TODO - refactor to use new endpoints and state.foodBankItems
   const editMeal = (property, value) => {
     if (property === "") {
@@ -466,7 +601,6 @@ function EditMeal({ history, ...props }) {
         (meal) => meal.meal_uid === value
       )[0];
       dispatch({ type: "EDIT_MEAL", payload: newMeal });
-      console.log("dispatch EDIT_MEALS");
     } else {
       // Property is property changed, value is new value of that property
       const newMeal = {
@@ -474,7 +608,6 @@ function EditMeal({ history, ...props }) {
         [property]: value,
       };
       dispatch({ type: "EDIT_MEAL", payload: newMeal });
-      console.log("dispatch EDIT_MEALS");
     }
   };
 
@@ -492,16 +625,166 @@ function EditMeal({ history, ...props }) {
       ...item,
     };
     if (item.item_status === "Active") {
-      console.log("deactivating item");
       updatedItem.item_status = "Inactive";
     } else {
-      console.log("activting item");
       updatedItem.item_status = "Active";
     }
     allItems[index] = updatedItem;
     // TODO - call function to save to database here
     dispatch({ type: "UPDATE_FOOD_BANK_ITEMS", payload: allItems });
   };
+
+  const changeTypeOfFood = (type) => {
+    let updatedItemTypes = null;
+    if (
+      state.editedBusinessData.item_types === null ||
+      state.editedBusinessData.item_types === ""
+    ) {
+      updatedItemTypes = {
+        fruits: 0,
+        vegetables: 0,
+        meals: 0,
+        desserts: 0,
+        beverages: 0,
+        dairy: 0,
+        snacks: 0,
+        cannedFoods: 0,
+      };
+      updatedItemTypes[type] = updatedItemTypes[type] === 0 ? 1 : 0;
+    } else {
+      updatedItemTypes = {
+        ...state.editedBusinessData.item_types,
+        [type]: state.editedBusinessData.item_types[type] === 0 ? 1 : 0,
+      };
+    }
+    const newBusiness = {
+      ...state.editedBusinessData,
+      item_types: updatedItemTypes,
+    };
+    dispatch({ type: "EDIT_BUSINESS", payload: newBusiness });
+  };
+
+  const saveBusinessData = () => {
+    // TODO - Modify data passed into endpoint
+
+    const modalMode = state.businessEditMode;
+
+    const businessData = {
+      ...state.editedBusinessData,
+      // business_uid: "200-000048",
+      // business_name: "FTH",
+      // business_type: "Testing 2",
+      // business_desc: "Vegan Delivery Service",
+      // business_contact_first_name: "Anu",
+      // business_contact_last_name: "Sandhu",
+      // business_phone_num: "(512) 555-1234",
+      // business_phone_num2: "(512) 555-1200",
+      // business_email: "anu@ptyd.com",
+      business_hours: {
+        Friday: ["00:00:00", "23:59:00"],
+        Monday: ["00:00:00", "23:59:00"],
+      },
+      // business_accepting_hours: {
+      //   Friday: ["09:00:00", "23:59:59"],
+      //   Monday: ["09:00:00", "23:59:59"],
+      //   Sunday: ["09:00:00", "23:59:59"],
+      //   Tuesday: ["09:00:00", "23:59:59"],
+      //   Saturday: ["09:00:00", "21:00:00"],
+      //   Thursday: ["09:00:00", "23:59:59"],
+      //   Wednesday: ["09:00:00", "23:00:00"],
+      // },
+      business_delivery_hours: {
+        Friday: ["09:00:00", "23:59:59"],
+      },
+      // business_address: "360 Cowden Road",
+      // business_unit: "",
+      // business_city: "Hollister",
+      // business_state: "CA",
+      // business_zip: "95135",
+      can_cancel: String(state.editedBusinessData.can_cancel),
+      delivery: "0",
+      reusable: String(state.editedBusinessData.reusable),
+      // business_image:
+      // "https://servingnow.s3-us-west-1.amazonaws.com/kitchen_imgs/landing-logo.png",
+      // business_status: "",
+      // business_facebook_url: "",
+      // business_instagram_url: "",
+      // business_twitter_url: "",
+      // business_website_url: "",
+      limit_per_person: "5",
+      // item_types: {
+      //   fruits: 1,
+      //   vegetables: 1,
+      //   meals: 1,
+      //   desserts: 1,
+      //   beverages: 1,
+      //   dairy: 0,
+      //   snacks: 0,
+      //   cannedFoods: 0,
+      // },
+    };
+
+    let endpointURL = "";
+    if (modalMode === "EDIT") {
+      endpointURL = "business_details_update/Post";
+    } else {
+      endpointURL = "business_details_update/Create";
+    }
+
+    let businessDataStatus = null;
+    let imageUploadStatus = null;
+    axios
+      .post(`${API_URL}${endpointURL}`, businessData)
+      .then((res) => {
+        console.log(res);
+        // TODO - upload image
+        businessDataStatus = res.status;
+        if (state.selectedFile) {
+          const imageFormData = new FormData();
+          imageFormData.append("bus_photo", state.selectedFile);
+          imageFormData.append("uid", state.selectedBusinessID);
+          return axios.post(`${API_URL}business_image_upload`, imageFormData);
+        }
+      })
+      .then((res) => {
+        if (res) {
+          console.log(res);
+          imageUploadStatus = res.status;
+        }
+      })
+      .catch((err) => {
+        alert(
+          "There was an issue while saving the business details, please try again"
+        );
+      })
+      .finally(() => {
+        if (
+          (businessDataStatus === 200 && imageUploadStatus === 200) ||
+          imageUploadStatus === null
+        ) {
+          dispatch({ type: "TOGGLE_SHOW_BUSINESS_DETAILS" });
+          dispatch({ type: "CHANGE_SELECTED_FILE", payload: null });
+          getBusinessAndMealData();
+        }
+      });
+  };
+
+  const handleAddFoodBank = () => {
+    dispatch({ type: "SET_DROPDOWN_ANCHOR", payload: null });
+    dispatch({ type: "TOGGLE_ADD_FOOD_BANK" });
+  };
+
+  const renderFoodType = (type) => {
+    if (
+      state.selectedBusinessData &&
+      state.selectedBusinessData.item_types[type]
+    ) {
+      return state.selectedBusinessData.item_types[type];
+    }
+    return 0;
+  };
+
+  console.log(renderFoodType("fruits"));
 
   if (!state.mounted) {
     return null;
@@ -521,7 +804,6 @@ function EditMeal({ history, ...props }) {
   return (
     <div style={{ backgroundColor: "white" }}>
       {console.log(state)}
-      {console.log(carouselRef)}
       <AdminNavBar currentPage={"edit-meal"} />
       <Container fluid className={styles.container}>
         <Row id="header" className={styles.section}>
@@ -532,7 +814,11 @@ function EditMeal({ history, ...props }) {
                   <Col className={styles.restaurantSelector}>
                     <img
                       src={getSelectedBusinessData("business_image")}
-                      className={styles.restaurantImg}
+                      className={
+                        getSelectedBusinessData("business_image") !== ""
+                          ? styles.restaurantImgVisible
+                          : styles.restaurantImgHidden
+                      }
                     />
                     <div style={{ marginLeft: "10px" }}>
                       <div className={styles.dropdownContainer}>
@@ -563,6 +849,8 @@ function EditMeal({ history, ...props }) {
                                 style={{
                                   marginTop: "auto",
                                   marginBottom: "auto",
+                                  fontWeight: "bold",
+                                  paddingRight: "5px",
                                 }}
                               >
                                 Search By
@@ -577,6 +865,21 @@ function EditMeal({ history, ...props }) {
                                 placeholder="Address"
                                 className={styles.dropdownSearch}
                               />
+                              <button
+                                style={{
+                                  marginLeft: "auto",
+                                  backgroundColor: "#E7404A",
+                                  color: "white",
+                                  height: "33px",
+                                  width: "146px",
+                                  border: "1px solid #E7404A",
+                                  boxShadow: "0px 3px 6px #00000029",
+                                  borderRadius: "39px",
+                                }}
+                                onClick={handleAddFoodBank}
+                              >
+                                Add Food Bank
+                              </button>
                             </div>
                             <TableContainer
                               style={{ height: "50vh", width: "92vw" }}
@@ -763,7 +1066,10 @@ function EditMeal({ history, ...props }) {
                         <p
                           className={styles.restaurantLinkText}
                           onClick={() =>
-                            dispatch({ type: "TOGGLE_SHOW_BUSINESS_DETAILS" })
+                            dispatch({
+                              type: "TOGGLE_SHOW_BUSINESS_DETAILS",
+                              payload: "EDIT",
+                            })
                           }
                         >
                           Edit Details
@@ -781,53 +1087,102 @@ function EditMeal({ history, ...props }) {
                       Types of Food
                     </div>
                     <div className={styles.foodTypesContainer}>
-                      <div className={styles.foodTypeLabel}>
+                      <div
+                        className={
+                          renderFoodType("fruits")
+                            ? styles.foodTypeLabelActive
+                            : styles.foodTypeLabelInactive
+                        }
+                      >
                         <img
                           src={FruitIconSVG}
                           style={{ padding: "5px 0px" }}
                         />
                         <div className={styles.redLabelSmall}>Fruits</div>
                       </div>
-                      <div className={styles.foodTypeLabel}>
+                      <div
+                        className={
+                          renderFoodType("vegetables")
+                            ? styles.foodTypeLabelActive
+                            : styles.foodTypeLabelInactive
+                        }
+                      >
                         <img
                           src={VegetableIconSVG}
                           style={{ padding: "5px 0px" }}
                         />
                         <div className={styles.redLabelSmall}>Vegetables</div>
                       </div>
-                      <div className={styles.foodTypeLabel}>
+                      <div
+                        className={
+                          renderFoodType("meals")
+                            ? styles.foodTypeLabelActive
+                            : styles.foodTypeLabelInactive
+                        }
+                      >
                         <img src={MealIconSVG} style={{ padding: "5px 0px" }} />
                         <div className={styles.redLabelSmall}>Meals</div>
                       </div>
-                      <div className={styles.foodTypeLabel}>
+                      <div
+                        className={
+                          renderFoodType("desserts")
+                            ? styles.foodTypeLabelActive
+                            : styles.foodTypeLabelInactive
+                        }
+                      >
                         <img
                           src={DessertIconSVG}
                           style={{ padding: "5px 0px" }}
                         />
                         <div className={styles.redLabelSmall}>Desserts</div>
                       </div>
-                      <div className={styles.foodTypeLabel}>
+                      <div
+                        className={
+                          renderFoodType("beverages")
+                            ? styles.foodTypeLabelActive
+                            : styles.foodTypeLabelInactive
+                        }
+                      >
                         <img
                           src={BeverageIconSVG}
                           style={{ padding: "5px 0px" }}
                         />
                         <div className={styles.redLabelSmall}>Beverages</div>
                       </div>
-                      <div className={styles.foodTypeLabel}>
+                      <div
+                        className={
+                          renderFoodType("dairy")
+                            ? styles.foodTypeLabelActive
+                            : styles.foodTypeLabelInactive
+                        }
+                      >
                         <img
                           src={DairyIconSVG}
                           style={{ padding: "5px 0px" }}
                         />
                         <div className={styles.redLabelSmall}>Dairy</div>
                       </div>
-                      <div className={styles.foodTypeLabel}>
+                      <div
+                        c
+                        className={
+                          renderFoodType("snacks")
+                            ? styles.foodTypeLabelActive
+                            : styles.foodTypeLabelInactive
+                        }
+                      >
                         <img
                           src={SnackIconSVG}
                           style={{ padding: "5px 0px" }}
                         />
                         <div className={styles.redLabelSmall}>Snacks</div>
                       </div>
-                      <div className={styles.foodTypeLabel}>
+                      <div
+                        className={
+                          renderFoodType("cannedFoods")
+                            ? styles.foodTypeLabelActive
+                            : styles.foodTypeLabelInactive
+                        }
+                      >
                         <img src={CanIconSVG} style={{ padding: "5px 0px" }} />
                         <div className={styles.redLabelSmall}>Canned Foods</div>
                       </div>
@@ -847,7 +1202,6 @@ function EditMeal({ history, ...props }) {
                     <div>Saturday</div>
                     <div>Sunday</div>
                   </Col>
-                  {console.log(displayBusinessHours("Monday"))}
                   <Col md="auto" style={{ textAlign: "center" }}>
                     <div>{displayBusinessHours("Monday")}</div>
                     <div>{displayBusinessHours("Tuesday")}</div>
@@ -1149,18 +1503,18 @@ function EditMeal({ history, ...props }) {
                   <img
                     height="150px"
                     width="150px"
-                    // src={state.editedBusinessData.business_image}
+                    src={state.editedBusinessData.business_image}
                   ></img>
                   <input
                     type="file"
                     name="upload_file"
-                    // onChange={(e) => {
-                    //   state.selectedFile = e.target.files[0];
-                    //   editBusiness(
-                    //     "business_image",
-                    //     URL.createObjectURL(e.target.files[0])
-                    //   );
-                    // }}
+                    onChange={(e) => {
+                      state.selectedFile = e.target.files[0];
+                      editBusiness(
+                        "business_image",
+                        URL.createObjectURL(e.target.files[0])
+                      );
+                    }}
                   />
                 </Form.Group>
                 <Form.Group
@@ -1174,10 +1528,10 @@ function EditMeal({ history, ...props }) {
                   <Form.Control
                     as="input"
                     placeholder="Enter Business Name"
-                    // value={state.editedBusinessData.business_name}
-                    // onChange={(event) =>
-                    //   editBusiness("business_name", event.target.value)
-                    // }
+                    value={state.editedBusinessData.business_name}
+                    onChange={(event) =>
+                      editBusiness("business_name", event.target.value)
+                    }
                   />
                 </Form.Group>
                 <Form.Group
@@ -1191,10 +1545,10 @@ function EditMeal({ history, ...props }) {
                   <Form.Control
                     as="input"
                     placeholder="Enter Business Type"
-                    // value={state.editedBusinessData.business_type}
-                    // onChange={(event) =>
-                    //   editBusiness("business_type", event.target.value)
-                    // }
+                    value={state.editedBusinessData.business_type}
+                    onChange={(event) =>
+                      editBusiness("business_type", event.target.value)
+                    }
                   />
                 </Form.Group>
                 <Form.Group
@@ -1208,10 +1562,10 @@ function EditMeal({ history, ...props }) {
                   <Form.Control
                     as="textarea"
                     placeholder="Enter Business Description"
-                    // value={state.editedBusinessData.business_desc}
-                    // onChange={(event) =>
-                    //   editBusiness("business_desc", event.target.value)
-                    // }
+                    value={state.editedBusinessData.business_desc}
+                    onChange={(event) =>
+                      editBusiness("business_desc", event.target.value)
+                    }
                   />
                 </Form.Group>
               </div>
@@ -1227,15 +1581,15 @@ function EditMeal({ history, ...props }) {
                     <Form.Control
                       as="input"
                       placeholder="Enter First Name"
-                      // value={
-                      //   state.editedBusinessData.business_contact_first_name
-                      // }
-                      // onChange={(event) =>
-                      //   editBusiness(
-                      //     "business_contact_first_name",
-                      //     event.target.value
-                      //   )
-                      // }
+                      value={
+                        state.editedBusinessData.business_contact_first_name
+                      }
+                      onChange={(event) =>
+                        editBusiness(
+                          "business_contact_first_name",
+                          event.target.value
+                        )
+                      }
                     />
                   </Form.Group>
                   <Form.Group style={{ width: "45%" }}>
@@ -1243,15 +1597,15 @@ function EditMeal({ history, ...props }) {
                     <Form.Control
                       as="input"
                       placeholder="Enter Last Name"
-                      // value={
-                      //   state.editedBusinessData.business_contact_last_name
-                      // }
-                      // onChange={(event) =>
-                      //   editBusiness(
-                      //     "business_contact_last_name",
-                      //     event.target.value
-                      //   )
-                      // }
+                      value={
+                        state.editedBusinessData.business_contact_last_name
+                      }
+                      onChange={(event) =>
+                        editBusiness(
+                          "business_contact_last_name",
+                          event.target.value
+                        )
+                      }
                     />
                   </Form.Group>
                 </Row>
@@ -1261,10 +1615,10 @@ function EditMeal({ history, ...props }) {
                     <Form.Control
                       as="input"
                       placeholder="Enter Phone Number"
-                      // value={state.editedBusinessData.business_phone_num}
-                      // onChange={(event) =>
-                      //   editBusiness("business_phone_num", event.target.value)
-                      // }
+                      value={state.editedBusinessData.business_phone_num}
+                      onChange={(event) =>
+                        editBusiness("business_phone_num", event.target.value)
+                      }
                     />
                   </Form.Group>
                   <Form.Group style={{ width: "45%" }}>
@@ -1272,10 +1626,10 @@ function EditMeal({ history, ...props }) {
                     <Form.Control
                       as="input"
                       placeholder="Enter Phone Number"
-                      // value={state.editedBusinessData.business_phone_num2}
-                      // onChange={(event) =>
-                      //   editBusiness("business_phone_num2", event.target.value)
-                      // }
+                      value={state.editedBusinessData.business_phone_num2}
+                      onChange={(event) =>
+                        editBusiness("business_phone_num2", event.target.value)
+                      }
                     />
                   </Form.Group>
                 </Row>
@@ -1285,10 +1639,10 @@ function EditMeal({ history, ...props }) {
                     <Form.Control
                       as="input"
                       placeholder="Enter Street Address"
-                      // value={state.editedBusinessData.business_address}
-                      // onChange={(event) =>
-                      //   editBusiness("business_address", event.target.value)
-                      // }
+                      value={state.editedBusinessData.business_address}
+                      onChange={(event) =>
+                        editBusiness("business_address", event.target.value)
+                      }
                     />
                   </Form.Group>
                   <Form.Group style={{ width: "30%" }}>
@@ -1296,10 +1650,10 @@ function EditMeal({ history, ...props }) {
                     <Form.Control
                       as="input"
                       placeholder="Enter Unit No."
-                      // value={state.editedBusinessData.business_unit}
-                      // onChange={(event) =>
-                      //   editBusiness("business_unit", event.target.value)
-                      // }
+                      value={state.editedBusinessData.business_unit}
+                      onChange={(event) =>
+                        editBusiness("business_unit", event.target.value)
+                      }
                     />
                   </Form.Group>
                 </Row>
@@ -1314,10 +1668,10 @@ function EditMeal({ history, ...props }) {
                   <Form.Control
                     as="input"
                     placeholder="Enter City"
-                    // value={state.editedBusinessData.business_city}
-                    // onChange={(event) =>
-                    //   editBusiness("business_city", event.target.value)
-                    // }
+                    value={state.editedBusinessData.business_city}
+                    onChange={(event) =>
+                      editBusiness("business_city", event.target.value)
+                    }
                   />
                 </Form.Group>
                 <Row style={{ margin: "0px", justifyContent: "center" }}>
@@ -1326,10 +1680,10 @@ function EditMeal({ history, ...props }) {
                     <Form.Control
                       as="input"
                       placeholder="Enter State"
-                      // value={state.editedBusinessData.business_state}
-                      // onChange={(event) =>
-                      //   editBusiness("business_state", event.target.value)
-                      // }
+                      value={state.editedBusinessData.business_state}
+                      onChange={(event) =>
+                        editBusiness("business_state", event.target.value)
+                      }
                     />
                   </Form.Group>
                   <Form.Group style={{ width: "45%" }}>
@@ -1337,10 +1691,10 @@ function EditMeal({ history, ...props }) {
                     <Form.Control
                       as="input"
                       placeholder="Enter Zip"
-                      // value={state.editedBusinessData.business_zip}
-                      // onChange={(event) =>
-                      //   editBusiness("business_zip", event.target.value)
-                      // }
+                      value={state.editedBusinessData.business_zip}
+                      onChange={(event) =>
+                        editBusiness("business_zip", event.target.value)
+                      }
                     />
                   </Form.Group>
                   <Form.Group
@@ -1356,11 +1710,11 @@ function EditMeal({ history, ...props }) {
                       type="radio"
                       id="reusable"
                       name="storage"
-                      // value={1}
-                      // checked={state.editedBusinessData.reusable === 1}
-                      // onChange={(event) =>
-                      //   editBusiness("reusable", Number(event.target.value))
-                      // }
+                      value={1}
+                      checked={state.editedBusinessData.reusable === 1}
+                      onChange={(event) =>
+                        editBusiness("reusable", Number(event.target.value))
+                      }
                     />{" "}
                     Reusable
                     <br />
@@ -1368,11 +1722,11 @@ function EditMeal({ history, ...props }) {
                       type="radio"
                       id="disposable"
                       name="storage"
-                      // value={0}
-                      // checked={state.editedBusinessData.reusable === 0}
-                      // onChange={(event) =>
-                      //   editBusiness("reusable", Number(event.target.value))
-                      // }
+                      value={0}
+                      checked={state.editedBusinessData.reusable === 0}
+                      onChange={(event) =>
+                        editBusiness("reusable", Number(event.target.value))
+                      }
                     />{" "}
                     Disposable
                   </Form.Group>
@@ -1389,11 +1743,11 @@ function EditMeal({ history, ...props }) {
                       type="radio"
                       id="can_cancel"
                       name="cancellation"
-                      // value={1}
-                      // checked={state.editedBusinessData.can_cancel === 1}
-                      // onChange={(event) =>
-                      //   editBusiness("can_cancel", Number(event.target.value))
-                      // }
+                      value={1}
+                      checked={state.editedBusinessData.can_cancel === 1}
+                      onChange={(event) =>
+                        editBusiness("can_cancel", Number(event.target.value))
+                      }
                     />{" "}
                     Allow cancellation within ordering hours
                     <br />
@@ -1401,11 +1755,11 @@ function EditMeal({ history, ...props }) {
                       type="radio"
                       id="no_cancel"
                       name="cancellation"
-                      // value={0}
-                      // checked={state.editedBusinessData.can_cancel === 0}
-                      // onChange={(event) =>
-                      //   editBusiness("can_cancel", Number(event.target.value))
-                      // }
+                      value={0}
+                      checked={state.editedBusinessData.can_cancel === 0}
+                      onChange={(event) =>
+                        editBusiness("can_cancel", Number(event.target.value))
+                      }
                     />{" "}
                     Cancellations not allowed
                   </Form.Group>
@@ -1422,13 +1776,13 @@ function EditMeal({ history, ...props }) {
                       type="radio"
                       id="active"
                       name="businessStatus"
-                      // value={"ACTIVE"}
-                      // checked={
-                      //   state.editedBusinessData.business_status === "ACTIVE"
-                      // }
-                      // onChange={(event) =>
-                      //   editBusiness("business_status", event.target.value)
-                      // }
+                      value={"ACTIVE"}
+                      checked={
+                        state.editedBusinessData.business_status === "ACTIVE"
+                      }
+                      onChange={(event) =>
+                        editBusiness("business_status", event.target.value)
+                      }
                     />{" "}
                     Active
                     <br />
@@ -1436,13 +1790,13 @@ function EditMeal({ history, ...props }) {
                       type="radio"
                       id="Inactive"
                       name="businessStatus"
-                      // value={"INACTIVE"}
-                      // checked={
-                      //   state.editedBusinessData.business_status === "INACTIVE"
-                      // }
-                      // onChange={(event) =>
-                      //   editBusiness("business_status", event.target.value)
-                      // }
+                      value={"INACTIVE"}
+                      checked={
+                        state.editedBusinessData.business_status === "INACTIVE"
+                      }
+                      onChange={(event) =>
+                        editBusiness("business_status", event.target.value)
+                      }
                     />{" "}
                     Inactive
                   </Form.Group>
@@ -1463,7 +1817,11 @@ function EditMeal({ history, ...props }) {
                 >
                   <Form.Label>Types of Food</Form.Label>
                   <div className={styles.editFoodTypeLabel}>
-                    <Form.Check type="checkbox" />
+                    <Form.Check
+                      type="checkbox"
+                      checked={getEditedFoodTypes("fruits")}
+                      onChange={() => changeTypeOfFood("fruits")}
+                    />
                     <img src={FruitIconSVG} />
                     <div
                       className={styles.redLabelHeader}
@@ -1473,7 +1831,11 @@ function EditMeal({ history, ...props }) {
                     </div>
                   </div>
                   <div className={styles.editFoodTypeLabel}>
-                    <Form.Check type="checkbox" />
+                    <Form.Check
+                      type="checkbox"
+                      checked={getEditedFoodTypes("vegetables")}
+                      onChange={() => changeTypeOfFood("vegetables")}
+                    />
                     <img src={VegetableIconSVG} />
                     <div
                       className={styles.redLabelHeader}
@@ -1483,7 +1845,11 @@ function EditMeal({ history, ...props }) {
                     </div>
                   </div>
                   <div className={styles.editFoodTypeLabel}>
-                    <Form.Check type="checkbox" />
+                    <Form.Check
+                      type="checkbox"
+                      checked={getEditedFoodTypes("meals")}
+                      onChange={() => changeTypeOfFood("meals")}
+                    />
                     <img src={MealIconSVG} />
                     <div
                       className={styles.redLabelHeader}
@@ -1493,7 +1859,11 @@ function EditMeal({ history, ...props }) {
                     </div>
                   </div>
                   <div className={styles.editFoodTypeLabel}>
-                    <Form.Check type="checkbox" />
+                    <Form.Check
+                      type="checkbox"
+                      checked={getEditedFoodTypes("desserts")}
+                      onChange={() => changeTypeOfFood("desserts")}
+                    />
                     <img src={DessertIconSVG} />
                     <div
                       className={styles.redLabelHeader}
@@ -1503,7 +1873,11 @@ function EditMeal({ history, ...props }) {
                     </div>
                   </div>
                   <div className={styles.editFoodTypeLabel}>
-                    <Form.Check type="checkbox" />
+                    <Form.Check
+                      type="checkbox"
+                      checked={getEditedFoodTypes("beverages")}
+                      onChange={() => changeTypeOfFood("beverages")}
+                    />
                     <img src={BeverageIconSVG} />
                     <div
                       className={styles.redLabelHeader}
@@ -1513,7 +1887,11 @@ function EditMeal({ history, ...props }) {
                     </div>
                   </div>
                   <div className={styles.editFoodTypeLabel}>
-                    <Form.Check type="checkbox" />
+                    <Form.Check
+                      type="checkbox"
+                      checked={getEditedFoodTypes("dairy")}
+                      onChange={() => changeTypeOfFood("dairy")}
+                    />
                     <img src={DairyIconSVG} />
                     <div
                       className={styles.redLabelHeader}
@@ -1523,13 +1901,31 @@ function EditMeal({ history, ...props }) {
                     </div>
                   </div>
                   <div className={styles.editFoodTypeLabel}>
-                    <Form.Check type="checkbox" />
+                    <Form.Check
+                      type="checkbox"
+                      checked={getEditedFoodTypes("snacks")}
+                      onChange={() => changeTypeOfFood("snacks")}
+                    />
                     <img src={SnackIconSVG} />
                     <div
                       className={styles.redLabelHeader}
                       style={{ padding: "5px" }}
                     >
                       Snacks
+                    </div>
+                  </div>
+                  <div className={styles.editFoodTypeLabel}>
+                    <Form.Check
+                      type="checkbox"
+                      checked={getEditedFoodTypes("cannedFoods")}
+                      onChange={() => changeTypeOfFood("cannedFoods")}
+                    />
+                    <img src={CanIconSVG} />
+                    <div
+                      className={styles.redLabelHeader}
+                      style={{ padding: "5px" }}
+                    >
+                      Canned Foods
                     </div>
                   </div>
                 </Form.Group>
@@ -1561,15 +1957,15 @@ function EditMeal({ history, ...props }) {
                     <Form.Control
                       as="input"
                       style={{ width: "30%" }}
-                      // value={getEditedBusinessHours().Monday[0]}
-                      // placeholder="HH:MM:SS"
-                      // onChange={(event) => {
-                      //   changeBusinessHours(
-                      //     "Monday",
-                      //     event.target.value,
-                      //     getEditedBusinessHours().Monday[1]
-                      //   );
-                      // }}
+                      value={getEditedBusinessHours().Monday[0]}
+                      placeholder="HH:MM:SS"
+                      onChange={(event) => {
+                        changeBusinessHours(
+                          "Monday",
+                          event.target.value,
+                          getEditedBusinessHours().Monday[1]
+                        );
+                      }}
                     />{" "}
                     <div
                       style={{
@@ -1583,15 +1979,15 @@ function EditMeal({ history, ...props }) {
                     <Form.Control
                       as="input"
                       style={{ width: "30%" }}
-                      // value={getEditedBusinessHours().Monday[1]}
-                      // placeholder="HH:MM:SS"
-                      // onChange={(event) => {
-                      //   changeBusinessHours(
-                      //     "Monday",
-                      //     getEditedBusinessHours().Monday[0],
-                      //     event.target.value
-                      //   );
-                      // }}
+                      value={getEditedBusinessHours().Monday[1]}
+                      placeholder="HH:MM:SS"
+                      onChange={(event) => {
+                        changeBusinessHours(
+                          "Monday",
+                          getEditedBusinessHours().Monday[0],
+                          event.target.value
+                        );
+                      }}
                     />
                   </Row>
                   <Row style={{ margin: "0px", padding: "5px 0px 5px 0px" }}>
@@ -1607,15 +2003,15 @@ function EditMeal({ history, ...props }) {
                     <Form.Control
                       as="input"
                       style={{ width: "30%" }}
-                      // value={getEditedBusinessHours().Tuesday[0]}
-                      // placeholder="HH:MM:SS"
-                      // onChange={(event) => {
-                      //   changeBusinessHours(
-                      //     "Tuesday",
-                      //     event.target.value,
-                      //     getEditedBusinessHours().Tuesday[1]
-                      //   );
-                      // }}
+                      value={getEditedBusinessHours().Tuesday[0]}
+                      placeholder="HH:MM:SS"
+                      onChange={(event) => {
+                        changeBusinessHours(
+                          "Tuesday",
+                          event.target.value,
+                          getEditedBusinessHours().Tuesday[1]
+                        );
+                      }}
                     />{" "}
                     <div
                       style={{
@@ -1629,15 +2025,15 @@ function EditMeal({ history, ...props }) {
                     <Form.Control
                       as="input"
                       style={{ width: "30%" }}
-                      // value={getEditedBusinessHours().Tuesday[1]}
-                      // placeholder="HH:MM:SS"
-                      // onChange={(event) => {
-                      //   changeBusinessHours(
-                      //     "Tuesday",
-                      //     getEditedBusinessHours().Tuesday[0],
-                      //     event.target.value
-                      //   );
-                      // }}
+                      value={getEditedBusinessHours().Tuesday[1]}
+                      placeholder="HH:MM:SS"
+                      onChange={(event) => {
+                        changeBusinessHours(
+                          "Tuesday",
+                          getEditedBusinessHours().Tuesday[0],
+                          event.target.value
+                        );
+                      }}
                     />
                   </Row>
                   <Row style={{ margin: "0px", padding: "5px 0px 5px 0px" }}>
@@ -1653,15 +2049,15 @@ function EditMeal({ history, ...props }) {
                     <Form.Control
                       as="input"
                       style={{ width: "30%" }}
-                      // value={getEditedBusinessHours().Wednesday[0]}
-                      // placeholder="HH:MM:SS"
-                      // onChange={(event) => {
-                      //   changeBusinessHours(
-                      //     "Wednesday",
-                      //     event.target.value,
-                      //     getEditedBusinessHours().Wednesday[1]
-                      //   );
-                      // }}
+                      value={getEditedBusinessHours().Wednesday[0]}
+                      placeholder="HH:MM:SS"
+                      onChange={(event) => {
+                        changeBusinessHours(
+                          "Wednesday",
+                          event.target.value,
+                          getEditedBusinessHours().Wednesday[1]
+                        );
+                      }}
                     />{" "}
                     <div
                       style={{
@@ -1675,15 +2071,15 @@ function EditMeal({ history, ...props }) {
                     <Form.Control
                       as="input"
                       style={{ width: "30%" }}
-                      // value={getEditedBusinessHours().Wednesday[1]}
-                      // placeholder="HH:MM:SS"
-                      // onChange={(event) => {
-                      //   changeBusinessHours(
-                      //     "Wednesday",
-                      //     getEditedBusinessHours().Wednesday[0],
-                      //     event.target.value
-                      //   );
-                      // }}
+                      value={getEditedBusinessHours().Wednesday[1]}
+                      placeholder="HH:MM:SS"
+                      onChange={(event) => {
+                        changeBusinessHours(
+                          "Wednesday",
+                          getEditedBusinessHours().Wednesday[0],
+                          event.target.value
+                        );
+                      }}
                     />
                   </Row>
                   <Row style={{ margin: "0px", padding: "5px 0px 5px 0px" }}>
@@ -1699,15 +2095,15 @@ function EditMeal({ history, ...props }) {
                     <Form.Control
                       as="input"
                       style={{ width: "30%" }}
-                      // value={getEditedBusinessHours().Thursday[0]}
-                      // placeholder="HH:MM:SS"
-                      // onChange={(event) => {
-                      //   changeBusinessHours(
-                      //     "Thursday",
-                      //     event.target.value,
-                      //     getEditedBusinessHours().Thursday[1]
-                      //   );
-                      // }}
+                      value={getEditedBusinessHours().Thursday[0]}
+                      placeholder="HH:MM:SS"
+                      onChange={(event) => {
+                        changeBusinessHours(
+                          "Thursday",
+                          event.target.value,
+                          getEditedBusinessHours().Thursday[1]
+                        );
+                      }}
                     />{" "}
                     <div
                       style={{
@@ -1721,15 +2117,15 @@ function EditMeal({ history, ...props }) {
                     <Form.Control
                       as="input"
                       style={{ width: "30%" }}
-                      // value={getEditedBusinessHours().Thursday[1]}
-                      // placeholder="HH:MM:SS"
-                      // onChange={(event) => {
-                      //   changeBusinessHours(
-                      //     "Thursday",
-                      //     getEditedBusinessHours().Thursday[0],
-                      //     event.target.value
-                      //   );
-                      // }}
+                      value={getEditedBusinessHours().Thursday[1]}
+                      placeholder="HH:MM:SS"
+                      onChange={(event) => {
+                        changeBusinessHours(
+                          "Thursday",
+                          getEditedBusinessHours().Thursday[0],
+                          event.target.value
+                        );
+                      }}
                     />
                   </Row>
                   <Row style={{ margin: "0px", padding: "5px 0px 5px 0px" }}>
@@ -1745,15 +2141,15 @@ function EditMeal({ history, ...props }) {
                     <Form.Control
                       as="input"
                       style={{ width: "30%" }}
-                      // value={getEditedBusinessHours().Friday[0]}
-                      // placeholder="HH:MM:SS"
-                      // onChange={(event) => {
-                      //   changeBusinessHours(
-                      //     "Friday",
-                      //     event.target.value,
-                      //     getEditedBusinessHours().Friday[1]
-                      //   );
-                      // }}
+                      value={getEditedBusinessHours().Friday[0]}
+                      placeholder="HH:MM:SS"
+                      onChange={(event) => {
+                        changeBusinessHours(
+                          "Friday",
+                          event.target.value,
+                          getEditedBusinessHours().Friday[1]
+                        );
+                      }}
                     />{" "}
                     <div
                       style={{
@@ -1767,15 +2163,15 @@ function EditMeal({ history, ...props }) {
                     <Form.Control
                       as="input"
                       style={{ width: "30%" }}
-                      // value={getEditedBusinessHours().Friday[1]}
-                      // placeholder="HH:MM:SS"
-                      // onChange={(event) => {
-                      //   changeBusinessHours(
-                      //     "Friday",
-                      //     getEditedBusinessHours().Friday[0],
-                      //     event.target.value
-                      //   );
-                      // }}
+                      value={getEditedBusinessHours().Friday[1]}
+                      placeholder="HH:MM:SS"
+                      onChange={(event) => {
+                        changeBusinessHours(
+                          "Friday",
+                          getEditedBusinessHours().Friday[0],
+                          event.target.value
+                        );
+                      }}
                     />
                   </Row>
                   <Row style={{ margin: "0px", padding: "5px 0px 5px 0px" }}>
@@ -1791,15 +2187,15 @@ function EditMeal({ history, ...props }) {
                     <Form.Control
                       as="input"
                       style={{ width: "30%" }}
-                      // value={getEditedBusinessHours().Saturday[0]}
-                      // placeholder="HH:MM:SS"
-                      // onChange={(event) => {
-                      //   changeBusinessHours(
-                      //     "Saturday",
-                      //     event.target.value,
-                      //     getEditedBusinessHours().Saturday[1]
-                      //   );
-                      // }}
+                      value={getEditedBusinessHours().Saturday[0]}
+                      placeholder="HH:MM:SS"
+                      onChange={(event) => {
+                        changeBusinessHours(
+                          "Saturday",
+                          event.target.value,
+                          getEditedBusinessHours().Saturday[1]
+                        );
+                      }}
                     />{" "}
                     <div
                       style={{
@@ -1813,15 +2209,15 @@ function EditMeal({ history, ...props }) {
                     <Form.Control
                       as="input"
                       style={{ width: "30%" }}
-                      // value={getEditedBusinessHours().Saturday[1]}
-                      // placeholder="HH:MM:SS"
-                      // onChange={(event) => {
-                      //   changeBusinessHours(
-                      //     "Saturday",
-                      //     getEditedBusinessHours().Saturday[0],
-                      //     event.target.value
-                      //   );
-                      // }}
+                      value={getEditedBusinessHours().Saturday[1]}
+                      placeholder="HH:MM:SS"
+                      onChange={(event) => {
+                        changeBusinessHours(
+                          "Saturday",
+                          getEditedBusinessHours().Saturday[0],
+                          event.target.value
+                        );
+                      }}
                     />
                   </Row>
                   <Row style={{ margin: "0px", padding: "5px 0px 5px 0px" }}>
@@ -1837,15 +2233,15 @@ function EditMeal({ history, ...props }) {
                     <Form.Control
                       as="input"
                       style={{ width: "30%" }}
-                      // value={getEditedBusinessHours().Sunday[0]}
-                      // placeholder="HH:MM:SS"
-                      // onChange={(event) => {
-                      //   changeBusinessHours(
-                      //     "Sunday",
-                      //     event.target.value,
-                      //     getEditedBusinessHours().Sunday[1]
-                      //   );
-                      // }}
+                      value={getEditedBusinessHours().Sunday[0]}
+                      placeholder="HH:MM:SS"
+                      onChange={(event) => {
+                        changeBusinessHours(
+                          "Sunday",
+                          event.target.value,
+                          getEditedBusinessHours().Sunday[1]
+                        );
+                      }}
                     />{" "}
                     <div
                       style={{
@@ -1859,15 +2255,15 @@ function EditMeal({ history, ...props }) {
                     <Form.Control
                       as="input"
                       style={{ width: "30%" }}
-                      // value={getEditedBusinessHours().Sunday[1]}
-                      // placeholder="HH:MM:SS"
-                      // onChange={(event) => {
-                      //   changeBusinessHours(
-                      //     "Sunday",
-                      //     getEditedBusinessHours().Sunday[0],
-                      //     event.target.value
-                      //   );
-                      // }}
+                      value={getEditedBusinessHours().Sunday[1]}
+                      placeholder="HH:MM:SS"
+                      onChange={(event) => {
+                        changeBusinessHours(
+                          "Sunday",
+                          getEditedBusinessHours().Sunday[0],
+                          event.target.value
+                        );
+                      }}
                     />
                   </Row>
                 </Form.Group>
@@ -1884,14 +2280,14 @@ function EditMeal({ history, ...props }) {
                     <Form.Control
                       as="input"
                       placeholder="Enter Facebook URL"
-                      // value={state.editedBusinessData.business_facebook_url}
+                      value={state.editedBusinessData.business_facebook_url}
                       style={{ width: "80%" }}
-                      // onChange={(event) =>
-                      //   editBusiness(
-                      //     "business_facebook_url",
-                      //     event.target.value
-                      //   )
-                      // }
+                      onChange={(event) =>
+                        editBusiness(
+                          "business_facebook_url",
+                          event.target.value
+                        )
+                      }
                     />
                   </Row>
                   <Row style={{ padding: "5px 0px 5px 0px" }}>
@@ -1899,14 +2295,14 @@ function EditMeal({ history, ...props }) {
                     <Form.Control
                       as="input"
                       placeholder="Enter Instagram URL"
-                      // value={state.editedBusinessData.business_instagram_url}
+                      value={state.editedBusinessData.business_instagram_url}
                       style={{ width: "80%" }}
-                      // onChange={(event) =>
-                      //   editBusiness(
-                      //     "business_instagram_url",
-                      //     event.target.value
-                      //   )
-                      // }
+                      onChange={(event) =>
+                        editBusiness(
+                          "business_instagram_url",
+                          event.target.value
+                        )
+                      }
                     />
                   </Row>
                   <Row style={{ padding: "5px 0px 5px 0px" }}>
@@ -1914,11 +2310,11 @@ function EditMeal({ history, ...props }) {
                     <Form.Control
                       as="input"
                       placeholder="Enter Twitter URL"
-                      // value={state.editedBusinessData.business_twitter_url}
+                      value={state.editedBusinessData.business_twitter_url}
                       style={{ width: "80%" }}
-                      // onChange={(event) =>
-                      //   editBusiness("business_twitter_url", event.target.value)
-                      // }
+                      onChange={(event) =>
+                        editBusiness("business_twitter_url", event.target.value)
+                      }
                     />
                   </Row>
                   <Row style={{ padding: "5px 0px 5px 0px" }}>
@@ -1926,11 +2322,11 @@ function EditMeal({ history, ...props }) {
                     <Form.Control
                       as="input"
                       placeholder="Enter Business Website URL"
-                      // value={state.editedBusinessData.business_website_url}
+                      value={state.editedBusinessData.business_website_url}
                       style={{ width: "80%" }}
-                      // onChange={(event) =>
-                      //   editBusiness("business_website_url", event.target.value)
-                      // }
+                      onChange={(event) =>
+                        editBusiness("business_website_url", event.target.value)
+                      }
                     />
                   </Row>
                 </Form.Group>
@@ -1956,7 +2352,13 @@ function EditMeal({ history, ...props }) {
                   padding: "0px",
                   border: "1px solid #E7404A",
                 }}
-                // onClick={() => dispatch({ type: "TOGGLE_EDIT_BUSINESS" })}
+                onClick={() =>
+                  // TODO - Reset edited business data
+                  dispatch({
+                    type: "TOGGLE_SHOW_BUSINESS_DETAILS",
+                    payload: "",
+                  })
+                }
               >
                 Cancel
               </Button>
@@ -1971,12 +2373,205 @@ function EditMeal({ history, ...props }) {
                   margin: "5px",
                   border: "1px solid #E7404A",
                 }}
-                // onClick={() => saveBusinessData()}
+                onClick={() => saveBusinessData()}
               >
                 Save Changes
               </Button>
             </div>
           </Row>
+        )}
+        {state.showAddFoodBank && (
+          <div
+            style={{
+              height: "100%",
+              width: "100%",
+              zIndex: "101",
+              left: "0",
+              top: "0",
+              overflow: "auto",
+              position: "fixed",
+              display: "grid",
+              backgroundColor: "rgba(255, 255, 255, 0.8)",
+            }}
+          >
+            <div
+              style={{
+                position: "relative",
+                justifySelf: "center",
+                alignSelf: "center",
+                display: "block",
+                border: "2px solid #E7404A",
+                backgroundColor: "white",
+                height: "auto",
+                width: "auto",
+                zIndex: "102",
+                padding: "10px 0px 10px 0px",
+                borderRadius: "20px",
+              }}
+            >
+              <div style={{ textAlign: "right", padding: "10px" }}>
+                {/* <ModalCloseBtn
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  dispatch({ type: "CLOSE_MODAL" });
+                }}
+              /> */}
+              </div>
+              <div
+                style={{
+                  border: "none",
+                  paddingLeft: "15px",
+                  fontWeight: "bold",
+                }}
+              >
+                <Modal.Title style={{ fontWeight: "bold" }}>
+                  {" "}
+                  Add Food Bank{" "}
+                </Modal.Title>
+              </div>
+              <Modal.Body>
+                <Form>
+                  <Form.Group as={Row}>
+                    <Form.Label column sm={4} className={styles.modalFormLabel}>
+                      Food Bank Name
+                    </Form.Label>
+                    <Col sm={7}>
+                      <Form.Control
+                        placeholder="Enter Name"
+                        // value={state.editedMeal.meal_hint}
+                        // onChange={(event) => {
+                        //   editMeal("meal_hint", event.target.value);
+                        // }}
+                      />
+                    </Col>
+                  </Form.Group>
+                  <Form.Group as={Row}>
+                    <Form.Label column sm={4} className={styles.modalFormLabel}>
+                      Picture
+                    </Form.Label>
+                    <Col sm={7}>
+                      <div
+                        style={{ textAlign: "center", marginBottom: "15px" }}
+                      >
+                        {/* {state.editedMeal.meal_photo_URL && (
+                          <img
+                            // src={state.previewLink}
+                            src={state.editedMeal.meal_photo_URL}
+                            height="150px"
+                            width="150px"
+                          ></img>
+                        )} */}
+                      </div>
+
+                      <input
+                        type="file"
+                        name="upload_file"
+                        // onChange={(e) => {
+                        //   state.selectedFile = e.target.files[0];
+                        //   dispatch({
+                        //     type: "SET_PREVIEW",
+                        //     payload: URL.createObjectURL(e.target.files[0]),
+                        //   });
+                        //   editMeal(
+                        //     "meal_photo_URL",
+                        //     URL.createObjectURL(e.target.files[0])
+                        //   );
+                        // }}
+                      />
+                    </Col>
+                  </Form.Group>
+                  <Form.Group as={Row}>
+                    <Form.Label column sm={4} className={styles.modalFormLabel}>
+                      Address
+                    </Form.Label>
+                    <Col sm={7}>
+                      <Form.Control
+                        placeholder="Enter Address"
+                        // value={state.editedMeal.meal_hint}
+                        // onChange={(event) => {
+                        //   editMeal("meal_hint", event.target.value);
+                        // }}
+                      />
+                    </Col>
+                  </Form.Group>
+                  <Form.Group as={Row}>
+                    <Form.Label column sm={4} className={styles.modalFormLabel}>
+                      Phone Number
+                    </Form.Label>
+                    <Col sm={7}>
+                      <Form.Control
+                        placeholder="Enter Phone Number"
+                        // value={state.editedMeal.meal_hint}
+                        // onChange={(event) => {
+                        //   editMeal("meal_hint", event.target.value);
+                        // }}
+                      />
+                    </Col>
+                  </Form.Group>
+                  <Form.Group as={Row}>
+                    <Form.Label column sm={4} className={styles.modalFormLabel}>
+                      Types of Food +
+                    </Form.Label>
+                    <Col sm={7}>
+                      <Form.Control
+
+                      // value={state.editedMeal.meal_hint}
+                      // onChange={(event) => {
+                      //   editMeal("meal_hint", event.target.value);
+                      // }}
+                      />
+                    </Col>
+                  </Form.Group>
+                  <Form.Group as={Row}>
+                    <Form.Label column sm={4} className={styles.modalFormLabel}>
+                      Item Limit
+                    </Form.Label>
+                    <Col sm={7}>
+                      <Form.Control
+                        placeholder="Enter Item Limit"
+                        // value={state.editedMeal.meal_hint}
+                        // onChange={(event) => {
+                        //   editMeal("meal_hint", event.target.value);
+                        // }}
+                      />
+                    </Col>
+                  </Form.Group>
+                  <Form.Group as={Row}>
+                    <Form.Label column sm={4} className={styles.modalFormLabel}>
+                      Email
+                    </Form.Label>
+                    <Col sm={7}>
+                      <Form.Control
+                        placeholder="Enter Email"
+                        // value={state.editedMeal.meal_hint}
+                        // onChange={(event) => {
+                        //   editMeal("meal_hint", event.target.value);
+                        // }}
+                      />
+                    </Col>
+                  </Form.Group>
+                </Form>
+              </Modal.Body>
+              <Modal.Footer
+                style={{ border: "none", justifyContent: "center" }}
+              >
+                <button
+                  style={{
+                    height: "50px",
+                    width: "322px",
+                    backgroundColor: "white",
+                    border: "1px solid #E7404A",
+                    borderRadius: "25px",
+                    color: "#E7404A",
+                    boxShadow: "0px 3px 6px #00000029",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Save Food Bank
+                </button>
+              </Modal.Footer>
+            </div>
+          </div>
         )}
       </Container>
     </div>
