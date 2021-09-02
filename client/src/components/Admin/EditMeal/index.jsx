@@ -760,18 +760,19 @@ function EditMeal({ history, ...props }) {
 
     let businessDataStatus = null;
     let imageUploadStatus = null;
+    let businessID = state.selectedBusinessID;
     axios
       .post(`${API_URL}${endpointURL}`, businessData)
       .then((res) => {
         businessDataStatus = res.status;
         if (modalMode === "NEW") {
-          const newBusinessID = res.data.uid;
-          document.cookie = `last_active_business = ${newBusinessID}`;
+          businessID = res.data.uid;
+          document.cookie = `last_active_business = ${businessID}`;
         }
         if (state.selectedFile) {
           const imageFormData = new FormData();
           imageFormData.append("bus_photo", state.selectedFile);
-          imageFormData.append("uid", state.selectedBusinessID);
+          imageFormData.append("uid", businessID);
 
           return axios.post(`${API_URL}business_image_upload`, imageFormData);
         }
