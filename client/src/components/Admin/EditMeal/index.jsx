@@ -125,6 +125,12 @@ const initialState = {
   menuDate: "",
   showEditBusinessDetails: false,
   showAddFoodBank: false,
+  searchFoodBankName: "",
+  searchFoodBankAddr: "",
+  sortBusiness: {
+    field: "",
+    direction: "asc",
+  },
 };
 
 // styles used to customize material table
@@ -224,7 +230,24 @@ function reducer(state, action) {
         ...state,
         selectedFile: action.payload,
       };
-
+    case "SEARCH_FOOD_BANK_NAME":
+      return {
+        ...state,
+        searchFoodBankName: action.payload,
+      };
+    case "SEARCH_FOOD_BANK_ADDR":
+      return {
+        ...state,
+        searchFoodBankAddr: action.payload,
+      };
+    case "SORT_BUSINESSES":
+      return {
+        ...state,
+        sortBusiness: {
+          field: action.payload.field,
+          direction: action.payload.direction,
+        },
+      };
     default:
       return state;
   }
@@ -481,6 +504,37 @@ function EditMeal({ history, ...props }) {
         cannedFoods: 0,
       };
     }
+  };
+
+  const sortBusinessData = (field) => {
+    const isAsc =
+      state.sortBusiness.field === field &&
+      state.sortBusiness.direction === "asc";
+    const direction = isAsc ? "desc" : "asc";
+    dispatch({
+      type: "SORT_BUSINESSES",
+      payload: {
+        field: field,
+        direction: direction,
+      },
+    });
+    const sortedBusinesses = sortedArray(state.businessData, field, direction);
+    // dispatch({
+    //   type: "FETCH_ALL_BUSINESS_DATA",
+    //   payload: {
+    //     businessData: allBusinessData,
+    //     selectedBusinessData: activeBusinessData,
+    //     selectedBusinessID: activeBusinessID,
+    //   },
+    // });
+    dispatch({
+      type: "FETCH_ALL_BUSINESS_DATA",
+      payload: {
+        businessData: sortedBusinesses,
+        selectedBusinessData: state.selectedBusinessData,
+        selectedBusinessID: state.selectedBusinessID,
+      },
+    });
   };
 
   const goToLink = (link) => {
@@ -858,6 +912,34 @@ function EditMeal({ history, ...props }) {
     });
   };
 
+  const filterBusinessData = () => {
+    return state.businessData
+      .filter((business) => {
+        if (state.searchFoodBankName === "") {
+          return business;
+        } else if (
+          business.business_name &&
+          business.business_name
+            .toLowerCase()
+            .includes(state.searchFoodBankName.toLowerCase())
+        ) {
+          return business;
+        }
+      })
+      .filter((business) => {
+        if (state.searchFoodBankAddr === "") {
+          return business;
+        } else if (
+          business.business_address &&
+          business.business_address
+            .toLowerCase()
+            .includes(state.searchFoodBankAddr.toLowerCase())
+        ) {
+          return business;
+        }
+      });
+  };
+
   const renderFoodType = (type) => {
     if (state.selectedBusinessData && state.selectedBusinessData.item_types) {
       return state.selectedBusinessData.item_types[type];
@@ -939,11 +1021,23 @@ function EditMeal({ history, ...props }) {
                               <input
                                 type="text"
                                 placeholder="Food Bank Name"
+                                onChange={(event) =>
+                                  dispatch({
+                                    type: "SEARCH_FOOD_BANK_NAME",
+                                    payload: event.target.value,
+                                  })
+                                }
                                 className={styles.dropdownSearch}
                               />
                               <input
                                 tyoe="text"
                                 placeholder="Address"
+                                onChange={(event) =>
+                                  dispatch({
+                                    type: "SEARCH_FOOD_BANK_ADDR",
+                                    payload: event.target.value,
+                                  })
+                                }
                                 className={styles.dropdownSearch}
                               />
                               <button
@@ -983,6 +1077,10 @@ function EditMeal({ history, ...props }) {
                                           textAlign: "center",
                                           fontSize: "15px",
                                         }}
+                                        direction={state.sortBusiness.direction}
+                                        onClick={() =>
+                                          sortBusinessData("business_name")
+                                        }
                                       >
                                         Food Bank Name
                                       </TableSortLabel>
@@ -1002,6 +1100,10 @@ function EditMeal({ history, ...props }) {
                                           textAlign: "center",
                                           fontSize: "15px",
                                         }}
+                                        direction={state.sortBusiness.direction}
+                                        onClick={() =>
+                                          sortBusinessData("business_address")
+                                        }
                                       >
                                         Address
                                       </TableSortLabel>
@@ -1021,6 +1123,10 @@ function EditMeal({ history, ...props }) {
                                           textAlign: "center",
                                           fontSize: "15px",
                                         }}
+                                        direction={state.sortBusiness.direction}
+                                        onClick={() =>
+                                          sortBusinessData("business_zip")
+                                        }
                                       >
                                         Zip Code
                                       </TableSortLabel>
@@ -1040,6 +1146,10 @@ function EditMeal({ history, ...props }) {
                                           textAlign: "center",
                                           fontSize: "15px",
                                         }}
+                                        direction={state.sortBusiness.direction}
+                                        onClick={() =>
+                                          sortBusinessData("business_phone_num")
+                                        }
                                       >
                                         Phone
                                       </TableSortLabel>
@@ -1059,6 +1169,10 @@ function EditMeal({ history, ...props }) {
                                           textAlign: "center",
                                           fontSize: "15px",
                                         }}
+                                        direction={state.sortBusiness.direction}
+                                        onClick={() =>
+                                          sortBusinessData("business_email")
+                                        }
                                       >
                                         Email
                                       </TableSortLabel>
@@ -1078,6 +1192,10 @@ function EditMeal({ history, ...props }) {
                                           textAlign: "center",
                                           fontSize: "15px",
                                         }}
+                                        direction={state.sortBusiness.direction}
+                                        onClick={() =>
+                                          sortBusinessData("limit_per_person")
+                                        }
                                       >
                                         Item Limit
                                       </TableSortLabel>
@@ -1086,7 +1204,7 @@ function EditMeal({ history, ...props }) {
                                 </TableHead>
                                 <TableBody>
                                   {state.businessData &&
-                                    state.businessData.map(
+                                    filterBusinessData().map(
                                       (business, index) => {
                                         return (
                                           <TableRow
