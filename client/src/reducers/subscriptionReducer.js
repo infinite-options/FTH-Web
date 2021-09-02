@@ -31,7 +31,8 @@ import {
   RESET_USER_INFO,
   SET_MEALS,
   SET_PAYMENT_OPTIONS,
-  SET_CURRENT_PURCHASE
+  SET_CURRENT_PURCHASE,
+  SET_CART
 } from "./actions/subscriptionTypes";
 
 const initialState = {
@@ -72,7 +73,8 @@ const initialState = {
   subscribedPlans: [],
   deliveryInstructions: "",
   paymentPassword: "",
-  errors: []
+  errors: [],
+  cart: []
 };
 
 export default function(state = initialState, action) {
@@ -346,6 +348,12 @@ export default function(state = initialState, action) {
         ...state,
         subscribedPlans: action.payload
       };
+
+    case SET_CART:
+      return {
+        ...state,
+        cart: action.payload
+      }
 
     default:
       return state;

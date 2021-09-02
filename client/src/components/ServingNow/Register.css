@@ -1,8 +1,19 @@
-.rectangle1 {
+/* .rectangle1 {
   position: absolute;
   width: 1920px;
   height: 80px;
   background-color: #e7404a;
+  top: 0px;
+  left: 0px;
+  z-index: -1;
+} */
+.rectangle1 {
+  /* position: absolute; */
+  width: 1920px;
+  height: 80px;
+  background-color: #e7404a;
+  border: dashed;
+  /* background-color: blue; */
   top: 0px;
   left: 0px;
   z-index: -1;

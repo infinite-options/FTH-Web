@@ -37,8 +37,8 @@ import AdminGoogleAnalytics from "./components/Admin/GoogleAnalytics";
 import AdminNotfications from "./components/Admin/Notifications";
 import AdminZones from "./components/Admin/Zones";
 import AdminCustomerInfo from "./components/Admin/CustomerInfo";
-import AdminIngredientsUnits from "./components/Admin/IngredientsUnits";
 import AdminCustomerInfo2 from "./components/Admin/CustomerInfo2";
+import AdminIngredientsUnits from "./components/Admin/IngredientsUnits";
 
 import Landing from "./components/ServingNow/Landing";
 import LoginPage from "./components/ServingNow/Login";
@@ -46,6 +46,8 @@ import RegisterPage from "./components/ServingNow/Register";
 import CreatePassword from "./components/ServingNow/CreatePassword";
 import Confirmation from "./components/ServingNow/Confirmation";
 import ClientForm from "./components/ServingNow/ClientForm";
+import PickItems from "./components/ServingNow/PickItems";
+import Cart from "./components/ServingNow/Cart";
 
 // import MapTest from './components/MapTest';
 import Congrats from "./components/Congrats";
@@ -177,6 +179,12 @@ function App() {
             </Route>
             <Route exact path="/clientform">
               <ClientForm />
+            </Route>
+            <Route exact path="/pickitems">
+              <PickItems />
+            </Route>
+            <Route exact path="/cart">
+              <Cart />
             </Route>
 
             <AppliedRoute path="*" component={NotFound} />

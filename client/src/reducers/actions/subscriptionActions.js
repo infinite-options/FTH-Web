@@ -35,6 +35,7 @@ import {
   SET_SELECTED_PLAN,
   RESET_USER_INFO,
   SET_CURRENT_PURCHASE,
+  SET_CART
 } from '../actions/subscriptionTypes';
 import {LOAD_USER_INFO} from '../actions/loginTypes';
 
@@ -675,3 +676,10 @@ export const setUserInfo = info => dispatch => {
 };
 export const setCurrentPurchase = id => dispatch =>
   dispatch({type: SET_CURRENT_PURCHASE, payload: id});
+
+  export const setCart = cartItems => dispatch => {
+    dispatch({
+      type: SET_CART,
+      payload: cartItems,
+    });
+  };
