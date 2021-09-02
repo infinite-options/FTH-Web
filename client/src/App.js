@@ -22,32 +22,32 @@ import ForgotPassword from "./components/RecoverPassword";
 import "./App.css";
 
 import { createBrowserHistory } from "history";
-import Login from "./components/Login"
+import Login from "./components/Login";
 
-import AdminNavBar from './components/Admin/AdminNavBar'
-import AdminHome from './components/Admin/Home';
-import AdminCreateMenu from './components/Admin/CreateMenu';
-import AdminEditMeal from './components/Admin/EditMeal';
-import AdminCreateMeal from './components/Admin/CreateMeal';
-import AdminEditMealRecipe from './components/Admin/EditMealRecipe';
-import AdminPlansCoupons from './components/Admin/PlansCoupons';
-import AdminOrderIngredients from './components/Admin/OrdersIngredients';
-import AdminCustomers from './components/Admin/Customers';
-import AdminGoogleAnalytics from './components/Admin/GoogleAnalytics';
-import AdminNotfications from './components/Admin/Notifications';
-import AdminZones from './components/Admin/Zones';
-import AdminCustomerInfo from './components/Admin/CustomerInfo';
-import AdminIngredientsUnits from './components/Admin/IngredientsUnits';
+import AdminNavBar from "./components/Admin/AdminNavBar";
+import AdminHome from "./components/Admin/Home";
+import AdminCreateMenu from "./components/Admin/CreateMenu";
+import AdminEditMeal from "./components/Admin/EditMeal";
+import AdminCreateMeal from "./components/Admin/CreateMeal";
+import AdminEditMealRecipe from "./components/Admin/EditMealRecipe";
+import AdminPlansCoupons from "./components/Admin/PlansCoupons";
+import AdminOrderIngredients from "./components/Admin/OrdersIngredients";
+import AdminCustomers from "./components/Admin/Customers";
+import AdminGoogleAnalytics from "./components/Admin/GoogleAnalytics";
+import AdminNotfications from "./components/Admin/Notifications";
+import AdminZones from "./components/Admin/Zones";
+import AdminCustomerInfo from "./components/Admin/CustomerInfo";
+import AdminCustomerInfo2 from "./components/Admin/CustomerInfo2";
+import AdminIngredientsUnits from "./components/Admin/IngredientsUnits";
 
-import Landing from './components/ServingNow/Landing';
-import LoginPage from './components/ServingNow/Login';
-import RegisterPage from './components/ServingNow/Register';
-import CreatePassword from './components/ServingNow/CreatePassword';
-import Confirmation from './components/ServingNow/Confirmation';
-import ClientForm from './components/ServingNow/ClientForm';
-import PickItems from './components/ServingNow/PickItems';
-import Cart from './components/ServingNow/Cart';
-
+import Landing from "./components/ServingNow/Landing";
+import LoginPage from "./components/ServingNow/Login";
+import RegisterPage from "./components/ServingNow/Register";
+import CreatePassword from "./components/ServingNow/CreatePassword";
+import Confirmation from "./components/ServingNow/Confirmation";
+import ClientForm from "./components/ServingNow/ClientForm";
+import PickItems from "./components/ServingNow/PickItems";
+import Cart from "./components/ServingNow/Cart";
 
 // import MapTest from './components/MapTest';
 import Congrats from "./components/Congrats";
@@ -181,13 +181,13 @@ function App() {
               <ClientForm />
             </Route>
             <Route exact path="/pickitems">
-              <PickItems/>
+              <PickItems />
             </Route>
             <Route exact path="/cart">
-              <Cart/>
+              <Cart />
             </Route>
-            
-            <AppliedRoute path='*' component={NotFound} />
+
+            <AppliedRoute path="*" component={NotFound} />
           </Switch>
         </Router>
       </Provider>
