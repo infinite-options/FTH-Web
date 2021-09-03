@@ -86,8 +86,23 @@ function Items({ history, ...props }) {
     <div>
       <AdminNavBar currentPage={"items"} />
       <Container fluid className={styles.container}>
-        <Row id="header" className={styles.section}>
-          {/* HEADER CONTENT GOES HERE */}
+        <Row
+          id="header"
+          className={styles.section}
+          style={{ height: "123px", padding: "26px 19px" }}
+        >
+          <Col md="auto">
+            <div className={styles.headerText}>Items</div>
+          </Col>
+          <Col></Col>
+          <Col md="auto">
+            <div className={styles.headerText}>Total no. of items</div>
+            <br></br>
+            <div className={styles.headerText}>5</div>
+          </Col>
+          <Col md="auto">
+            <button className={styles.headerButtonWhite}>Add Itmes +</button>
+          </Col>
         </Row>
         <Row id="main" className={styles.section} style={{ marginTop: "20px" }}>
           <Col>

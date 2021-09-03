@@ -10,3 +10,19 @@
   margin: 10px auto 10px auto;
   padding: 10px;
 }
+
+.headerText {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.headerButtonWhite {
+  width: 144px;
+  height: 33px;
+  background-color: white;
+  color: #e7404a;
+  box-shadow: 0px 3px 6px #00000029;
+  border-radius: 18px;
+  border: none;
+}

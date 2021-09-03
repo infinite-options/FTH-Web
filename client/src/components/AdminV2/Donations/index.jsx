@@ -86,8 +86,19 @@ function Donations({ history, ...props }) {
     <div>
       <AdminNavBar currentPage={"donations"} />
       <Container fluid className={styles.container}>
-        <Row id="header" className={styles.section}>
-          {/* HEADER CONTENT GOES HERE */}
+        <Row
+          id="header"
+          className={styles.section}
+          style={{ height: "123px", padding: "26px 19px" }}
+        >
+          <Col md="auto">
+            <div className={styles.headerText}>Transactions / Donations</div>
+          </Col>
+          <Col></Col>
+
+          <Col md="auto">
+            <button className={styles.headerButtonWhite}>Add Donation +</button>
+          </Col>
         </Row>
         <Row id="main" className={styles.section} style={{ marginTop: "20px" }}>
           <Col>

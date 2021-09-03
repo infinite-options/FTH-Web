@@ -86,8 +86,18 @@ function BusinessProfile({ history, ...props }) {
     <div>
       <AdminNavBar currentPage={"business-profile"} />
       <Container fluid className={styles.container}>
-        <Row id="header" className={styles.section}>
-          {/* HEADER CONTENT GOES HERE */}
+        <Row
+          id="header"
+          className={styles.section}
+          style={{ height: "123px", padding: "26px 19px" }}
+        >
+          <Col md="auto">
+            <div className={styles.headerText}>Profile</div>
+          </Col>
+          <Col></Col>
+          <Col md="auto">
+            <button className={styles.headerButtonWhite}>Edit Profile</button>
+          </Col>
         </Row>
         <Row id="main" className={styles.section} style={{ marginTop: "20px" }}>
           <Col>
