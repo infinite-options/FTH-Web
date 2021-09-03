@@ -1,0 +1,12 @@
+.container {
+  padding: 0px 60px;
+  width: 100%;
+  margin: 0px;
+}
+
+.section {
+  border-radius: 15px;
+  border: 1px solid #e7404a;
+  margin: 10px auto 10px auto;
+  padding: 10px;
+}

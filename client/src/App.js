@@ -24,6 +24,7 @@ import "./App.css";
 import { createBrowserHistory } from "history";
 import Login from "./components/Login";
 
+// Old Admin Imports
 import AdminNavBar from "./components/Admin/AdminNavBar";
 import AdminHome from "./components/Admin/Home";
 import AdminCreateMenu from "./components/Admin/CreateMenu";
@@ -32,13 +33,24 @@ import AdminCreateMeal from "./components/Admin/CreateMeal";
 import AdminEditMealRecipe from "./components/Admin/EditMealRecipe";
 import AdminPlansCoupons from "./components/Admin/PlansCoupons";
 import AdminOrderIngredients from "./components/Admin/OrdersIngredients";
-import AdminCustomers from "./components/Admin/Customers";
+// import AdminCustomers from "./components/Admin/Customers";
 import AdminGoogleAnalytics from "./components/Admin/GoogleAnalytics";
 import AdminNotfications from "./components/Admin/Notifications";
 import AdminZones from "./components/Admin/Zones";
 import AdminCustomerInfo from "./components/Admin/CustomerInfo";
 import AdminCustomerInfo2 from "./components/Admin/CustomerInfo2";
 import AdminIngredientsUnits from "./components/Admin/IngredientsUnits";
+
+// New Admin Imports
+import NewAdminNavBar from "./components/AdminV2/AdminNavBar";
+import AdminBusinessProfile from "./components/AdminV2/BusinessProfile";
+import AdminOrders from "./components/AdminV2/Orders";
+import AdminDonations from "./components/AdminV2/Donations";
+import AdminInventory from "./components/AdminV2/Inventory";
+import AdminItems from "./components/AdminV2/Items";
+import AdminCustomers from "./components/AdminV2/Customers";
+import AdminAnalytics from "./components/AdminV2/Analytics";
+import AdminNotifications2 from "./components/AdminV2/Notifications";
 
 import Landing from "./components/ServingNow/Landing";
 import LoginPage from "./components/ServingNow/Login";
@@ -70,7 +82,8 @@ function App() {
   }, []);
   */
 
-  const adminNavBar = <AdminNavBar />;
+  // const adminNavBar = <AdminNavBar />;
+  // const newAdminNavBar = <NewAdminNavBar />;
 
   return (
     <div className="root">
@@ -121,6 +134,42 @@ function App() {
             <AppliedRoute exact path="/update-plan" component={UpdatePlan} />
 
             {/* <AppliedRoute exact path='/test' component={MapTest} /> */}
+
+            {/* New Admin Routes */}
+
+            <Route exact path="/admin-v2/orders">
+              <AdminOrders />
+            </Route>
+
+            <Route exact path="/admin-v2/donations">
+              <AdminDonations />
+            </Route>
+
+            <Route exact path="/admin-v2/inventory">
+              <AdminInventory />
+            </Route>
+
+            <Route exact path="/admin-v2/items">
+              <AdminItems />
+            </Route>
+
+            <Route exact path="/admin-v2/customers">
+              <AdminCustomers />
+            </Route>
+
+            <Route exact path="/admin-v2/google-analytics">
+              <AdminAnalytics />
+            </Route>
+
+            <Route exact path="/admin-v2/notifications">
+              <AdminNotifications2 />
+            </Route>
+
+            <Route exact path="/admin-v2/business-profile">
+              <AdminBusinessProfile />
+            </Route>
+
+            {/* Old Admin Routes */}
 
             <Route exact path="/admin">
               <AdminHome />
