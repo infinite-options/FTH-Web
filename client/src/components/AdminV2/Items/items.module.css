@@ -26,3 +26,28 @@
   border-radius: 18px;
   border: none;
 }
+
+.tableSearch {
+  border-radius: 25px;
+  padding: 10px 15px;
+  border: 1px solid #707070;
+  margin: 5px;
+  outline: none;
+  width: 166px;
+}
+
+.dropdown {
+  border: 1px solid #707070;
+  border-radius: 25px;
+  padding: 10px 15px;
+  color: black;
+  background-color: white;
+  width: 166px;
+  margin: 5px;
+  outline: none;
+  display: inline-block;
+  appearance: none;
+  cursor: pointer;
+  background: url("../../../images/RedDropdown.svg") no-repeat;
+  background-position: right 5px top 50%;
+}

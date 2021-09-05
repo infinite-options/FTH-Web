@@ -64,3 +64,64 @@
   color: #e7404a;
   font-size: 15px;
 }
+
+.tableSearch {
+  border-radius: 25px;
+  padding: 10px 15px;
+  border: 1px solid #707070;
+  margin: 5px;
+  outline: none;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 41px;
+  height: 25px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  border-radius: 40px;
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  border-radius: 50%;
+  position: absolute;
+  content: "";
+  height: 21px;
+  width: 21px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #00cc00;
+}
+
+input:focus + .slider {
+  box-shadow: none;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(16px);
+  -ms-transform: translateX(16px);
+  transform: translateX(16px);
+}

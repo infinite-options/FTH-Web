@@ -102,9 +102,9 @@ function Donations({ history, ...props }) {
         </Row>
         <Row id="main" className={styles.section} style={{ marginTop: "20px" }}>
           <Col>
-            <Row id="mainHeader">
-              {/* REMOVE IF NO TABLE FILTERING IS USED */}
-            </Row>
+            {/* REMOVE IF NO TABLE FILTERING IS USED */}
+            {/* <Row id="mainHeader">
+            </Row> */}
             <Row id="mainBody">
               <Col id="table">
                 <TableContainer>
@@ -127,7 +127,140 @@ function Donations({ history, ...props }) {
                               fontSize: "15px",
                             }}
                           >
-                            Table Cell
+                            Package UPC
+                          </TableSortLabel>
+                        </TableCell>
+                        <TableCell
+                          style={{
+                            color: "#E7404A",
+                            border: "none",
+                            textAlign: "center",
+                            fontSize: "15px",
+                          }}
+                        >
+                          <TableSortLabel
+                            style={{
+                              color: "#E7404A",
+                              border: "none",
+                              textAlign: "center",
+                              fontSize: "15px",
+                            }}
+                          >
+                            Item Name
+                          </TableSortLabel>
+                        </TableCell>
+                        <TableCell
+                          style={{
+                            color: "#E7404A",
+                            border: "none",
+                            textAlign: "center",
+                            fontSize: "15px",
+                          }}
+                        >
+                          <TableSortLabel
+                            style={{
+                              color: "#E7404A",
+                              border: "none",
+                              textAlign: "center",
+                              fontSize: "15px",
+                            }}
+                          >
+                            Package Picture
+                          </TableSortLabel>
+                        </TableCell>
+                        <TableCell
+                          style={{
+                            color: "#E7404A",
+                            border: "none",
+                            textAlign: "center",
+                            fontSize: "15px",
+                          }}
+                        >
+                          <TableSortLabel
+                            style={{
+                              color: "#E7404A",
+                              border: "none",
+                              textAlign: "center",
+                              fontSize: "15px",
+                            }}
+                          >
+                            Donation Type
+                          </TableSortLabel>
+                        </TableCell>
+                        <TableCell
+                          style={{
+                            color: "#E7404A",
+                            border: "none",
+                            textAlign: "center",
+                            fontSize: "15px",
+                          }}
+                        >
+                          <TableSortLabel
+                            style={{
+                              color: "#E7404A",
+                              border: "none",
+                              textAlign: "center",
+                              fontSize: "15px",
+                            }}
+                          >
+                            Qty Recieved
+                          </TableSortLabel>
+                        </TableCell>
+                        <TableCell
+                          style={{
+                            color: "#E7404A",
+                            border: "none",
+                            textAlign: "center",
+                            fontSize: "15px",
+                          }}
+                        >
+                          <TableSortLabel
+                            style={{
+                              color: "#E7404A",
+                              border: "none",
+                              textAlign: "center",
+                              fontSize: "15px",
+                            }}
+                          >
+                            Recieved Date
+                          </TableSortLabel>
+                        </TableCell>
+                        <TableCell
+                          style={{
+                            color: "#E7404A",
+                            border: "none",
+                            textAlign: "center",
+                            fontSize: "15px",
+                          }}
+                        >
+                          <TableSortLabel
+                            style={{
+                              color: "#E7404A",
+                              border: "none",
+                              textAlign: "center",
+                              fontSize: "15px",
+                            }}
+                          >
+                            Available Date
+                          </TableSortLabel>
+                        </TableCell>
+                        <TableCell
+                          style={{
+                            color: "#E7404A",
+                            border: "none",
+                            textAlign: "center",
+                            fontSize: "15px",
+                          }}
+                        >
+                          <TableSortLabel
+                            style={{
+                              color: "#E7404A",
+                              border: "none",
+                              textAlign: "center",
+                              fontSize: "15px",
+                            }}
+                          >
+                            Exp. Date
                           </TableSortLabel>
                         </TableCell>
                       </TableRow>

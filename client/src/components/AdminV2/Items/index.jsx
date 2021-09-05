@@ -107,7 +107,40 @@ function Items({ history, ...props }) {
         <Row id="main" className={styles.section} style={{ marginTop: "20px" }}>
           <Col>
             <Row id="mainHeader">
-              {/* REMOVE IF NO TABLE FILTERING IS USED */}
+              <Col md="auto">
+                <div
+                  className={styles.headerText}
+                  style={{ lineHeight: "50px" }}
+                >
+                  Search By
+                </div>
+              </Col>
+              <Col md="auto">
+                <input
+                  type="text"
+                  placeholder="Brand"
+                  className={styles.tableSearch}
+                />
+              </Col>
+              <Col md="auto">
+                <input
+                  type="text"
+                  placeholder="Item"
+                  className={styles.tableSearch}
+                />
+              </Col>
+              <Col md="auto">
+                <input
+                  type="text"
+                  placeholder="Package"
+                  className={styles.tableSearch}
+                />
+              </Col>
+              <Col md="auto">
+                <select className={styles.dropdown}>
+                  <option key={0}>Type of Food</option>
+                </select>
+              </Col>
             </Row>
             <Row id="mainBody">
               <Col id="table">
@@ -131,7 +164,140 @@ function Items({ history, ...props }) {
                               fontSize: "15px",
                             }}
                           >
-                            Table Cell
+                            UPC
+                          </TableSortLabel>
+                        </TableCell>
+                        <TableCell
+                          style={{
+                            color: "#E7404A",
+                            border: "none",
+                            textAlign: "center",
+                            fontSize: "15px",
+                          }}
+                        >
+                          <TableSortLabel
+                            style={{
+                              color: "#E7404A",
+                              border: "none",
+                              textAlign: "center",
+                              fontSize: "15px",
+                            }}
+                          >
+                            Brand
+                          </TableSortLabel>
+                        </TableCell>
+                        <TableCell
+                          style={{
+                            color: "#E7404A",
+                            border: "none",
+                            textAlign: "center",
+                            fontSize: "15px",
+                          }}
+                        >
+                          <TableSortLabel
+                            style={{
+                              color: "#E7404A",
+                              border: "none",
+                              textAlign: "center",
+                              fontSize: "15px",
+                            }}
+                          >
+                            Item
+                          </TableSortLabel>
+                        </TableCell>
+                        <TableCell
+                          style={{
+                            color: "#E7404A",
+                            border: "none",
+                            textAlign: "center",
+                            fontSize: "15px",
+                          }}
+                        >
+                          <TableSortLabel
+                            style={{
+                              color: "#E7404A",
+                              border: "none",
+                              textAlign: "center",
+                              fontSize: "15px",
+                            }}
+                          >
+                            Package
+                          </TableSortLabel>
+                        </TableCell>
+                        <TableCell
+                          style={{
+                            color: "#E7404A",
+                            border: "none",
+                            textAlign: "center",
+                            fontSize: "15px",
+                          }}
+                        >
+                          <TableSortLabel
+                            style={{
+                              color: "#E7404A",
+                              border: "none",
+                              textAlign: "center",
+                              fontSize: "15px",
+                            }}
+                          >
+                            Item Picture
+                          </TableSortLabel>
+                        </TableCell>
+                        <TableCell
+                          style={{
+                            color: "#E7404A",
+                            border: "none",
+                            textAlign: "center",
+                            fontSize: "15px",
+                          }}
+                        >
+                          <TableSortLabel
+                            style={{
+                              color: "#E7404A",
+                              border: "none",
+                              textAlign: "center",
+                              fontSize: "15px",
+                            }}
+                          >
+                            Type of Food
+                          </TableSortLabel>
+                        </TableCell>
+                        <TableCell
+                          style={{
+                            color: "#E7404A",
+                            border: "none",
+                            textAlign: "center",
+                            fontSize: "15px",
+                          }}
+                        >
+                          <TableSortLabel
+                            style={{
+                              color: "#E7404A",
+                              border: "none",
+                              textAlign: "center",
+                              fontSize: "15px",
+                            }}
+                          >
+                            Package
+                          </TableSortLabel>
+                        </TableCell>
+                        <TableCell
+                          style={{
+                            color: "#E7404A",
+                            border: "none",
+                            textAlign: "center",
+                            fontSize: "15px",
+                          }}
+                        >
+                          <TableSortLabel
+                            style={{
+                              color: "#E7404A",
+                              border: "none",
+                              textAlign: "center",
+                              fontSize: "15px",
+                            }}
+                          >
+                            Item
                           </TableSortLabel>
                         </TableCell>
                       </TableRow>

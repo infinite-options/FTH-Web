@@ -1,9 +1,8 @@
 .menu {
   width: 90%;
   display: flex;
-  position:relative;
-  height:100px;
-
+  position: relative;
+  height: 100px;
 }
 
 .menu1 {
@@ -11,7 +10,7 @@
   display: flex;
   justify-content: flex-end;
   margin-bottom: 20px;
-  margin-left:20px;
+  margin-left: 20px;
 }
 
 .logo {
@@ -54,7 +53,7 @@
 }
 .selectBtn a:hover {
   /* background-color: #7fa4dd; */
-  color: #FF9400;
+  color: #ff9400;
   border-radius: 20px;
   outline-offset: 5px;
 }
@@ -96,12 +95,10 @@ a img {
   font-weight: 600 !important;
   margin-bottom: 0px;
 
-
   padding-left: 0px;
   text-align: center;
   margin-left: 120px;
   margin-top: 79px;
-  
 }
 
 .subscribe {
@@ -109,43 +106,21 @@ a img {
   width: 450px;
   border-radius: 30px;
   background-color: #ff9e19;
-  border:1px solid black;
-  position:relative;
+  border: 1px solid black;
+  position: relative;
   text-align: center;
-} 
-
-select.pickers {
-
-
-  background-image:
-    linear-gradient(45deg, transparent 50%, white 50%),
-    linear-gradient(135deg, white 50%, transparent 50%);
-  background-position:
-    calc(100% - 30px) calc(15px),
-    calc(100% - 15px) calc(15px),
-    100% 0;
-  background-size:
-    15px 15px,
-    15px 15px;
-    /* 2.6em 2.6em */
-  background-repeat: no-repeat;
-
-
-
-
-
-
-
-
-
-
-
 }
 
+/* select.pickers {
+  background-image: linear-gradient(45deg, transparent 50%, white 50%),
+    linear-gradient(135deg, white 50%, transparent 50%);
+  background-position: calc(100% - 30px) calc(15px),
+    calc(100% - 15px) calc(15px), 100% 0;
+  background-size: 15px 15px, 15px 15px;
+  background-repeat: no-repeat;
+} */
 
-
-
-select {
+/* select {
   display: inline-block;
   font: inherit;
   line-height: 1.5em;
@@ -177,8 +152,7 @@ select {
 
 
 
-}
-
+} */
 
 .pickers:focus {
   outline: none;
@@ -202,7 +176,7 @@ select {
 }
 
 .whiteArrowDown {
-  background-image: url('./static/white_arrow_down.png');
+  background-image: url("./static/white_arrow_down.png");
   background-size: 100%;
   width: 24px;
   height: 16px;
