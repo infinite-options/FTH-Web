@@ -51,3 +51,73 @@
   background: url("../../../images/RedDropdown.svg") no-repeat;
   background-position: right 5px top 50%;
 }
+
+.whiteButton {
+  height: 50px;
+  width: 322px;
+  background-color: white;
+  border: 1px solid #e7404a;
+  border-radius: 25px;
+  color: #e7404a;
+  box-shadow: 0px 3px 6px #00000029;
+  font-weight: bold;
+}
+.redButton {
+  height: 50px;
+  width: 322px;
+  background-color: #e7404a;
+  border: 1px solid #e7404a;
+  border-radius: 25px;
+  color: white;
+  box-shadow: 0px 3px 6px #00000029;
+  font-weight: bold;
+}
+
+.modalInput {
+  border: 1px solid #e7404a;
+  height: 40px;
+  padding: 10px;
+  outline: none;
+}
+
+.modalFormLabel {
+  color: #e7404a;
+  line-height: 40px;
+}
+
+.modalPlusBtn {
+  font-size: 30px;
+  color: #e7404a;
+  width: 40px;
+  text-align: center;
+}
+
+.modalCol {
+  padding: 0px;
+}
+
+.modalContainerVertical {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.modalContainerHorizontal {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.modalDropdown {
+  padding-left: 10px;
+  border: 1px solid #e7404a;
+  height: 40px;
+  color: black;
+  background-color: white;
+  outline: none;
+  display: inline-block;
+  appearance: none;
+  cursor: pointer;
+  background: url("../../../images/RedDropdown.svg") no-repeat;
+  background-position: right 5px top 50%;
+}

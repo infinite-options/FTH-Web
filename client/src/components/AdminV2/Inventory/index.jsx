@@ -23,6 +23,7 @@ import Carousel from "react-multi-carousel";
 import { ReactComponent as LeftArrow } from "../../../images/LeftArrowRed.svg";
 import { ReactComponent as RightArrow } from "../../../images/RightArrowRed.svg";
 import ToggleSwitch from "./toggleSwitch.jsx";
+import { ReactComponent as ModalCloseBtn } from "../../../images/ModalCloseRed.svg";
 
 const responsive = {
   superLargeDesktop: {

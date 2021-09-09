@@ -19,9 +19,11 @@ import AdminNavBar from "../AdminNavBar";
 import { act } from "react-dom/test-utils";
 import { formatTime, sortedArray } from "../../../reducers/helperFuncs";
 import styles from "./donations.module.css";
+import { ReactComponent as ModalCloseBtn } from "../../../images/ModalCloseRed.svg";
 
 const initialState = {
   mounted: false,
+  showAddDonation: false,
 };
 
 function reducer(state, action) {
@@ -31,6 +33,12 @@ function reducer(state, action) {
         ...state,
         mounted: true,
       };
+    case "TOGGLE_ADD_DONATION": {
+      return {
+        ...state,
+        showAddDonation: !state.showAddDonation,
+      };
+    }
     default:
       return state;
   }
@@ -78,6 +86,10 @@ function Donations({ history, ...props }) {
     }
   }, [history]);
 
+  const toggleShowAddDonation = () => {
+    dispatch({ type: "TOGGLE_ADD_DONATION" });
+  };
+
   if (!state.mounted) {
     return null;
   }
@@ -97,7 +109,12 @@ function Donations({ history, ...props }) {
           <Col></Col>
 
           <Col md="auto">
-            <button className={styles.headerButtonWhite}>Add Donation +</button>
+            <button
+              className={styles.headerButtonWhite}
+              onClick={() => toggleShowAddDonation()}
+            >
+              Add Donation +
+            </button>
           </Col>
         </Row>
         <Row id="main" className={styles.section} style={{ marginTop: "20px" }}>
@@ -273,6 +290,71 @@ function Donations({ history, ...props }) {
           </Col>
         </Row>
       </Container>
+      {state.showAddDonation && (
+        <div
+          style={{
+            height: "100%",
+            width: "100%",
+            zIndex: "101",
+            left: "0",
+            top: "0",
+            overflow: "auto",
+            position: "fixed",
+            display: "grid",
+            backgroundColor: "rgba(255, 255, 255, 0.8)",
+          }}
+        >
+          <div
+            style={{
+              position: "relative",
+              justifySelf: "center",
+              alignSelf: "center",
+              display: "block",
+              border: "2px solid #E7404A",
+              backgroundColor: "white",
+              height: "auto",
+              width: "auto",
+              zIndex: "102",
+              padding: "10px 0px 10px 0px",
+              borderRadius: "20px",
+            }}
+          >
+            <div style={{ textAlign: "right", padding: "10px" }}>
+              <ModalCloseBtn
+                style={{ cursor: "pointer" }}
+                onClick={() => toggleShowAddDonation()}
+              />
+            </div>
+            <div
+              style={{
+                border: "none",
+                paddingLeft: "15px",
+                fontWeight: "bold",
+              }}
+            >
+              <Modal.Title style={{ fontWeight: "bold" }}>
+                Modal Title
+              </Modal.Title>
+              <Modal.Body>Modal Body</Modal.Body>
+              <Modal.Footer
+                style={{
+                  border: "none",
+                  justifyContent: "center",
+                  flexDirection: "column",
+                }}
+              >
+                <button className={styles.redButton}>Add Item</button>
+                <button
+                  className={styles.whiteButton}
+                  onClick={() => toggleShowAddDonation()}
+                >
+                  Cancel
+                </button>
+              </Modal.Footer>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

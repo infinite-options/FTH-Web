@@ -25,3 +25,24 @@
   border-radius: 18px;
   border: none;
 }
+
+.whiteButton {
+  height: 50px;
+  width: 322px;
+  background-color: white;
+  border: 1px solid #e7404a;
+  border-radius: 25px;
+  color: #e7404a;
+  box-shadow: 0px 3px 6px #00000029;
+  font-weight: bold;
+}
+.redButton {
+  height: 50px;
+  width: 322px;
+  background-color: #e7404a;
+  border: 1px solid #e7404a;
+  border-radius: 25px;
+  color: white;
+  box-shadow: 0px 3px 6px #00000029;
+  font-weight: bold;
+}
