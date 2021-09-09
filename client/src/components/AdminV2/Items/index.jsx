@@ -23,7 +23,10 @@ import { ReactComponent as ModalCloseBtn } from "../../../images/ModalCloseRed.s
 
 const initialState = {
   mounted: false,
-  showAddItems: false,
+  showAddSupply: false,
+  showAddBrand: false,
+  showAddItem: false,
+  showAddItemTags: false,
   items: [],
   selectedFile: null,
   newSupply: {
@@ -60,6 +63,7 @@ const initialState = {
   supplyUnits: [],
   uniqueBrands: [],
   uniqueItems: [],
+  itemTagList: [],
 };
 
 function reducer(state, action) {
@@ -69,10 +73,25 @@ function reducer(state, action) {
         ...state,
         mounted: true,
       };
-    case "TOGGLE_ADD_ITEMS":
+    case "TOGGLE_ADD_SUPPLY":
       return {
         ...state,
-        showAddItems: !state.showAddItems,
+        showAddSupply: !state.showAddSupply,
+      };
+    case "TOGGLE_ADD_ITEM":
+      return {
+        ...state,
+        showAddItem: !state.showAddItem,
+      };
+    case "TOGGLE_ADD_BRAND":
+      return {
+        ...state,
+        showAddBrand: !state.showAddBrand,
+      };
+    case "TOGGLE_ADD_ITEM_TAGS":
+      return {
+        ...state,
+        showAddItemTags: !state.showAddItemTags,
       };
     case "UPDATE_ITEMS":
       return {
@@ -108,6 +127,11 @@ function reducer(state, action) {
       return {
         ...state,
         uniqueBrands: action.payload,
+      };
+    case "GET_ITEM_TAG_LIST":
+      return {
+        ...state,
+        itemTagList: action.payload,
       };
     default:
       return state;
@@ -171,8 +195,22 @@ function Items({ history, ...props }) {
       });
   }, []);
 
-  const toggleAddItems = () => {
-    dispatch({ type: "TOGGLE_ADD_ITEMS" });
+  const toggleAddItem = () => {
+    dispatch({ type: "TOGGLE_ADD_ITEM" });
+    dispatch({ type: "TOGGLE_ADD_SUPPLY" });
+  };
+
+  const toggleAddSupply = () => {
+    dispatch({ type: "TOGGLE_ADD_SUPPLY" });
+  };
+
+  const toggleAddBrand = () => {
+    dispatch({ type: "TOGGLE_ADD_BRAND" });
+    dispatch({ type: "TOGGLE_ADD_SUPPLY" });
+  };
+
+  const toggelAddItemTags = () => {
+    dispatch({ type: "TOGGLE_ADD_ITEM_TAGS" });
   };
 
   const getBrandNameByID = (id) => {
@@ -276,11 +314,16 @@ function Items({ history, ...props }) {
     });
   };
 
+  const getItemTags = () => {
+    axios.get(`${API_URL}get_tags_list`).then((response) => {
+      const tags = response.data.result;
+      dispatch({ type: "GET_ITEM_TAG_LIST", payload: tags });
+    });
+  };
   const postNewSupply = () => {
     const supplyFormData = new FormData();
 
     for (const field of Object.keys(state.newSupply)) {
-      console.log(field);
       if (field === "sup_desc") {
         supplyFormData.append(field, getNewSupplyDesc());
       } else if (field === "item_photo") {
@@ -294,6 +337,19 @@ function Items({ history, ...props }) {
       .post(`${API_URL}add_supply`, supplyFormData)
       .then((response) => console.log(response));
   };
+
+  const postNewBrand = () => {
+    const brandFormData = new FormData();
+
+    for (const field of Object.keys(state.newBrand)) {
+      brandFormData.append(field, state.newBrand[field]);
+    }
+
+    axios
+      .post(`${API_URL}add_brand`, brandFormData)
+      .then((response) => console.log(response));
+  };
+
   if (!state.mounted) {
     return null;
   }
@@ -326,7 +382,7 @@ function Items({ history, ...props }) {
                 getSupplyUnits();
                 getUniqueBrands();
                 getUniqueItems();
-                toggleAddItems();
+                toggleAddSupply();
               }}
             >
               Add Items +
@@ -562,7 +618,7 @@ function Items({ history, ...props }) {
           </Col>
         </Row>
       </Container>
-      {state.showAddItems && (
+      {state.showAddSupply && (
         <div
           style={{
             height: "100%",
@@ -596,7 +652,7 @@ function Items({ history, ...props }) {
               <ModalCloseBtn
                 style={{ cursor: "pointer" }}
                 onClick={() => {
-                  toggleAddItems();
+                  toggleAddSupply();
                 }}
               />
             </div>
@@ -662,7 +718,12 @@ function Items({ history, ...props }) {
                           );
                         })}
                     </select>
-                    <div className={styles.modalPlusBtn}>+</div>
+                    <div
+                      className={styles.modalPlusBtn}
+                      onClick={() => toggleAddBrand()}
+                    >
+                      +
+                    </div>
                   </div>
                   <div className={styles.modalContainerHorizontal}>
                     <div
@@ -693,7 +754,12 @@ function Items({ history, ...props }) {
                           );
                         })}
                     </select>
-                    <div className={styles.modalPlusBtn}>+</div>
+                    <div
+                      className={styles.modalPlusBtn}
+                      onClick={() => toggleAddItem()}
+                    >
+                      +
+                    </div>
                   </div>
                   <div className={styles.modalContainerHorizontal}>
                     <div
@@ -810,10 +876,376 @@ function Items({ history, ...props }) {
                 </button>
                 <button
                   className={styles.whiteButton}
-                  onClick={() => toggleAddItems()}
+                  onClick={() => toggleAddSupply()}
                 >
                   Cancel
                 </button>
+              </Modal.Footer>
+            </div>
+          </div>
+        </div>
+      )}
+      {state.showAddBrand && (
+        <div
+          style={{
+            height: "100%",
+            width: "100%",
+            zIndex: "101",
+            left: "0",
+            top: "0",
+            position: "fixed",
+            display: "grid",
+            backgroundColor: "rgba(255, 255, 255, 0.8)",
+          }}
+        >
+          <div
+            style={{
+              position: "relative",
+              justifySelf: "center",
+              alignSelf: "center",
+              display: "block",
+              border: "2px solid #E7404A",
+              backgroundColor: "white",
+              height: "auto",
+              width: "auto",
+              zIndex: "102",
+              padding: "10px 0px 10px 0px",
+              borderRadius: "20px",
+              maxHeight: "90%",
+              overflow: "scroll",
+            }}
+          >
+            <div style={{ textAlign: "right", padding: "10px" }}>
+              <ModalCloseBtn
+                style={{ cursor: "pointer" }}
+                onClick={() => toggleAddBrand()}
+              />
+            </div>
+            <div
+              style={{
+                border: "none",
+                paddingLeft: "15px",
+                fontWeight: "bold",
+              }}
+            >
+              <Modal.Title style={{ fontWeight: "bold" }}>Brand</Modal.Title>
+              <Modal.Body>
+                <div
+                  className={styles.modalContainerVertical}
+                  style={{ height: "550px" }}
+                >
+                  <div className={styles.modalContainerHorizontal}>
+                    <div className={styles.modalFormLabel}>Brand Name</div>
+                    <input
+                      className={styles.modalInput}
+                      style={{ width: "55%" }}
+                      value={state.newBrand.brand_name}
+                      onChange={(event) =>
+                        editNewBrand("brand_name", event.target.value)
+                      }
+                    ></input>
+                  </div>
+                  <div className={styles.modalContainerHorizontal}>
+                    <div className={styles.modalFormLabel}>
+                      Corporate Office
+                    </div>
+                  </div>
+                  <div
+                    className={styles.modalContainerHorizontal}
+                    style={{ width: "420px" }}
+                  >
+                    <div className={styles.modalContainerVertical}>
+                      <div>Street</div>
+                      <input
+                        className={styles.modalInput}
+                        value={state.newBrand.brand_address}
+                        onChange={(event) =>
+                          editNewBrand("brand_address", event.target.value)
+                        }
+                      ></input>
+                    </div>
+                    <div className={styles.modalContainerVertical}>
+                      <div>Unit</div>
+                      <input
+                        className={styles.modalInput}
+                        value={state.newBrand.brand_unit}
+                        onChange={(event) =>
+                          editNewBrand("brand_unit", event.target.value)
+                        }
+                      ></input>
+                    </div>
+                  </div>
+                  <div className={styles.modalContainerVertical}>
+                    <div>City</div>
+                    <input
+                      className={styles.modalInput}
+                      value={state.newBrand.brand_city}
+                      onChange={(event) =>
+                        editNewBrand("brand_city", event.target.value)
+                      }
+                    ></input>
+                  </div>
+                  <div className={styles.modalContainerHorizontal}>
+                    <div className={styles.modalContainerVertical}>
+                      <div>State</div>
+                      <input
+                        className={styles.modalInput}
+                        value={state.newBrand.brand_state}
+                        onChange={(event) =>
+                          editNewBrand("brand_state", event.target.value)
+                        }
+                      ></input>
+                    </div>
+                    <div className={styles.modalContainerVertical}>
+                      <div>Zip</div>
+                      <input
+                        className={styles.modalInput}
+                        value={state.newBrand.brand_zip}
+                        onChange={(event) =>
+                          editNewBrand("brand_zip", event.target.value)
+                        }
+                      ></input>
+                    </div>
+                  </div>
+                  <div className={styles.modalContainerHorizontal}>
+                    <div className={styles.modalFormLabel}>
+                      Contact Details:
+                    </div>
+                  </div>
+                  <div className={styles.modalContainerHorizontal}>
+                    <div className={styles.modalContainerVertical}>
+                      <div>First Name</div>
+                      <input
+                        className={styles.modalInput}
+                        value={state.newBrand.brand_contact_first_name}
+                        onChange={(event) =>
+                          editNewBrand(
+                            "brand_contact_first_name",
+                            event.target.value
+                          )
+                        }
+                      ></input>
+                    </div>
+                    <div className={styles.modalContainerVertical}>
+                      <div>Last Name</div>
+                      <input
+                        className={styles.modalInput}
+                        value={state.newBrand.brand_contact_last_name}
+                        onChange={(event) =>
+                          editNewBrand(
+                            "brand_contact_last_name",
+                            event.target.value
+                          )
+                        }
+                      ></input>
+                    </div>
+                  </div>
+                  <div className={styles.modalContainerHorizontal}>
+                    <div className={styles.modalContainerVertical}>
+                      <div>Phone Number 1</div>
+                      <input
+                        className={styles.modalInput}
+                        value={state.newBrand.brand_phone_num1}
+                        onChange={(event) =>
+                          editNewBrand("brand_phone_num1", event.target.value)
+                        }
+                      ></input>
+                    </div>
+                    <div className={styles.modalContainerVertical}>
+                      <div>Phone Number 2</div>
+                      <input
+                        className={styles.modalInput}
+                        value={state.newBrand.brand_phone_num2}
+                        onChange={(event) =>
+                          editNewBrand("brand_phone_num2", event.target.value)
+                        }
+                      ></input>
+                    </div>
+                  </div>
+                </div>
+              </Modal.Body>
+              <Modal.Footer
+                style={{
+                  border: "none",
+                  justifyContent: "center",
+                  flexDirection: "column",
+                }}
+              >
+                <button
+                  className={styles.redButton}
+                  onClick={() => postNewBrand()}
+                >
+                  Add Item
+                </button>
+                <button
+                  className={styles.whiteButton}
+                  onClick={() => toggleAddBrand()}
+                >
+                  Cancel
+                </button>
+              </Modal.Footer>
+            </div>
+          </div>
+        </div>
+      )}
+      {state.showAddItem && (
+        <div
+          style={{
+            height: "100%",
+            width: "100%",
+            zIndex: "101",
+            left: "0",
+            top: "0",
+            position: "fixed",
+            display: "grid",
+            backgroundColor: "rgba(255, 255, 255, 0.8)",
+          }}
+        >
+          <div
+            style={{
+              position: "relative",
+              justifySelf: "center",
+              alignSelf: "center",
+              display: "block",
+              border: "2px solid #E7404A",
+              backgroundColor: "white",
+              height: "auto",
+              width: "auto",
+              zIndex: "102",
+              padding: "10px 0px 10px 0px",
+              borderRadius: "20px",
+              overflow: "scroll",
+              maxHeight: "90%",
+            }}
+          >
+            <div style={{ textAlign: "right", padding: "10px" }}>
+              <ModalCloseBtn
+                style={{ cursor: "pointer" }}
+                onClick={() => toggleAddItem()}
+              />
+            </div>
+            <div
+              style={{
+                border: "none",
+                paddingLeft: "15px",
+                fontWeight: "bold",
+              }}
+            >
+              <Modal.Title style={{ fontWeight: "bold" }}>Item</Modal.Title>
+              <Modal.Body>
+                <div
+                  className={styles.modalContainerVertical}
+                  style={{ height: "150px" }}
+                >
+                  <div className={styles.modalContainerHorizontal}>
+                    <div className={styles.modalFormLabel}>Item Name</div>
+                    <input className={styles.modalInput}></input>
+                  </div>
+                  <div className={styles.modalContainerHorizontal}>
+                    <div className={styles.modalFormLabel}>
+                      Item Description
+                    </div>
+                    <input className={styles.modalInput}></input>
+                  </div>
+                  <div className={styles.modalContainerHorizontal}>
+                    <div
+                      className={styles.modalFormLabel}
+                      onClick={() => {
+                        getItemTags();
+                        toggelAddItemTags();
+                      }}
+                    >
+                      Add Item Tags +
+                    </div>
+                    <div></div>
+                  </div>
+                </div>
+                <div className={styles.modalContainerHorizontal}>
+                  <div className={styles.modalFormLabel}>Type of Food</div>
+                  <select className={styles.modalDropdown}>
+                    <option key="0" value="">
+                      Select Type of Food
+                    </option>
+                  </select>
+                </div>
+              </Modal.Body>
+              <Modal.Footer
+                style={{
+                  border: "none",
+                  justifyContent: "center",
+                  flexDirection: "column",
+                }}
+              >
+                <button className={styles.redButton}>Add Item</button>
+                <button
+                  className={styles.whiteButton}
+                  onClick={() => toggleAddItem()}
+                >
+                  Cancel
+                </button>
+              </Modal.Footer>
+            </div>
+          </div>
+        </div>
+      )}
+      {state.showAddItemTags && (
+        <div
+          style={{
+            height: "100%",
+            width: "100%",
+            zIndex: "101",
+            left: "0",
+            top: "0",
+            position: "fixed",
+            display: "grid",
+          }}
+        >
+          <div
+            style={{
+              position: "relative",
+              justifySelf: "center",
+              alignSelf: "center",
+              display: "block",
+              border: "2px solid #E7404A",
+              backgroundColor: "white",
+              height: "auto",
+              width: "auto",
+              zIndex: "102",
+              padding: "10px 0px 10px 0px",
+              borderRadius: "20px",
+              overflow: "auto",
+            }}
+          >
+            <div
+              style={{
+                border: "none",
+                paddingLeft: "15px",
+                fontWeight: "bold",
+              }}
+            >
+              <Modal.Title style={{ fontWeight: "bold" }}>
+                Select Item tags to add
+              </Modal.Title>
+              <Modal.Body>
+                <div style={{ maxWidth: "300px" }}>
+                  {state.itemTagList &&
+                    state.itemTagList.map((item) => {
+                      return (
+                        <div style={{ display: "inline-block" }}>
+                          {item.tags}
+                        </div>
+                      );
+                    })}
+                </div>
+              </Modal.Body>
+              <Modal.Footer
+                style={{
+                  border: "none",
+                  justifyContent: "center",
+                  flexDirection: "column",
+                }}
+              >
+                <button className={styles.whiteButton}>Add Meal Tags</button>
               </Modal.Footer>
             </div>
           </div>
