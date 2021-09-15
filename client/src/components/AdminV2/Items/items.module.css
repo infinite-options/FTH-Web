@@ -100,12 +100,14 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  margin: 5px 0px;
 }
 
 .modalContainerHorizontal {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  margin: 5px 0px;
 }
 
 .modalDropdown {
@@ -120,4 +122,29 @@
   cursor: pointer;
   background: url("../../../images/RedDropdown.svg") no-repeat;
   background-position: right 5px top 50%;
+}
+
+.itemTagSelected {
+  display: inline-block;
+  height: 40px;
+  padding: 0px 20px;
+  background-color: #f8c5c8;
+  border-radius: 20px;
+  text-align: center;
+  line-height: 40px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.itemTagNotSelected {
+  display: inline-block;
+  height: 40px;
+  padding: 0px 20px;
+  background-color: white;
+  border: 1px solid #e7404a;
+  border-radius: 20px;
+  text-align: center;
+  line-height: 40px;
+  margin: 5px;
+  cursor: pointer;
 }
