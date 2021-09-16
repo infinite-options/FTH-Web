@@ -44,7 +44,8 @@ class NavBar extends Component {
                     <a href="cart">
                     <button 
                         style={{background: "none", 
-                                border:"none"
+                                border:"none",
+                                marginLeft: "5px"
                                 }}> 
                             <img src={shoppingCart} alt="" 
                                 style={{
