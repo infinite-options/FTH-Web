@@ -43,6 +43,7 @@ import AdminIngredientsUnits from "./components/Admin/IngredientsUnits";
 
 // New Admin Imports
 import NewAdminNavBar from "./components/AdminV2/AdminNavBar";
+import NewAdminHome from "./components/AdminV2/Home";
 import AdminBusinessProfile from "./components/AdminV2/BusinessProfile";
 import AdminOrders from "./components/AdminV2/Orders";
 import AdminDonations from "./components/AdminV2/Donations";
@@ -136,7 +137,9 @@ function App() {
             {/* <AppliedRoute exact path='/test' component={MapTest} /> */}
 
             {/* New Admin Routes */}
-
+            <Route exact path="/admin-v2">
+              <NewAdminHome />
+            </Route>
             <Route exact path="/admin-v2/orders">
               <AdminOrders />
             </Route>

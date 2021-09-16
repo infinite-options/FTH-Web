@@ -54,7 +54,7 @@ function Notifications({ history, ...props }) {
         .get(`${API_URL}Profile/${customer_uid}`)
         .then((response) => {
           const role = response.data.result[0].role.toLowerCase();
-          if (role === "admin") {
+          if (role !== "admin" && role !== "customer") {
             // console.log("mounting")
             // console.log(state.mounted);
             dispatch({ type: "MOUNT" });
