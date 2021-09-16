@@ -42,8 +42,6 @@ const initialState = {
     detailed_measure: "",
     item_photo: "",
     package_upc: "",
-    brand_name: "",
-    item_name: "",
   },
   newItem: {
     item_name: "",
@@ -486,7 +484,17 @@ function Items({ history, ...props }) {
   const postNewSupply = () => {
     const supplyFormData = new FormData();
 
+    if (state.selectedFile === null) {
+      alert("invalid inputs");
+      return;
+    }
+
     for (const field of Object.keys(state.newSupply)) {
+      if (field !== "sup_desc" && state.newSupply[field] === "") {
+        alert(`invalid inputs: ${field}`);
+        return;
+      }
+
       if (field === "sup_desc") {
         supplyFormData.append(field, getNewSupplyDesc());
       } else if (field === "item_photo") {

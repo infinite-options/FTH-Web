@@ -25,3 +25,19 @@
   border-radius: 18px;
   border: none;
 }
+
+.editBusinessFormContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  padding: 15px 0px 25px 0px;
+  width: 100%;
+}
+
+.editFoodTypeLabel {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+  padding: 5px 0px;
+}
