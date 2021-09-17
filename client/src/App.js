@@ -60,6 +60,7 @@ import Confirmation from "./components/ServingNow/Confirmation";
 import ClientForm from "./components/ServingNow/ClientForm";
 import PickItems from "./components/ServingNow/PickItems";
 import Cart from "./components/ServingNow/Cart";
+// import Checkout from "./components/ServingNow/Checkout";
 
 // import MapTest from './components/MapTest';
 import Congrats from "./components/Congrats";
@@ -235,6 +236,9 @@ function App() {
             <Route exact path="/cart">
               <Cart />
             </Route>
+            {/* <Route exact path="/checkout">
+              <Checkout />
+            </Route> */}
 
             <AppliedRoute path="*" component={NotFound} />
           </Switch>

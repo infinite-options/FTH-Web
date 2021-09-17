@@ -955,7 +955,7 @@ function Items({ history, ...props }) {
                               fontSize: "15px",
                             }}
                             direction={state.sortSupply.direction}
-                            onClick={() => sortSupply("sup_num")}
+                            onClick={() => sortSupply("sup_measure")}
                           >
                             Package
                           </TableSortLabel>
@@ -976,7 +976,7 @@ function Items({ history, ...props }) {
                               fontSize: "15px",
                             }}
                             direction={state.sortSupply.direction}
-                            onClick={() => sortSupply("detailed_num")}
+                            onClick={() => sortSupply("detailed_measure")}
                           >
                             Item
                           </TableSortLabel>

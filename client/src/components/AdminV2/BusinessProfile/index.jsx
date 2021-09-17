@@ -292,7 +292,6 @@ function BusinessProfile({ history, ...props }) {
 
   return (
     <div>
-      {console.log(state)}
       <AdminNavBar currentPage={"business-profile"} />
       <Container fluid className={styles.container}>
         <Row
