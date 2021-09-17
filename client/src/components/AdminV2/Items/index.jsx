@@ -68,6 +68,14 @@ const initialState = {
   itemTagList: [],
   itemTypeList: [],
   autocomplete: false,
+  sortSupply: {
+    field: "",
+    direction: "asc",
+  },
+  itemBrandSearch: "",
+  itemNameSearch: "",
+  itemPackageSearch: "",
+  itemTypeFilter: "",
 };
 
 function reducer(state, action) {
@@ -152,6 +160,34 @@ function reducer(state, action) {
         ...state,
         autocomplete: !state.autocomplete,
       };
+    case "SORT_SUPPLY":
+      return {
+        ...state,
+        sortSupply: {
+          field: action.payload.field,
+          direction: action.payload.direction,
+        },
+      };
+    case "FILTER_BY_BRAND_NAME":
+      return {
+        ...state,
+        itemBrandSearch: action.payload,
+      };
+    case "FILTER_BY_ITEM_NAME":
+      return {
+        ...state,
+        itemNameSearch: action.payload,
+      };
+    case "FILTER_BY_PACKAGE":
+      return {
+        ...state,
+        itemPackageSearch: action.payload,
+      };
+    case "FILTER_BY_FOOD_TYPE":
+      return {
+        ...state,
+        itemTypeFilter: action.payload,
+      };
     default:
       return state;
   }
@@ -203,6 +239,7 @@ function Items({ history, ...props }) {
 
   useEffect(() => {
     getSupplyItems();
+    getItemTypes();
   }, []);
 
   const addressAutocomplete = () => {
@@ -333,6 +370,7 @@ function Items({ history, ...props }) {
     } else {
       getSupplyItems();
       dispatch({ type: "EDIT_NEW_SUPPLY", payload: initialState.newSupply });
+      state.selectedFile = null;
     }
 
     dispatch({ type: "TOGGLE_ADD_SUPPLY" });
@@ -341,8 +379,8 @@ function Items({ history, ...props }) {
   const toggleAddBrand = () => {
     if (state.showAddBrand) {
       getSupplyModalData();
+      dispatch({ type: "EDIT_NEW_BRAND", payload: initialState.newBrand });
     } else {
-      // addressAutocomplete();
     }
 
     dispatch({ type: "TOGGLE_ADD_BRAND" });
@@ -363,6 +401,18 @@ function Items({ history, ...props }) {
   const getItemNameByID = (id) => {
     return state.uniqueItems.filter((item) => item.item_uid === id)[0]
       .item_name;
+  };
+
+  const sortSupply = (field) => {
+    const isAsc =
+      state.sortSupply.field === field && state.sortSupply.direction === "asc";
+    const direction = isAsc ? "desc" : "asc";
+    dispatch({
+      type: "SORT_SUPPLY",
+      payload: { field: field, direction: direction },
+    });
+    const sortedSupply = sortedArray(state.items, field, direction);
+    dispatch({ type: "UPDATE_ITEMS", payload: sortedSupply });
   };
 
   const editNewSupply = (field, value) => {
@@ -541,6 +591,62 @@ function Items({ history, ...props }) {
     });
   };
 
+  const filterItems = () => {
+    return state.items
+      .filter((item) => {
+        if (state.itemBrandSearch === "") {
+          return item;
+        } else if (
+          item.brand_name &&
+          item.brand_name.length > 0 &&
+          item.brand_name
+            .toLowerCase()
+            .includes(state.itemBrandSearch.toLowerCase())
+        ) {
+          return item;
+        }
+      })
+      .filter((item) => {
+        if (state.itemNameSearch === "") {
+          return item;
+        } else if (
+          item.item_name &&
+          item.item_name.length > 0 &&
+          item.item_name
+            .toLowerCase()
+            .includes(state.itemNameSearch.toLowerCase())
+        ) {
+          return item;
+        }
+      })
+      .filter((item) => {
+        if (state.itemPackageSearch === "") {
+          return item;
+        } else if (
+          item.sup_desc &&
+          item.sup_desc.length > 0 &&
+          item.sup_desc
+            .toLowerCase()
+            .includes(state.itemPackageSearch.toLowerCase())
+        ) {
+          return item;
+        }
+      })
+      .filter((item) => {
+        if (state.itemTypeFilter === "") {
+          return item;
+        } else if (
+          item.item_type &&
+          item.item_type.length > 0 &&
+          item.item_type
+            .toLowerCase()
+            .includes(state.itemTypeFilter.toLowerCase())
+        ) {
+          return item;
+        }
+      });
+  };
+
   const getSupplyModalData = () => {
     getSupplyUnits();
     getSuuplyNonSpecificUnits();
@@ -600,6 +706,13 @@ function Items({ history, ...props }) {
                   type="text"
                   placeholder="Brand"
                   className={styles.tableSearch}
+                  value={state.itemBrandSearch}
+                  onChange={(event) =>
+                    dispatch({
+                      type: "FILTER_BY_BRAND_NAME",
+                      payload: event.target.value,
+                    })
+                  }
                 />
               </Col>
               <Col md="auto">
@@ -607,6 +720,13 @@ function Items({ history, ...props }) {
                   type="text"
                   placeholder="Item"
                   className={styles.tableSearch}
+                  value={state.itemNameSearch}
+                  onChange={(event) =>
+                    dispatch({
+                      type: "FILTER_BY_ITEM_NAME",
+                      payload: event.target.value,
+                    })
+                  }
                 />
               </Col>
               <Col md="auto">
@@ -614,11 +734,37 @@ function Items({ history, ...props }) {
                   type="text"
                   placeholder="Package"
                   className={styles.tableSearch}
+                  value={state.itemPackageSearch}
+                  onChange={(event) =>
+                    dispatch({
+                      type: "FILTER_BY_PACKAGE",
+                      payload: event.target.value,
+                    })
+                  }
                 />
               </Col>
               <Col md="auto">
-                <select className={styles.dropdown}>
-                  <option key={0}>Type of Food</option>
+                <select
+                  className={styles.dropdown}
+                  value={state.itemTypeFilter}
+                  onChange={(event) =>
+                    dispatch({
+                      type: "FILTER_BY_FOOD_TYPE",
+                      payload: event.target.value,
+                    })
+                  }
+                >
+                  <option key={0} value="">
+                    Type of Food
+                  </option>
+                  {state.itemTypeList &&
+                    state.itemTypeList.map((type, index) => {
+                      return (
+                        <option key={index} value={type.types}>
+                          {type.types}
+                        </option>
+                      );
+                    })}
                 </select>
               </Col>
             </Row>
@@ -643,6 +789,8 @@ function Items({ history, ...props }) {
                               textAlign: "center",
                               fontSize: "15px",
                             }}
+                            direction={state.sortSupply.direction}
+                            onClick={() => sortSupply("supply_uid")}
                           >
                             UPC
                           </TableSortLabel>
@@ -662,6 +810,8 @@ function Items({ history, ...props }) {
                               textAlign: "center",
                               fontSize: "15px",
                             }}
+                            direction={state.sortSupply.direction}
+                            onClick={() => sortSupply("brand_name")}
                           >
                             Brand
                           </TableSortLabel>
@@ -681,6 +831,8 @@ function Items({ history, ...props }) {
                               textAlign: "center",
                               fontSize: "15px",
                             }}
+                            direction={state.sortSupply.direction}
+                            onClick={() => sortSupply("item_name")}
                           >
                             Item
                           </TableSortLabel>
@@ -700,6 +852,8 @@ function Items({ history, ...props }) {
                               textAlign: "center",
                               fontSize: "15px",
                             }}
+                            direction={state.sortSupply.direction}
+                            onClick={() => sortSupply("sup_desc")}
                           >
                             Package
                           </TableSortLabel>
@@ -738,6 +892,8 @@ function Items({ history, ...props }) {
                               textAlign: "center",
                               fontSize: "15px",
                             }}
+                            direction={state.sortSupply.direction}
+                            onClick={() => sortSupply("item_type")}
                           >
                             Type of Food
                           </TableSortLabel>
@@ -757,6 +913,8 @@ function Items({ history, ...props }) {
                               textAlign: "center",
                               fontSize: "15px",
                             }}
+                            direction={state.sortSupply.direction}
+                            onClick={() => sortSupply("sup_num")}
                           >
                             Package
                           </TableSortLabel>
@@ -776,6 +934,8 @@ function Items({ history, ...props }) {
                               textAlign: "center",
                               fontSize: "15px",
                             }}
+                            direction={state.sortSupply.direction}
+                            onClick={() => sortSupply("detailed_num")}
                           >
                             Item
                           </TableSortLabel>
@@ -784,7 +944,7 @@ function Items({ history, ...props }) {
                     </TableHead>
                     <TableBody>
                       {state.items &&
-                        state.items.map((item, index) => {
+                        filterItems().map((item, index) => {
                           return (
                             <TableRow key={index}>
                               <TableCell>{item.package_upc}</TableCell>

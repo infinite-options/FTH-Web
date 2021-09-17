@@ -1,3 +1,16 @@
+::-webkit-input-placeholder {
+  font-family: sans-serif !important;
+}
+
+:-moz-placeholder {
+  /* Firefox 18- */
+  font-family: sans-serif !important;
+}
+::-moz-placeholder {
+  /* Firefox 19+ */
+  font-family: sans-serif !important;
+}
+
 .container {
   padding: 0px 60px;
   width: 100%;

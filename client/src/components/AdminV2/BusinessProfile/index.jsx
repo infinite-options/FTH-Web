@@ -38,6 +38,7 @@ const initialState = {
   showEditProfile: false,
   businessProfileInfo: null,
   editedBusinessProfileInfo: null,
+  selectedFile: null,
 };
 
 function reducer(state, action) {
@@ -51,6 +52,7 @@ function reducer(state, action) {
       return {
         ...state,
         businessProfileInfo: action.payload,
+        editedBusinessProfileInfo: action.payload,
       };
     case "SET_EDITED_BUSINESS_PROFILE_INFO":
       return {
@@ -160,24 +162,190 @@ function BusinessProfile({ history, ...props }) {
       });
   };
 
-  const getBusinessProfileInfo = (field) => {
-    if (state.businessProfileInfo && state.businessProfileInfo[field]) {
-      return state.businessProfileInfo[field];
+  const getBusinessProfileInfo = (data, field) => {
+    if (data && data.hasOwnProperty(field)) {
+      return data[field];
     } else {
       return "";
     }
   };
 
-  const getFoodType = (type) => {
-    if (state.businessProfileInfo && state.businessProfileInfo.item_types) {
-      return state.businessProfileInfo.item_types[type];
+  const getFoodType = (data, type) => {
+    if (data && data.hasOwnProperty("item_types")) {
+      return data.item_types[type];
     } else {
       return 0;
     }
   };
 
+  const getBusinessHours = (data, day, type) => {
+    if (data && data.business_accepting_hours) {
+      if (type === "start") {
+        return data.business_accepting_hours[day][0];
+      } else {
+        return data.business_accepting_hours[day][1];
+      }
+    } else {
+      return "";
+    }
+  };
+
+  const editBusiness = (property, value) => {
+    const newBusiness = {
+      ...state.editedBusinessProfileInfo,
+      [property]: value,
+    };
+    dispatch({
+      type: "SET_EDITED_BUSINESS_PROFILE_INFO",
+      payload: newBusiness,
+    });
+  };
+
+  const changeTypeOfFood = (type) => {
+    let updatedItemTypes = null;
+    if (
+      state.editedBusinessProfileInfo.item_types === null ||
+      state.editedBusinessProfileInfo.item_types === ""
+    ) {
+      updatedItemTypes = {
+        fruits: 0,
+        vegetables: 0,
+        meals: 0,
+        desserts: 0,
+        beverages: 0,
+        dairy: 0,
+        snacks: 0,
+        cannedFoods: 0,
+      };
+      updatedItemTypes[type] = updatedItemTypes[type] === 0 ? 1 : 0;
+    } else {
+      updatedItemTypes = {
+        ...state.editedBusinessProfileInfo.item_types,
+        [type]: state.editedBusinessProfileInfo.item_types[type] === 0 ? 1 : 0,
+      };
+    }
+    const newBusiness = {
+      ...state.editedBusinessProfileInfo,
+      item_types: updatedItemTypes,
+    };
+    dispatch({
+      type: "SET_EDITED_BUSINESS_PROFILE_INFO",
+      payload: newBusiness,
+    });
+  };
+
+  const changeBusinessHours = (day, startTime, endTime) => {
+    const newHours = {
+      ...state.editedBusinessProfileInfo.business_accepting_hours,
+      [day]: [startTime, endTime],
+    };
+
+    console.log(newHours);
+
+    // hours[day][arrayIndex] = newTime;
+    editBusiness("business_accepting_hours", newHours);
+  };
+
   const toggleEditProfile = () => {
     dispatch({ type: "TOGGLE_SHOW_EDIT_PROFILE" });
+  };
+
+  const saveBusinessData = () => {
+    // TODO - Modify data passed into endpoint
+
+    const businessData = {
+      ...state.editedBusinessProfileInfo,
+      // business_uid: "200-000048",
+      // business_name: "FTH",
+      // business_type: "Testing 2",
+      // business_desc: "Vegan Delivery Service",
+      // business_contact_first_name: "Anu",
+      // business_contact_last_name: "Sandhu",
+      // business_phone_num: "(512) 555-1234",
+      // business_phone_num2: "(512) 555-1200",
+      // business_email: "anu@ptyd.com",
+      business_hours: {
+        Friday: ["00:00:00", "23:59:00"],
+        Monday: ["00:00:00", "23:59:00"],
+      },
+      // business_accepting_hours: {
+      //   Friday: ["09:00:00", "23:59:59"],
+      //   Monday: ["09:00:00", "23:59:59"],
+      //   Sunday: ["09:00:00", "23:59:59"],
+      //   Tuesday: ["09:00:00", "23:59:59"],
+      //   Saturday: ["09:00:00", "21:00:00"],
+      //   Thursday: ["09:00:00", "23:59:59"],
+      //   Wednesday: ["09:00:00", "23:00:00"],
+      // },
+      business_delivery_hours: {
+        Friday: ["09:00:00", "23:59:59"],
+      },
+      // business_address: "360 Cowden Road",
+      // business_unit: "",
+      // business_city: "Hollister",
+      // business_state: "CA",
+      // business_zip: "95135",
+      can_cancel: String(state.editedBusinessProfileInfo.can_cancel),
+      delivery: "0",
+      reusable: String(state.editedBusinessProfileInfo.reusable),
+      // business_image:
+      // "https://servingnow.s3-us-west-1.amazonaws.com/kitchen_imgs/landing-logo.png",
+      // business_status: "",
+      // business_facebook_url: "",
+      // business_instagram_url: "",
+      // business_twitter_url: "",
+      // business_website_url: "",
+      limit_per_person: "5",
+      // item_types: {
+      //   fruits: 1,
+      //   vegetables: 1,
+      //   meals: 1,
+      //   desserts: 1,
+      //   beverages: 1,
+      //   dairy: 0,
+      //   snacks: 0,
+      //   cannedFoods: 0,
+      // },
+    };
+
+    let businessDataStatus = null;
+    let imageUploadStatus = null;
+    let businessID = state.selectedBusinessID;
+    axios
+      .post(`${API_URL}business_details_update/Post`, businessData)
+      .then((res) => {
+        businessDataStatus = res.status;
+        if (state.selectedFile) {
+          const imageFormData = new FormData();
+          imageFormData.append("bus_photo", state.selectedFile);
+          imageFormData.append("uid", businessID);
+
+          return axios.post(`${API_URL}business_image_upload`, imageFormData);
+        }
+      })
+      .then((res) => {
+        if (res) {
+          imageUploadStatus = res.status;
+        }
+      })
+      .catch((err) => {
+        alert(
+          "There was an issue while saving the business details, please try again"
+        );
+      })
+      .finally(() => {
+        if (
+          (businessDataStatus === 200 && imageUploadStatus === 200) ||
+          imageUploadStatus === null
+        ) {
+          dispatch({
+            type: "SET_SHOW_BUSINESS_DETAILS",
+            payload: { showEditBusinessDetails: false, businessEditMode: "" },
+          });
+          toggleEditProfile();
+          getBusinessData();
+        }
+      });
   };
 
   if (!state.mounted) {
@@ -226,19 +394,21 @@ function BusinessProfile({ history, ...props }) {
                   <img
                     height="150px"
                     width="150px"
-                    src=""
-                    // src={state.editedBusinessData.business_image}
+                    src={getBusinessProfileInfo(
+                      state.editedBusinessProfileInfo,
+                      "business_image"
+                    )}
                   ></img>
                   <input
                     type="file"
                     name="upload_file"
-                    // onChange={(e) => {
-                    //   state.selectedFile = e.target.files[0];
-                    //   editBusiness(
-                    //     "business_image",
-                    //     URL.createObjectURL(e.target.files[0])
-                    //   );
-                    // }}
+                    onChange={(e) => {
+                      state.selectedFile = e.target.files[0];
+                      editBusiness(
+                        "business_image",
+                        URL.createObjectURL(e.target.files[0])
+                      );
+                    }}
                   />
                 </Form.Group>
                 <Form.Group
@@ -252,10 +422,13 @@ function BusinessProfile({ history, ...props }) {
                   <Form.Control
                     as="input"
                     placeholder="Enter Business Name"
-                    // value={state.editedBusinessData.business_name}
-                    // onChange={(event) =>
-                    //   editBusiness("business_name", event.target.value)
-                    // }
+                    value={getBusinessProfileInfo(
+                      state.editedBusinessProfileInfo,
+                      "business_name"
+                    )}
+                    onChange={(event) =>
+                      editBusiness("business_name", event.target.value)
+                    }
                   />
                 </Form.Group>
                 <Form.Group
@@ -269,10 +442,13 @@ function BusinessProfile({ history, ...props }) {
                   <Form.Control
                     as="input"
                     placeholder="Enter Business Type"
-                    // value={state.editedBusinessData.business_type}
-                    // onChange={(event) =>
-                    //   editBusiness("business_type", event.target.value)
-                    // }
+                    value={getBusinessProfileInfo(
+                      state.editedBusinessProfileInfo,
+                      "business_type"
+                    )}
+                    onChange={(event) =>
+                      editBusiness("business_type", event.target.value)
+                    }
                   />
                 </Form.Group>
                 <Form.Group
@@ -286,10 +462,13 @@ function BusinessProfile({ history, ...props }) {
                   <Form.Control
                     as="textarea"
                     placeholder="Enter Business Description"
-                    // value={state.editedBusinessData.business_desc}
-                    // onChange={(event) =>
-                    //   editBusiness("business_desc", event.target.value)
-                    // }
+                    value={getBusinessProfileInfo(
+                      state.editedBusinessProfileInfo,
+                      "business_desc"
+                    )}
+                    onChange={(event) =>
+                      editBusiness("business_desc", event.target.value)
+                    }
                   />
                 </Form.Group>
               </div>
@@ -305,15 +484,16 @@ function BusinessProfile({ history, ...props }) {
                     <Form.Control
                       as="input"
                       placeholder="Enter First Name"
-                      // value={
-                      //   state.editedBusinessData.business_contact_first_name
-                      // }
-                      // onChange={(event) =>
-                      //   editBusiness(
-                      //     "business_contact_first_name",
-                      //     event.target.value
-                      //   )
-                      // }
+                      value={getBusinessProfileInfo(
+                        state.editedBusinessProfileInfo,
+                        "business_contact_first_name"
+                      )}
+                      onChange={(event) =>
+                        editBusiness(
+                          "business_contact_first_name",
+                          event.target.value
+                        )
+                      }
                     />
                   </Form.Group>
                   <Form.Group style={{ width: "45%" }}>
@@ -321,15 +501,16 @@ function BusinessProfile({ history, ...props }) {
                     <Form.Control
                       as="input"
                       placeholder="Enter Last Name"
-                      // value={
-                      //   state.editedBusinessData.business_contact_last_name
-                      // }
-                      // onChange={(event) =>
-                      //   editBusiness(
-                      //     "business_contact_last_name",
-                      //     event.target.value
-                      //   )
-                      // }
+                      value={getBusinessProfileInfo(
+                        state.editedBusinessProfileInfo,
+                        "business_contact_last_name"
+                      )}
+                      onChange={(event) =>
+                        editBusiness(
+                          "business_contact_last_name",
+                          event.target.value
+                        )
+                      }
                     />
                   </Form.Group>
                 </Row>
@@ -339,10 +520,13 @@ function BusinessProfile({ history, ...props }) {
                     <Form.Control
                       as="input"
                       placeholder="Enter Phone Number"
-                      // value={state.editedBusinessData.business_phone_num}
-                      // onChange={(event) =>
-                      //   editBusiness("business_phone_num", event.target.value)
-                      // }
+                      value={getBusinessProfileInfo(
+                        state.editedBusinessProfileInfo,
+                        "business_phone_num"
+                      )}
+                      onChange={(event) =>
+                        editBusiness("business_phone_num", event.target.value)
+                      }
                     />
                   </Form.Group>
                   <Form.Group style={{ width: "45%" }}>
@@ -350,10 +534,13 @@ function BusinessProfile({ history, ...props }) {
                     <Form.Control
                       as="input"
                       placeholder="Enter Phone Number"
-                      // value={state.editedBusinessData.business_phone_num2}
-                      // onChange={(event) =>
-                      //   editBusiness("business_phone_num2", event.target.value)
-                      // }
+                      value={getBusinessProfileInfo(
+                        state.editedBusinessProfileInfo,
+                        "business_phone_num2"
+                      )}
+                      onChange={(event) =>
+                        editBusiness("business_phone_num2", event.target.value)
+                      }
                     />
                   </Form.Group>
                 </Row>
@@ -363,10 +550,13 @@ function BusinessProfile({ history, ...props }) {
                     <Form.Control
                       as="input"
                       placeholder="Enter Street Address"
-                      // value={state.editedBusinessData.business_address}
-                      // onChange={(event) =>
-                      //   editBusiness("business_address", event.target.value)
-                      // }
+                      value={getBusinessProfileInfo(
+                        state.editedBusinessProfileInfo,
+                        "business_address"
+                      )}
+                      onChange={(event) =>
+                        editBusiness("business_address", event.target.value)
+                      }
                     />
                   </Form.Group>
                   <Form.Group style={{ width: "30%" }}>
@@ -374,10 +564,13 @@ function BusinessProfile({ history, ...props }) {
                     <Form.Control
                       as="input"
                       placeholder="Enter Unit No."
-                      // value={state.editedBusinessData.business_unit}
-                      // onChange={(event) =>
-                      //   editBusiness("business_unit", event.target.value)
-                      // }
+                      value={getBusinessProfileInfo(
+                        state.editedBusinessProfileInfo,
+                        "business_unit"
+                      )}
+                      onChange={(event) =>
+                        editBusiness("business_unit", event.target.value)
+                      }
                     />
                   </Form.Group>
                 </Row>
@@ -392,10 +585,13 @@ function BusinessProfile({ history, ...props }) {
                   <Form.Control
                     as="input"
                     placeholder="Enter City"
-                    // value={state.editedBusinessData.business_city}
-                    // onChange={(event) =>
-                    //   editBusiness("business_city", event.target.value)
-                    // }
+                    value={getBusinessProfileInfo(
+                      state.editedBusinessProfileInfo,
+                      "business_city"
+                    )}
+                    onChange={(event) =>
+                      editBusiness("business_city", event.target.value)
+                    }
                   />
                 </Form.Group>
                 <Row style={{ margin: "0px", justifyContent: "center" }}>
@@ -404,10 +600,13 @@ function BusinessProfile({ history, ...props }) {
                     <Form.Control
                       as="input"
                       placeholder="Enter State"
-                      // value={state.editedBusinessData.business_state}
-                      // onChange={(event) =>
-                      //   editBusiness("business_state", event.target.value)
-                      // }
+                      value={getBusinessProfileInfo(
+                        state.editedBusinessProfileInfo,
+                        "business_state"
+                      )}
+                      onChange={(event) =>
+                        editBusiness("business_state", event.target.value)
+                      }
                     />
                   </Form.Group>
                   <Form.Group style={{ width: "45%" }}>
@@ -415,10 +614,13 @@ function BusinessProfile({ history, ...props }) {
                     <Form.Control
                       as="input"
                       placeholder="Enter Zip"
-                      // value={state.editedBusinessData.business_zip}
-                      // onChange={(event) =>
-                      //   editBusiness("business_zip", event.target.value)
-                      // }
+                      value={getBusinessProfileInfo(
+                        state.editedBusinessProfileInfo,
+                        "business_zip"
+                      )}
+                      onChange={(event) =>
+                        editBusiness("business_zip", event.target.value)
+                      }
                     />
                   </Form.Group>
                   <Form.Group
@@ -434,11 +636,16 @@ function BusinessProfile({ history, ...props }) {
                       type="radio"
                       id="reusable"
                       name="storage"
-                      // value={1}
-                      // checked={state.editedBusinessData.reusable === 1}
-                      // onChange={(event) =>
-                      //   editBusiness("reusable", Number(event.target.value))
-                      // }
+                      value={1}
+                      checked={
+                        getBusinessProfileInfo(
+                          state.editedBusinessProfileInfo,
+                          "reusable"
+                        ) === 1
+                      }
+                      onChange={(event) =>
+                        editBusiness("reusable", Number(event.target.value))
+                      }
                     />{" "}
                     Reusable
                     <br />
@@ -446,11 +653,16 @@ function BusinessProfile({ history, ...props }) {
                       type="radio"
                       id="disposable"
                       name="storage"
-                      // value={0}
-                      // checked={state.editedBusinessData.reusable === 0}
-                      // onChange={(event) =>
-                      //   editBusiness("reusable", Number(event.target.value))
-                      // }
+                      value={0}
+                      checked={
+                        getBusinessProfileInfo(
+                          state.editedBusinessProfileInfo,
+                          "reusable"
+                        ) === 0
+                      }
+                      onChange={(event) =>
+                        editBusiness("reusable", Number(event.target.value))
+                      }
                     />{" "}
                     Disposable
                   </Form.Group>
@@ -461,17 +673,23 @@ function BusinessProfile({ history, ...props }) {
                       marginRight: "auto",
                     }}
                   >
+                    {console.log(state.editedBusinessProfileInfo.can_cancel)}
                     <Form.Label>Cancellation</Form.Label>
                     <br />
                     <input
                       type="radio"
                       id="can_cancel"
                       name="cancellation"
-                      // value={1}
-                      // checked={state.editedBusinessData.can_cancel === 1}
-                      // onChange={(event) =>
-                      //   editBusiness("can_cancel", Number(event.target.value))
-                      // }
+                      value={1}
+                      checked={
+                        getBusinessProfileInfo(
+                          state.editedBusinessProfileInfo,
+                          "can_cancel"
+                        ) === 1
+                      }
+                      onChange={(event) =>
+                        editBusiness("can_cancel", Number(event.target.value))
+                      }
                     />{" "}
                     Allow cancellation within ordering hours
                     <br />
@@ -479,11 +697,16 @@ function BusinessProfile({ history, ...props }) {
                       type="radio"
                       id="no_cancel"
                       name="cancellation"
-                      // value={0}
-                      // checked={state.editedBusinessData.can_cancel === 0}
-                      // onChange={(event) =>
-                      //   editBusiness("can_cancel", Number(event.target.value))
-                      // }
+                      value={0}
+                      checked={
+                        getBusinessProfileInfo(
+                          state.editedBusinessProfileInfo,
+                          "can_cancel"
+                        ) === 0
+                      }
+                      onChange={(event) =>
+                        editBusiness("can_cancel", Number(event.target.value))
+                      }
                     />{" "}
                     Cancellations not allowed
                   </Form.Group>
@@ -500,13 +723,16 @@ function BusinessProfile({ history, ...props }) {
                       type="radio"
                       id="active"
                       name="businessStatus"
-                      // value={"ACTIVE"}
-                      // checked={
-                      //   state.editedBusinessData.business_status === "ACTIVE"
-                      // }
-                      // onChange={(event) =>
-                      //   editBusiness("business_status", event.target.value)
-                      // }
+                      value={"ACTIVE"}
+                      checked={
+                        getBusinessProfileInfo(
+                          state.editedBusinessProfileInfo,
+                          "business_status"
+                        ) === "ACTIVE"
+                      }
+                      onChange={(event) =>
+                        editBusiness("business_status", event.target.value)
+                      }
                     />{" "}
                     Active
                     <br />
@@ -514,13 +740,14 @@ function BusinessProfile({ history, ...props }) {
                       type="radio"
                       id="Inactive"
                       name="businessStatus"
-                      // value={"INACTIVE"}
-                      // checked={
-                      //   state.editedBusinessData.business_status === "INACTIVE"
-                      // }
-                      // onChange={(event) =>
-                      //   editBusiness("business_status", event.target.value)
-                      // }
+                      value={"INACTIVE"}
+                      checked={getBusinessProfileInfo(
+                        state.editedBusinessProfileInfo,
+                        "business_status"
+                      )}
+                      onChange={(event) =>
+                        editBusiness("business_status", event.target.value)
+                      }
                     />{" "}
                     Inactive
                   </Form.Group>
@@ -543,8 +770,11 @@ function BusinessProfile({ history, ...props }) {
                   <div className={styles.editFoodTypeLabel}>
                     <Form.Check
                       type="checkbox"
-                      // checked={getEditedFoodTypes("fruits")}
-                      // onChange={() => changeTypeOfFood("fruits")}
+                      checked={getFoodType(
+                        state.editedBusinessProfileInfo,
+                        "fruits"
+                      )}
+                      onChange={() => changeTypeOfFood("fruits")}
                     />
                     <img src={FruitIconSVG} />
                     <div
@@ -557,8 +787,11 @@ function BusinessProfile({ history, ...props }) {
                   <div className={styles.editFoodTypeLabel}>
                     <Form.Check
                       type="checkbox"
-                      // checked={getEditedFoodTypes("vegetables")}
-                      // onChange={() => changeTypeOfFood("vegetables")}
+                      checked={getFoodType(
+                        state.editedBusinessProfileInfo,
+                        "vegetables"
+                      )}
+                      onChange={() => changeTypeOfFood("vegetables")}
                     />
                     <img src={VegetableIconSVG} />
                     <div
@@ -571,8 +804,11 @@ function BusinessProfile({ history, ...props }) {
                   <div className={styles.editFoodTypeLabel}>
                     <Form.Check
                       type="checkbox"
-                      // checked={getEditedFoodTypes("meals")}
-                      // onChange={() => changeTypeOfFood("meals")}
+                      checked={getFoodType(
+                        state.editedBusinessProfileInfo,
+                        "meals"
+                      )}
+                      onChange={() => changeTypeOfFood("meals")}
                     />
                     <img src={MealIconSVG} />
                     <div
@@ -585,8 +821,11 @@ function BusinessProfile({ history, ...props }) {
                   <div className={styles.editFoodTypeLabel}>
                     <Form.Check
                       type="checkbox"
-                      // checked={getEditedFoodTypes("desserts")}
-                      // onChange={() => changeTypeOfFood("desserts")}
+                      checked={getFoodType(
+                        state.editedBusinessProfileInfo,
+                        "desserts"
+                      )}
+                      onChange={() => changeTypeOfFood("desserts")}
                     />
                     <img src={DessertIconSVG} />
                     <div
@@ -599,8 +838,11 @@ function BusinessProfile({ history, ...props }) {
                   <div className={styles.editFoodTypeLabel}>
                     <Form.Check
                       type="checkbox"
-                      // checked={getEditedFoodTypes("beverages")}
-                      // onChange={() => changeTypeOfFood("beverages")}
+                      checked={getFoodType(
+                        state.editedBusinessProfileInfo,
+                        "beverages"
+                      )}
+                      onChange={() => changeTypeOfFood("beverages")}
                     />
                     <img src={BeverageIconSVG} />
                     <div
@@ -613,8 +855,11 @@ function BusinessProfile({ history, ...props }) {
                   <div className={styles.editFoodTypeLabel}>
                     <Form.Check
                       type="checkbox"
-                      // checked={getEditedFoodTypes("dairy")}
-                      // onChange={() => changeTypeOfFood("dairy")}
+                      checked={getFoodType(
+                        state.editedBusinessProfileInfo,
+                        "dairy"
+                      )}
+                      onChange={() => changeTypeOfFood("dairy")}
                     />
                     <img src={DairyIconSVG} />
                     <div
@@ -627,8 +872,11 @@ function BusinessProfile({ history, ...props }) {
                   <div className={styles.editFoodTypeLabel}>
                     <Form.Check
                       type="checkbox"
-                      // checked={getEditedFoodTypes("snacks")}
-                      // onChange={() => changeTypeOfFood("snacks")}
+                      checked={getFoodType(
+                        state.editedBusinessProfileInfo,
+                        "snacks"
+                      )}
+                      onChange={() => changeTypeOfFood("snacks")}
                     />
                     <img src={SnackIconSVG} />
                     <div
@@ -641,8 +889,11 @@ function BusinessProfile({ history, ...props }) {
                   <div className={styles.editFoodTypeLabel}>
                     <Form.Check
                       type="checkbox"
-                      // checked={getEditedFoodTypes("cannedFoods")}
-                      // onChange={() => changeTypeOfFood("cannedFoods")}
+                      checked={getFoodType(
+                        state.editedBusinessProfileInfo,
+                        "cannedFoods"
+                      )}
+                      onChange={() => changeTypeOfFood("cannedFoods")}
                     />
                     <img src={CanIconSVG} />
                     <div
@@ -681,15 +932,23 @@ function BusinessProfile({ history, ...props }) {
                     <Form.Control
                       as="input"
                       style={{ width: "30%" }}
-                      // value={getEditedBusinessHours().Monday[0]}
-                      // placeholder="HH:MM:SS"
-                      // onChange={(event) => {
-                      //   changeBusinessHours(
-                      //     "Monday",
-                      //     event.target.value,
-                      //     getEditedBusinessHours().Monday[1]
-                      //   );
-                      // }}
+                      value={getBusinessHours(
+                        state.editedBusinessProfileInfo,
+                        "Monday",
+                        "start"
+                      )}
+                      placeholder="HH:MM:SS"
+                      onChange={(event) => {
+                        changeBusinessHours(
+                          "Monday",
+                          event.target.value,
+                          getBusinessHours(
+                            state.editedBusinessProfileInfo,
+                            "Monday",
+                            "end"
+                          )
+                        );
+                      }}
                     />{" "}
                     <div
                       style={{
@@ -703,15 +962,23 @@ function BusinessProfile({ history, ...props }) {
                     <Form.Control
                       as="input"
                       style={{ width: "30%" }}
-                      // value={getEditedBusinessHours().Monday[1]}
-                      // placeholder="HH:MM:SS"
-                      // onChange={(event) => {
-                      //   changeBusinessHours(
-                      //     "Monday",
-                      //     getEditedBusinessHours().Monday[0],
-                      //     event.target.value
-                      //   );
-                      // }}
+                      value={getBusinessHours(
+                        state.editedBusinessProfileInfo,
+                        "Monday",
+                        "end"
+                      )}
+                      placeholder="HH:MM:SS"
+                      onChange={(event) => {
+                        changeBusinessHours(
+                          "Monday",
+                          getBusinessHours(
+                            state.editedBusinessProfileInfo,
+                            "Monday",
+                            "start"
+                          ),
+                          event.target.value
+                        );
+                      }}
                     />
                   </Row>
                   <Row style={{ margin: "0px", padding: "5px 0px 5px 0px" }}>
@@ -727,15 +994,23 @@ function BusinessProfile({ history, ...props }) {
                     <Form.Control
                       as="input"
                       style={{ width: "30%" }}
-                      // value={getEditedBusinessHours().Tuesday[0]}
-                      // placeholder="HH:MM:SS"
-                      // onChange={(event) => {
-                      //   changeBusinessHours(
-                      //     "Tuesday",
-                      //     event.target.value,
-                      //     getEditedBusinessHours().Tuesday[1]
-                      //   );
-                      // }}
+                      value={getBusinessHours(
+                        state.editedBusinessProfileInfo,
+                        "Tuesday",
+                        "start"
+                      )}
+                      placeholder="HH:MM:SS"
+                      onChange={(event) => {
+                        changeBusinessHours(
+                          "Tuesday",
+                          event.target.value,
+                          getBusinessHours(
+                            state.editedBusinessProfileInfo,
+                            "Tuesday",
+                            "end"
+                          )
+                        );
+                      }}
                     />{" "}
                     <div
                       style={{
@@ -749,15 +1024,23 @@ function BusinessProfile({ history, ...props }) {
                     <Form.Control
                       as="input"
                       style={{ width: "30%" }}
-                      // value={getEditedBusinessHours().Tuesday[1]}
-                      // placeholder="HH:MM:SS"
-                      // onChange={(event) => {
-                      //   changeBusinessHours(
-                      //     "Tuesday",
-                      //     getEditedBusinessHours().Tuesday[0],
-                      //     event.target.value
-                      //   );
-                      // }}
+                      value={getBusinessHours(
+                        state.editedBusinessProfileInfo,
+                        "Tuesday",
+                        "end"
+                      )}
+                      placeholder="HH:MM:SS"
+                      onChange={(event) => {
+                        changeBusinessHours(
+                          "Tuesday",
+                          getBusinessHours(
+                            state.editedBusinessProfileInfo,
+                            "Tuesday",
+                            "start"
+                          ),
+                          event.target.value
+                        );
+                      }}
                     />
                   </Row>
                   <Row style={{ margin: "0px", padding: "5px 0px 5px 0px" }}>
@@ -773,15 +1056,23 @@ function BusinessProfile({ history, ...props }) {
                     <Form.Control
                       as="input"
                       style={{ width: "30%" }}
-                      // value={getEditedBusinessHours().Wednesday[0]}
-                      // placeholder="HH:MM:SS"
-                      // onChange={(event) => {
-                      //   changeBusinessHours(
-                      //     "Wednesday",
-                      //     event.target.value,
-                      //     getEditedBusinessHours().Wednesday[1]
-                      //   );
-                      // }}
+                      value={getBusinessHours(
+                        state.editedBusinessProfileInfo,
+                        "Wednesday",
+                        "start"
+                      )}
+                      placeholder="HH:MM:SS"
+                      onChange={(event) => {
+                        changeBusinessHours(
+                          "Wednesday",
+                          event.target.value,
+                          getBusinessHours(
+                            state.editedBusinessProfileInfo,
+                            "Wednesday",
+                            "end"
+                          )
+                        );
+                      }}
                     />{" "}
                     <div
                       style={{
@@ -795,15 +1086,23 @@ function BusinessProfile({ history, ...props }) {
                     <Form.Control
                       as="input"
                       style={{ width: "30%" }}
-                      // value={getEditedBusinessHours().Wednesday[1]}
-                      // placeholder="HH:MM:SS"
-                      // onChange={(event) => {
-                      //   changeBusinessHours(
-                      //     "Wednesday",
-                      //     getEditedBusinessHours().Wednesday[0],
-                      //     event.target.value
-                      //   );
-                      // }}
+                      value={getBusinessHours(
+                        state.editedBusinessProfileInfo,
+                        "Wednesday",
+                        "end"
+                      )}
+                      placeholder="HH:MM:SS"
+                      onChange={(event) => {
+                        changeBusinessHours(
+                          "Wednesday",
+                          getBusinessHours(
+                            state.editedBusinessProfileInfo,
+                            "Wednesday",
+                            "start"
+                          ),
+                          event.target.value
+                        );
+                      }}
                     />
                   </Row>
                   <Row style={{ margin: "0px", padding: "5px 0px 5px 0px" }}>
@@ -819,15 +1118,23 @@ function BusinessProfile({ history, ...props }) {
                     <Form.Control
                       as="input"
                       style={{ width: "30%" }}
-                      // value={getEditedBusinessHours().Thursday[0]}
-                      // placeholder="HH:MM:SS"
-                      // onChange={(event) => {
-                      //   changeBusinessHours(
-                      //     "Thursday",
-                      //     event.target.value,
-                      //     getEditedBusinessHours().Thursday[1]
-                      //   );
-                      // }}
+                      value={getBusinessHours(
+                        state.editedBusinessProfileInfo,
+                        "Thursday",
+                        "start"
+                      )}
+                      placeholder="HH:MM:SS"
+                      onChange={(event) => {
+                        changeBusinessHours(
+                          "Thursday",
+                          event.target.value,
+                          getBusinessHours(
+                            state.editedBusinessProfileInfo,
+                            "Thursday",
+                            "end"
+                          )
+                        );
+                      }}
                     />{" "}
                     <div
                       style={{
@@ -841,15 +1148,23 @@ function BusinessProfile({ history, ...props }) {
                     <Form.Control
                       as="input"
                       style={{ width: "30%" }}
-                      // value={getEditedBusinessHours().Thursday[1]}
-                      // placeholder="HH:MM:SS"
-                      // onChange={(event) => {
-                      //   changeBusinessHours(
-                      //     "Thursday",
-                      //     getEditedBusinessHours().Thursday[0],
-                      //     event.target.value
-                      //   );
-                      // }}
+                      value={getBusinessHours(
+                        state.editedBusinessProfileInfo,
+                        "Thursday",
+                        "end"
+                      )}
+                      placeholder="HH:MM:SS"
+                      onChange={(event) => {
+                        changeBusinessHours(
+                          "Thursday",
+                          getBusinessHours(
+                            state.editedBusinessProfileInfo,
+                            "Thursday",
+                            "start"
+                          ),
+                          event.target.value
+                        );
+                      }}
                     />
                   </Row>
                   <Row style={{ margin: "0px", padding: "5px 0px 5px 0px" }}>
@@ -865,15 +1180,23 @@ function BusinessProfile({ history, ...props }) {
                     <Form.Control
                       as="input"
                       style={{ width: "30%" }}
-                      // value={getEditedBusinessHours().Friday[0]}
-                      // placeholder="HH:MM:SS"
-                      // onChange={(event) => {
-                      //   changeBusinessHours(
-                      //     "Friday",
-                      //     event.target.value,
-                      //     getEditedBusinessHours().Friday[1]
-                      //   );
-                      // }}
+                      value={getBusinessHours(
+                        state.editedBusinessProfileInfo,
+                        "Friday",
+                        "start"
+                      )}
+                      placeholder="HH:MM:SS"
+                      onChange={(event) => {
+                        changeBusinessHours(
+                          "Friday",
+                          event.target.value,
+                          getBusinessHours(
+                            state.editedBusinessProfileInfo,
+                            "Friday",
+                            "end"
+                          )
+                        );
+                      }}
                     />{" "}
                     <div
                       style={{
@@ -887,15 +1210,23 @@ function BusinessProfile({ history, ...props }) {
                     <Form.Control
                       as="input"
                       style={{ width: "30%" }}
-                      // value={getEditedBusinessHours().Friday[1]}
-                      // placeholder="HH:MM:SS"
-                      // onChange={(event) => {
-                      //   changeBusinessHours(
-                      //     "Friday",
-                      //     getEditedBusinessHours().Friday[0],
-                      //     event.target.value
-                      //   );
-                      // }}
+                      value={getBusinessHours(
+                        state.editedBusinessProfileInfo,
+                        "Friday",
+                        "end"
+                      )}
+                      placeholder="HH:MM:SS"
+                      onChange={(event) => {
+                        changeBusinessHours(
+                          "Friday",
+                          getBusinessHours(
+                            state.editedBusinessProfileInfo,
+                            "Friday",
+                            "start"
+                          ),
+                          event.target.value
+                        );
+                      }}
                     />
                   </Row>
                   <Row style={{ margin: "0px", padding: "5px 0px 5px 0px" }}>
@@ -911,15 +1242,23 @@ function BusinessProfile({ history, ...props }) {
                     <Form.Control
                       as="input"
                       style={{ width: "30%" }}
-                      // value={getEditedBusinessHours().Saturday[0]}
-                      // placeholder="HH:MM:SS"
-                      // onChange={(event) => {
-                      //   changeBusinessHours(
-                      //     "Saturday",
-                      //     event.target.value,
-                      //     getEditedBusinessHours().Saturday[1]
-                      //   );
-                      // }}
+                      value={getBusinessHours(
+                        state.editedBusinessProfileInfo,
+                        "Saturday",
+                        "start"
+                      )}
+                      placeholder="HH:MM:SS"
+                      onChange={(event) => {
+                        changeBusinessHours(
+                          "Saturday",
+                          event.target.value,
+                          getBusinessHours(
+                            state.editedBusinessProfileInfo,
+                            "Saturday",
+                            "end"
+                          )
+                        );
+                      }}
                     />{" "}
                     <div
                       style={{
@@ -933,15 +1272,23 @@ function BusinessProfile({ history, ...props }) {
                     <Form.Control
                       as="input"
                       style={{ width: "30%" }}
-                      // value={getEditedBusinessHours().Saturday[1]}
-                      // placeholder="HH:MM:SS"
-                      // onChange={(event) => {
-                      //   changeBusinessHours(
-                      //     "Saturday",
-                      //     getEditedBusinessHours().Saturday[0],
-                      //     event.target.value
-                      //   );
-                      // }}
+                      value={getBusinessHours(
+                        state.editedBusinessProfileInfo,
+                        "Saturday",
+                        "end"
+                      )}
+                      placeholder="HH:MM:SS"
+                      onChange={(event) => {
+                        changeBusinessHours(
+                          "Saturday",
+                          getBusinessHours(
+                            state.editedBusinessProfileInfo,
+                            "Saturday",
+                            "start"
+                          ),
+                          event.target.value
+                        );
+                      }}
                     />
                   </Row>
                   <Row style={{ margin: "0px", padding: "5px 0px 5px 0px" }}>
@@ -957,15 +1304,23 @@ function BusinessProfile({ history, ...props }) {
                     <Form.Control
                       as="input"
                       style={{ width: "30%" }}
-                      // value={getEditedBusinessHours().Sunday[0]}
-                      // placeholder="HH:MM:SS"
-                      // onChange={(event) => {
-                      //   changeBusinessHours(
-                      //     "Sunday",
-                      //     event.target.value,
-                      //     getEditedBusinessHours().Sunday[1]
-                      //   );
-                      // }}
+                      value={getBusinessHours(
+                        state.editedBusinessProfileInfo,
+                        "Sunday",
+                        "start"
+                      )}
+                      placeholder="HH:MM:SS"
+                      onChange={(event) => {
+                        changeBusinessHours(
+                          "Sunday",
+                          event.target.value,
+                          getBusinessHours(
+                            state.editedBusinessProfileInfo,
+                            "Sunday",
+                            "end"
+                          )
+                        );
+                      }}
                     />{" "}
                     <div
                       style={{
@@ -979,15 +1334,23 @@ function BusinessProfile({ history, ...props }) {
                     <Form.Control
                       as="input"
                       style={{ width: "30%" }}
-                      // value={getEditedBusinessHours().Sunday[1]}
-                      // placeholder="HH:MM:SS"
-                      // onChange={(event) => {
-                      //   changeBusinessHours(
-                      //     "Sunday",
-                      //     getEditedBusinessHours().Sunday[0],
-                      //     event.target.value
-                      //   );
-                      // }}
+                      value={getBusinessHours(
+                        state.editedBusinessProfileInfo,
+                        "Sunday",
+                        "end"
+                      )}
+                      placeholder="HH:MM:SS"
+                      onChange={(event) => {
+                        changeBusinessHours(
+                          "Sunday",
+                          getBusinessHours(
+                            state.editedBusinessProfileInfo,
+                            "Sunday",
+                            "start"
+                          ),
+                          event.target.value
+                        );
+                      }}
                     />
                   </Row>
                 </Form.Group>
@@ -1004,14 +1367,17 @@ function BusinessProfile({ history, ...props }) {
                     <Form.Control
                       as="input"
                       placeholder="Enter Facebook URL"
-                      // value={state.editedBusinessData.business_facebook_url}
+                      value={getBusinessProfileInfo(
+                        state.editedBusinessProfileInfo,
+                        "business_facebook_url"
+                      )}
                       style={{ width: "80%" }}
-                      // onChange={(event) =>
-                      //   editBusiness(
-                      //     "business_facebook_url",
-                      //     event.target.value
-                      //   )
-                      // }
+                      onChange={(event) =>
+                        editBusiness(
+                          "business_facebook_url",
+                          event.target.value
+                        )
+                      }
                     />
                   </Row>
                   <Row style={{ padding: "5px 0px 5px 0px" }}>
@@ -1019,14 +1385,17 @@ function BusinessProfile({ history, ...props }) {
                     <Form.Control
                       as="input"
                       placeholder="Enter Instagram URL"
-                      // value={state.editedBusinessData.business_instagram_url}
+                      value={getBusinessProfileInfo(
+                        state.editedBusinessProfileInfo,
+                        "business_instagram_url"
+                      )}
                       style={{ width: "80%" }}
-                      // onChange={(event) =>
-                      //   editBusiness(
-                      //     "business_instagram_url",
-                      //     event.target.value
-                      //   )
-                      // }
+                      onChange={(event) =>
+                        editBusiness(
+                          "business_instagram_url",
+                          event.target.value
+                        )
+                      }
                     />
                   </Row>
                   <Row style={{ padding: "5px 0px 5px 0px" }}>
@@ -1034,11 +1403,14 @@ function BusinessProfile({ history, ...props }) {
                     <Form.Control
                       as="input"
                       placeholder="Enter Twitter URL"
-                      // value={state.editedBusinessData.business_twitter_url}
+                      value={getBusinessProfileInfo(
+                        state.editedBusinessProfileInfo,
+                        "business_twitter_url"
+                      )}
                       style={{ width: "80%" }}
-                      // onChange={(event) =>
-                      //   editBusiness("business_twitter_url", event.target.value)
-                      // }
+                      onChange={(event) =>
+                        editBusiness("business_twitter_url", event.target.value)
+                      }
                     />
                   </Row>
                   <Row style={{ padding: "5px 0px 5px 0px" }}>
@@ -1046,11 +1418,14 @@ function BusinessProfile({ history, ...props }) {
                     <Form.Control
                       as="input"
                       placeholder="Enter Business Website URL"
-                      // value={state.editedBusinessData.business_website_url}
+                      value={getBusinessProfileInfo(
+                        state.editedBusinessProfileInfo,
+                        "business_website_url"
+                      )}
                       style={{ width: "80%" }}
-                      // onChange={(event) =>
-                      //   editBusiness("business_website_url", event.target.value)
-                      // }
+                      onChange={(event) =>
+                        editBusiness("business_website_url", event.target.value)
+                      }
                     />
                   </Row>
                 </Form.Group>
@@ -1100,7 +1475,7 @@ function BusinessProfile({ history, ...props }) {
                   margin: "5px",
                   border: "1px solid #E7404A",
                 }}
-                // onClick={() => saveBusinessData()}
+                onClick={() => saveBusinessData()}
               >
                 Save Changes
               </Button>
@@ -1126,8 +1501,10 @@ function BusinessProfile({ history, ...props }) {
                   <img
                     height="150px"
                     width="150px"
-                    src=""
-                    src={getBusinessProfileInfo("business_image")}
+                    src={getBusinessProfileInfo(
+                      state.businessProfileInfo,
+                      "business_image"
+                    )}
                   ></img>
                 </Form.Group>
                 <Form.Group
@@ -1140,7 +1517,12 @@ function BusinessProfile({ history, ...props }) {
                   <Form.Label style={{ color: "#E7404A", fontWeight: "600" }}>
                     Food Bank Name
                   </Form.Label>
-                  <div>{getBusinessProfileInfo("business_name")}</div>
+                  <div>
+                    {getBusinessProfileInfo(
+                      state.businessProfileInfo,
+                      "business_name"
+                    )}
+                  </div>
                 </Form.Group>
                 <Form.Group
                   style={{
@@ -1152,7 +1534,12 @@ function BusinessProfile({ history, ...props }) {
                   <Form.Label style={{ color: "#E7404A", fontWeight: "600" }}>
                     Business Type
                   </Form.Label>
-                  <div>{getBusinessProfileInfo("business_type")}</div>
+                  <div>
+                    {getBusinessProfileInfo(
+                      state.businessProfileInfo,
+                      "business_type"
+                    )}
+                  </div>
                 </Form.Group>
                 <Form.Group
                   style={{
@@ -1164,7 +1551,12 @@ function BusinessProfile({ history, ...props }) {
                   <Form.Label style={{ color: "#E7404A", fontWeight: "600" }}>
                     Business Description
                   </Form.Label>
-                  <div>{getBusinessProfileInfo("business_desc")}</div>
+                  <div>
+                    {getBusinessProfileInfo(
+                      state.businessProfileInfo,
+                      "business_desc"
+                    )}
+                  </div>
                 </Form.Group>
               </div>
 
@@ -1179,7 +1571,10 @@ function BusinessProfile({ history, ...props }) {
                       First Name
                     </Form.Label>
                     <div>
-                      {getBusinessProfileInfo("business_contact_first_name")}
+                      {getBusinessProfileInfo(
+                        state.businessProfileInfo,
+                        "business_contact_first_name"
+                      )}
                     </div>
                   </Form.Group>
                   <Form.Group style={{ width: "45%" }}>
@@ -1187,7 +1582,10 @@ function BusinessProfile({ history, ...props }) {
                       Last Name
                     </Form.Label>
                     <div>
-                      {getBusinessProfileInfo("business_contact_last_name")}
+                      {getBusinessProfileInfo(
+                        state.businessProfileInfo,
+                        "business_contact_last_name"
+                      )}
                     </div>
                   </Form.Group>
                 </Row>
@@ -1196,13 +1594,23 @@ function BusinessProfile({ history, ...props }) {
                     <Form.Label style={{ color: "#E7404A", fontWeight: "600" }}>
                       Phone Number 1
                     </Form.Label>
-                    <div>{getBusinessProfileInfo("business_phone_num")}</div>
+                    <div>
+                      {getBusinessProfileInfo(
+                        state.businessProfileInfo,
+                        "business_phone_num"
+                      )}
+                    </div>
                   </Form.Group>
                   <Form.Group style={{ width: "45%" }}>
                     <Form.Label style={{ color: "#E7404A", fontWeight: "600" }}>
                       Phone Number 2
                     </Form.Label>
-                    <div>{getBusinessProfileInfo("business_phone_num2")}</div>
+                    <div>
+                      {getBusinessProfileInfo(
+                        state.businessProfileInfo,
+                        "business_phone_num2"
+                      )}
+                    </div>
                   </Form.Group>
                 </Row>
                 <Row style={{ margin: "0px", justifyContent: "center" }}>
@@ -1210,13 +1618,23 @@ function BusinessProfile({ history, ...props }) {
                     <Form.Label style={{ color: "#E7404A", fontWeight: "600" }}>
                       Street
                     </Form.Label>
-                    <div>{getBusinessProfileInfo("business_address")}</div>
+                    <div>
+                      {getBusinessProfileInfo(
+                        state.businessProfileInfo,
+                        "business_address"
+                      )}
+                    </div>
                   </Form.Group>
                   <Form.Group style={{ width: "30%" }}>
                     <Form.Label style={{ color: "#E7404A", fontWeight: "600" }}>
                       Unit
                     </Form.Label>
-                    <div>{getBusinessProfileInfo("business_unit")}</div>
+                    <div>
+                      {getBusinessProfileInfo(
+                        state.businessProfileInfo,
+                        "business_unit"
+                      )}
+                    </div>
                   </Form.Group>
                 </Row>
                 <Form.Group
@@ -1229,20 +1647,35 @@ function BusinessProfile({ history, ...props }) {
                   <Form.Label style={{ color: "#E7404A", fontWeight: "600" }}>
                     City
                   </Form.Label>
-                  <div>{getBusinessProfileInfo("business_city")}</div>
+                  <div>
+                    {getBusinessProfileInfo(
+                      state.businessProfileInfo,
+                      "business_city"
+                    )}
+                  </div>
                 </Form.Group>
                 <Row style={{ margin: "0px", justifyContent: "center" }}>
                   <Form.Group style={{ width: "45%" }}>
                     <Form.Label style={{ color: "#E7404A", fontWeight: "600" }}>
                       State
                     </Form.Label>
-                    <div>{getBusinessProfileInfo("business_state")}</div>
+                    <div>
+                      {getBusinessProfileInfo(
+                        state.businessProfileInfo,
+                        "business_state"
+                      )}
+                    </div>
                   </Form.Group>
                   <Form.Group style={{ width: "45%" }}>
                     <Form.Label style={{ color: "#E7404A", fontWeight: "600" }}>
                       Zip
                     </Form.Label>
-                    <div>{getBusinessProfileInfo("business_unit")}</div>
+                    <div>
+                      {getBusinessProfileInfo(
+                        state.businessProfileInfo,
+                        "business_unit"
+                      )}
+                    </div>
                   </Form.Group>
                   <Form.Group
                     style={{
@@ -1255,7 +1688,10 @@ function BusinessProfile({ history, ...props }) {
                       Storage
                     </Form.Label>
                     <div>
-                      {getBusinessProfileInfo("reusable")
+                      {getBusinessProfileInfo(
+                        state.businessProfileInfo,
+                        "reusable"
+                      )
                         ? "Reusable"
                         : "Disposable"}
                     </div>
@@ -1271,7 +1707,10 @@ function BusinessProfile({ history, ...props }) {
                       Cancellation
                     </Form.Label>
                     <div>
-                      {getBusinessProfileInfo("can_cancel")
+                      {getBusinessProfileInfo(
+                        state.businessProfileInfo,
+                        "can_cancel"
+                      )
                         ? "Allow cancellation within ordering hours"
                         : "Cancellations not allowed"}
                     </div>
@@ -1287,7 +1726,10 @@ function BusinessProfile({ history, ...props }) {
                       Business Status
                     </Form.Label>
                     <div>
-                      {getBusinessProfileInfo("business_status") === "ACTIVE"
+                      {getBusinessProfileInfo(
+                        state.businessProfileInfo,
+                        "business_status"
+                      ) === "ACTIVE"
                         ? "Active"
                         : "Inactive"}
                     </div>
@@ -1310,7 +1752,7 @@ function BusinessProfile({ history, ...props }) {
                   <Form.Label style={{ color: "#E7404A", fontWeight: "600" }}>
                     Types of Food
                   </Form.Label>
-                  {getFoodType("fruits") === 1 && (
+                  {getFoodType(state.businessProfileInfo, "fruits") === 1 && (
                     <div className={styles.editFoodTypeLabel}>
                       <img src={FruitIconSVG} />
                       <div
@@ -1321,7 +1763,8 @@ function BusinessProfile({ history, ...props }) {
                       </div>
                     </div>
                   )}
-                  {getFoodType("vegetables") === 1 && (
+                  {getFoodType(state.businessProfileInfo, "vegetables") ===
+                    1 && (
                     <div className={styles.editFoodTypeLabel}>
                       <img src={VegetableIconSVG} />
                       <div
@@ -1332,7 +1775,7 @@ function BusinessProfile({ history, ...props }) {
                       </div>
                     </div>
                   )}
-                  {getFoodType("meals") === 1 && (
+                  {getFoodType(state.businessProfileInfo, "meals") === 1 && (
                     <div className={styles.editFoodTypeLabel}>
                       <img src={MealIconSVG} />
                       <div
@@ -1343,7 +1786,7 @@ function BusinessProfile({ history, ...props }) {
                       </div>
                     </div>
                   )}
-                  {getFoodType("desserts") === 1 && (
+                  {getFoodType(state.businessProfileInfo, "desserts") === 1 && (
                     <div className={styles.editFoodTypeLabel}>
                       <img src={DessertIconSVG} />
                       <div
@@ -1354,7 +1797,8 @@ function BusinessProfile({ history, ...props }) {
                       </div>
                     </div>
                   )}
-                  {getFoodType("beverages") === 1 && (
+                  {getFoodType(state.businessProfileInfo, "beverages") ===
+                    1 && (
                     <div className={styles.editFoodTypeLabel}>
                       <img src={BeverageIconSVG} />
                       <div
@@ -1365,7 +1809,7 @@ function BusinessProfile({ history, ...props }) {
                       </div>
                     </div>
                   )}
-                  {getFoodType("dairy") === 1 && (
+                  {getFoodType(state.businessProfileInfo, "dairy") === 1 && (
                     <div className={styles.editFoodTypeLabel}>
                       <img src={DairyIconSVG} />
                       <div
@@ -1376,7 +1820,7 @@ function BusinessProfile({ history, ...props }) {
                       </div>
                     </div>
                   )}
-                  {getFoodType("snacks") === 1 && (
+                  {getFoodType(state.businessProfileInfo, "snacks") === 1 && (
                     <div className={styles.editFoodTypeLabel}>
                       <img src={SnackIconSVG} />
                       <div
@@ -1387,7 +1831,8 @@ function BusinessProfile({ history, ...props }) {
                       </div>
                     </div>
                   )}
-                  {getFoodType("cannedFoods") === 1 && (
+                  {getFoodType(state.businessProfileInfo, "cannedFoods") ===
+                    1 && (
                     <div className={styles.editFoodTypeLabel}>
                       <img src={CanIconSVG} />
                       <div
@@ -1434,7 +1879,11 @@ function BusinessProfile({ history, ...props }) {
                         textAlign: "center",
                       }}
                     >
-                      HH:MM:SS
+                      {getBusinessHours(
+                        state.businessProfileInfo,
+                        "Monday",
+                        "start"
+                      )}
                     </div>
                     <div
                       style={{
@@ -1453,7 +1902,11 @@ function BusinessProfile({ history, ...props }) {
                         textAlign: "center",
                       }}
                     >
-                      HH:MM:SS
+                      {getBusinessHours(
+                        state.businessProfileInfo,
+                        "Monday",
+                        "end"
+                      )}
                     </div>
                   </Row>
                   <Row style={{ margin: "0px", padding: "5px 0px 5px 0px" }}>
@@ -1474,7 +1927,11 @@ function BusinessProfile({ history, ...props }) {
                         textAlign: "center",
                       }}
                     >
-                      HH:MM:SS
+                      {getBusinessHours(
+                        state.businessProfileInfo,
+                        "Tuesday",
+                        "start"
+                      )}
                     </div>
                     <div
                       style={{
@@ -1493,7 +1950,11 @@ function BusinessProfile({ history, ...props }) {
                         textAlign: "center",
                       }}
                     >
-                      HH:MM:SS
+                      {getBusinessHours(
+                        state.businessProfileInfo,
+                        "Tuesday",
+                        "end"
+                      )}
                     </div>
                   </Row>
                   <Row style={{ margin: "0px", padding: "5px 0px 5px 0px" }}>
@@ -1514,7 +1975,11 @@ function BusinessProfile({ history, ...props }) {
                         textAlign: "center",
                       }}
                     >
-                      HH:MM:SS
+                      {getBusinessHours(
+                        state.businessProfileInfo,
+                        "Wednesday",
+                        "start"
+                      )}
                     </div>
                     <div
                       style={{
@@ -1533,7 +1998,11 @@ function BusinessProfile({ history, ...props }) {
                         textAlign: "center",
                       }}
                     >
-                      HH:MM:SS
+                      {getBusinessHours(
+                        state.businessProfileInfo,
+                        "Wednesday",
+                        "end"
+                      )}
                     </div>
                   </Row>
                   <Row style={{ margin: "0px", padding: "5px 0px 5px 0px" }}>
@@ -1554,7 +2023,11 @@ function BusinessProfile({ history, ...props }) {
                         textAlign: "center",
                       }}
                     >
-                      HH:MM:SS
+                      {getBusinessHours(
+                        state.businessProfileInfo,
+                        "Thursday",
+                        "start"
+                      )}
                     </div>
                     <div
                       style={{
@@ -1573,7 +2046,11 @@ function BusinessProfile({ history, ...props }) {
                         textAlign: "center",
                       }}
                     >
-                      HH:MM:SS
+                      {getBusinessHours(
+                        state.businessProfileInfo,
+                        "Thursday",
+                        "end"
+                      )}
                     </div>
                   </Row>
                   <Row style={{ margin: "0px", padding: "5px 0px 5px 0px" }}>
@@ -1594,7 +2071,11 @@ function BusinessProfile({ history, ...props }) {
                         textAlign: "center",
                       }}
                     >
-                      HH:MM:SS
+                      {getBusinessHours(
+                        state.businessProfileInfo,
+                        "Friday",
+                        "start"
+                      )}
                     </div>
                     <div
                       style={{
@@ -1613,7 +2094,11 @@ function BusinessProfile({ history, ...props }) {
                         textAlign: "center",
                       }}
                     >
-                      HH:MM:SS
+                      {getBusinessHours(
+                        state.businessProfileInfo,
+                        "Friday",
+                        "end"
+                      )}
                     </div>
                   </Row>
                   <Row style={{ margin: "0px", padding: "5px 0px 5px 0px" }}>
@@ -1634,7 +2119,11 @@ function BusinessProfile({ history, ...props }) {
                         textAlign: "center",
                       }}
                     >
-                      HH:MM:SS
+                      {getBusinessHours(
+                        state.businessProfileInfo,
+                        "Saturday",
+                        "start"
+                      )}
                     </div>
                     <div
                       style={{
@@ -1653,7 +2142,11 @@ function BusinessProfile({ history, ...props }) {
                         textAlign: "center",
                       }}
                     >
-                      HH:MM:SS
+                      {getBusinessHours(
+                        state.businessProfileInfo,
+                        "Saturday",
+                        "end"
+                      )}
                     </div>
                   </Row>
                   <Row style={{ margin: "0px", padding: "5px 0px 5px 0px" }}>
@@ -1674,7 +2167,11 @@ function BusinessProfile({ history, ...props }) {
                         textAlign: "center",
                       }}
                     >
-                      HH:MM:SS
+                      {getBusinessHours(
+                        state.businessProfileInfo,
+                        "Sunday",
+                        "start"
+                      )}
                     </div>
                     <div
                       style={{
@@ -1693,7 +2190,11 @@ function BusinessProfile({ history, ...props }) {
                         textAlign: "center",
                       }}
                     >
-                      HH:MM:SS
+                      {getBusinessHours(
+                        state.businessProfileInfo,
+                        "Sunday",
+                        "end"
+                      )}
                     </div>
                   </Row>
                 </Form.Group>
@@ -1715,7 +2216,10 @@ function BusinessProfile({ history, ...props }) {
                         textAlign: "center",
                       }}
                     >
-                      URL
+                      {getBusinessProfileInfo(
+                        state.businessProfileInfo,
+                        "business_facebook_url"
+                      )}
                     </div>
                   </Row>
                   <Row style={{ padding: "5px 0px 5px 0px" }}>
@@ -1728,7 +2232,10 @@ function BusinessProfile({ history, ...props }) {
                         textAlign: "center",
                       }}
                     >
-                      URL
+                      {getBusinessProfileInfo(
+                        state.businessProfileInfo,
+                        "business_instagram_url"
+                      )}
                     </div>
                   </Row>
                   <Row style={{ padding: "5px 0px 5px 0px" }}>
@@ -1741,7 +2248,10 @@ function BusinessProfile({ history, ...props }) {
                         textAlign: "center",
                       }}
                     >
-                      URL
+                      {getBusinessProfileInfo(
+                        state.businessProfileInfo,
+                        "business_twitter_url"
+                      )}
                     </div>
                   </Row>
                   <Row style={{ padding: "5px 0px 5px 0px" }}>
@@ -1754,7 +2264,10 @@ function BusinessProfile({ history, ...props }) {
                         textAlign: "center",
                       }}
                     >
-                      URL
+                      {getBusinessProfileInfo(
+                        state.businessProfileInfo,
+                        "business_website_url"
+                      )}
                     </div>
                   </Row>
                 </Form.Group>
