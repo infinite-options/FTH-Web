@@ -134,7 +134,7 @@ export default function Login() {
                           break;
                         // Farmer roles are moving towared business Id string
                         default:
-                          history.push("/admin");
+                          history.push("/admin-v2");
                           break;
                       }
                     } else if (res.data.code === 404) {
