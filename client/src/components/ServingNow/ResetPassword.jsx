@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import { Grid, Typography, Box, Button } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
-import Shopping from "../Assets/shopping.png";
+import bg from "../Assets/bg.png";
 import Login from "../Assets/login.svg";
 import Register from "../Assets/register.svg";
 import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles((theme) => ({
   root: {
     position: "absolute",
-    backgroundImage: `url(${Shopping})`,
+    backgroundImage: `url(${bg})`,
     backgroundPosition: "center",
     backgroundSize: "70%",
     backgroundRepeat: "no-repeat",
@@ -28,11 +28,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Landing() {
+export default function ResetPassword() {
   const classes = useStyles();
   const history = useHistory();
   return (
-    <div className={classes.root}>
+    <div className={classes.root} id="passwordreset">
       <Grid container>
         <Grid item xs={12}>
           <Box className={classes.header}>
@@ -61,52 +61,33 @@ export default function Landing() {
             position: "relative",
             flexDirection: "column",
             opacity: 1,
-            height: "auto",
-            overflowY: "hidden",
-            marginTop: "15%",
-            marginLeft: "5%",
+            backgroundColor: "#ffffff",
+            borderRadius: "68px",
+            border: "2px solid #E7404A",
+            marginTop: "5%",
+            marginLeft: "15%",
           }}
         >
           <Typography
             style={{
               textAlign: "center",
-              font: "normal normal bold 35px SF Pro Display",
-              letterspacing: "0.49px",
+              font: "normal normal bold 20px SF Pro Display",
+              letterspacing: "0.32px",
               color: "#000000",
             }}
           >
-            Welcome to
-            <Typography
-              style={{
-                textAlign: "center",
-                font: "normal normal bold 35px SF Pro Display",
-                letterspacing: "0.49px",
-                color: "#E7404A",
-              }}
-            >
-              Serving Now
-              <Typography
-                style={{
-                  textAlign: "center",
-                  font: "normal normal bold 20px SF Pro Display",
-                  letterspacing: "0.32px",
-                  color: "#000000",
-                }}
-              >
-                To continue
-              </Typography>
-            </Typography>
+            Forgot your password?
           </Typography>
-          <img
-            src={Login}
-            onClick={() => history.push("/loginfth")}
-            className={classes.btn}
-          />
-          <img
-            src={Register}
-            onClick={() => history.push("/register")}
-            className={classes.btn}
-          />
+          <Typography
+            style={{
+              textAlign: "center",
+              font: "normal normal 300 18px SF Pro Display",
+              letterspacing: "0.2px",
+              color: "#000000",
+            }}
+          >
+            Enter the phone number associated with your account.
+          </Typography>
         </Grid>
       </Grid>
     </div>

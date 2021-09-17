@@ -55,6 +55,7 @@ import AdminNotifications2 from "./components/AdminV2/Notifications";
 
 import Landing from "./components/ServingNow/Landing";
 import LoginPage from "./components/ServingNow/Login";
+import ResetPassword from "./components/ServingNow/ResetPassword";
 import RegisterPage from "./components/ServingNow/Register";
 import CreatePassword from "./components/ServingNow/CreatePassword";
 import Confirmation from "./components/ServingNow/Confirmation";
@@ -219,6 +220,9 @@ function App() {
             </Route>
             <Route exact path="/loginfth">
               <LoginPage />
+            </Route>
+            <Route exact path="/passwordreset">
+              <ResetPassword />
             </Route>
             <Route exact path="/register">
               <RegisterPage />

@@ -7,6 +7,18 @@
   left: 0px;
 }
 
+.landing {
+    /* Full height */
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-image: url('../Assets/shopping.png');
+  background-size: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 .shopping {
   position: absolute;
   top: -70px;

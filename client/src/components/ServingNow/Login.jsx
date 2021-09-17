@@ -1,28 +1,61 @@
 import React, { Component } from "react";
 import { useState, useContext } from "react";
-
+import { Grid, Typography, Box, Button } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
+import Shopping from "../Assets/shopping.png";
+import LoginBtn from "../Assets/login.svg";
+import Input from "../Assets/input.svg";
+import { makeStyles } from "@material-ui/core/styles";
 import "../ServingNow/Login.css";
 import Cookies from "js-cookie";
-import shopping from "../Assets/shopping.png";
-import box from "../Assets/loginBox.png";
-// import textBox from '../Assets/textBox.svg';
-import login1 from "../Assets/login1.svg";
+import loginBox from "../Assets/loginBox.png";
 import visibility from "../Assets/visibility.svg";
 import google from "../Assets/google.svg";
 import apple from "../Assets/apple.svg";
 import fb from "../Assets/fb.svg";
 import axios from "axios";
 import { API_URL } from "../../reducers/constants";
-import {
-  loginAttempt,
-  changeEmail,
-  changePassword,
-  errMessage,
-  getErrMessage,
-  socialLoginAttempt,
-} from "../../reducers/actions/loginActions";
-import { createBrowserHistory } from "history";
-import { useHistory } from "react-router-dom";
+
+import socialG from "../Assets/google-round.png";
+import socialF from "../Assets/facebook-round.png";
+import socialA from "../Assets/apple-round.png";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    position: "absolute",
+    backgroundImage: `url(${Shopping})`,
+    backgroundPosition: "center",
+    backgroundSize: "70%",
+    backgroundRepeat: "no-repeat",
+    width: "100%",
+    height: "100%",
+    overflow: "hidden",
+  },
+  header: {
+    width: "100%",
+    height: "80px",
+    backgroundColor: "#e7404a",
+  },
+  btn: {
+    cursor: "pointer",
+    width: "50%",
+    marginLeft: "25%",
+  },
+  input: {
+    width: "350px",
+    height: "50px",
+    background: "transparent `url(${Input})` 0% 0% no-repeat padding-box",
+    border: "1px solid #707070",
+    borderRadius: "25px",
+    opacity: 1,
+    marginTop: "1rem",
+    paddingLeft: "1rem",
+    marginLeft: "10%",
+  },
+  socialBtn: {
+    width: "10%",
+  },
+}));
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -36,6 +69,7 @@ export default function Login() {
   const [passwordError, setpasswordError] = useState();
   const [socialError, setsocialError] = useState();
   const [socialMedia, setSocialMedia] = useState("");
+  const classes = useStyles();
   const history = useHistory();
 
   const handleEmailChange = (event) => {
@@ -317,8 +351,161 @@ export default function Login() {
   // }
 
   return (
-    <div id="loginfth" class="page">
-      <img src={shopping} alt="" class="shopping" />
+    <div id="loginfth" className={classes.root}>
+      <Grid container>
+        <Grid item xs={12}>
+          <Box className={classes.header}>
+            <Typography
+              style={{
+                textAlign: "left",
+                font: "normal normal bold 22px/26px SF Pro Display",
+                letterSpacing: "0.24px",
+                color: "#FFFFFF",
+                opacity: 1,
+                marginLeft: "10rem",
+                paddingTop: "25px",
+              }}
+            >
+              Serving Now
+            </Typography>
+          </Box>
+        </Grid>
+      </Grid>
+
+      <Grid container>
+        <Grid item xs={4}></Grid>
+        <Grid
+          item
+          style={{
+            display: "flex",
+            position: "relative",
+            flexDirection: "column",
+            opacity: 1,
+            backgroundColor: "#ffffff",
+            borderRadius: "68px",
+            border: "2px solid #E7404A",
+            marginTop: "5%",
+            marginLeft: "15%",
+          }}
+        >
+          <Grid
+            item
+            xs={12}
+            style={{
+              display: "flex",
+              position: "relative",
+              flexDirection: "column",
+              opacity: 1,
+              marginTop: "1rem",
+            }}
+          >
+            <Typography
+              style={{
+                textAlign: "center",
+                font: "normal normal bold 20px SF Pro Display",
+                letterspacing: "0.32px",
+                color: "#000000",
+              }}
+            >
+              Login to your existing account
+            </Typography>
+
+            <input
+              className={classes.input}
+              type="text"
+              id="phoneNumber"
+              placeholder="Phone Number / ID Number"
+              onChange={handlePhoneChange}
+            />
+
+            <input
+              className={classes.input}
+              type="password"
+              id="password"
+              placeholder="Password"
+              onChange={handlePasswordChange}
+            />
+            <Typography>
+              <a
+                href="passwordreset"
+                style={{
+                  textAlign: "center",
+                  textDecoration: "underline",
+                  font: "normal normal 600 16px SF Pro Display",
+                  letterSpacing: " 0.18px",
+                  color: "#E7404A",
+                  opacity: 1,
+                  marginLeft: "33%",
+                  marginBottom: "1rem",
+                }}
+              >
+                Forgot Password?
+              </a>
+            </Typography>
+
+            <img
+              src={LoginBtn}
+              onClick={verifyLoginInfo}
+              className={classes.btn}
+            />
+            <Typography
+              style={{
+                textAlign: "center",
+                font: "normal normal bold 20px SF Pro Display",
+                letterspacing: "0.32px",
+                color: "#000000",
+                marginTop: "1rem",
+              }}
+            >
+              Or sign in with
+            </Typography>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            style={{
+              display: "flex",
+              position: "relative",
+              flexDirection: "row",
+              justifyContent: "space-around",
+              alignItems: "center",
+              marginTop: "1rem",
+              marginBottom: "1rem",
+            }}
+          >
+            <img src={socialG} alt="" className={classes.socialBtn} />
+            <img src={socialA} alt="" className={classes.socialBtn} />
+            <img src={socialF} alt="" className={classes.socialBtn} />
+          </Grid>
+          <Typography
+            style={{
+              textAlign: "left",
+              font: "normal normal bold 20px SF Pro Display",
+              letterspacing: "0.32px",
+              color: "#000000",
+              display: "flex",
+              flexDirection: "row",
+              marginBottom: "1rem",
+            }}
+          >
+            Don't have an account?
+            <a
+              href="register"
+              style={{
+                textAlign: "center",
+                textDecoration: "underline",
+                font: "normal normal 600 18px SF Pro Display",
+                letterSpacing: " 0.2px",
+                color: "#E7404A",
+                opacity: 1,
+              }}
+            >
+              Register
+            </a>
+          </Typography>
+        </Grid>
+      </Grid>
+      {/* <img src={shopping} alt="" class="shopping" />
       <img src={box} alt="" class="box" />
 
       <img src={visibility} alt="" class="visibility" />
@@ -401,7 +588,7 @@ export default function Login() {
           {" "}
           <b>Login </b>{" "}
         </button>
-      </div>
+      </div> */}
     </div>
   );
 }
