@@ -1,7 +1,7 @@
-import { useEffect, useReducer, useState, useRef, useMemo } from "react";
+import { useEffect, useReducer, useRef } from "react";
 import axios from "axios";
 import { API_URL } from "../../../reducers/constants";
-import { Container, Row, Col, Form, Button, Modal } from "react-bootstrap";
+import { Container, Row, Col, Modal } from "react-bootstrap";
 import {
   Table,
   TableContainer,
@@ -10,15 +10,10 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  Popover,
-  Hidden,
 } from "@material-ui/core";
-import { style } from "@material-ui/system";
-import { makeStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router";
 import AdminNavBar from "../AdminNavBar";
-import { act } from "react-dom/test-utils";
-import { formatTime, sortedArray } from "../../../reducers/helperFuncs";
+import { sortedArray } from "../../../reducers/helperFuncs";
 import styles from "./items.module.css";
 import { ReactComponent as ModalCloseBtn } from "../../../images/ModalCloseRed.svg";
 
@@ -215,10 +210,7 @@ function Items({ history, ...props }) {
         .then((response) => {
           const role = response.data.result[0].role.toLowerCase();
           if (role === "admin") {
-            // console.log("mounting")
-            // console.log(state.mounted);
             dispatch({ type: "MOUNT" });
-            // console.log("dispatch MOUNT");
           } else {
             history.push("/meal-plan");
           }
@@ -263,8 +255,6 @@ function Items({ history, ...props }) {
           const place = autocomplete.getPlace();
 
           if (!place.geometry || !place.geometry.location) {
-            // User entered the name of a Place that was not suggested and
-            // pressed the Enter key, or the Place Details request failed.
             window.alert(
               "No details available for input: '" + place.name + "'"
             );
@@ -304,7 +294,6 @@ function Items({ history, ...props }) {
           address1Field.value = address1;
           postalField.value = postcode;
 
-          // console.log(newBrandState);
           const updatedBrand = {
             ...newBrandState,
             brand_address: address1,
@@ -313,22 +302,7 @@ function Items({ history, ...props }) {
             brand_zip: postcode,
           };
 
-          console.log(updatedBrand);
-
           dispatch({ type: "EDIT_NEW_BRAND", payload: updatedBrand });
-
-          // this.setState({
-          //   name: place.name,
-          //   street: address1,
-          //   city: city,
-          //   state: state,
-          //   addressZip: postcode,
-          //   latitude: place.geometry.location.lat(),
-          //   longitude: place.geometry.location.lng(),
-          //   // streetChanged: false,
-          //   autoCompleteClicked: true,
-          // });
-          //console.log(this.state.autoCompleteClicked)
         }
       );
     }
@@ -435,9 +409,7 @@ function Items({ history, ...props }) {
 
   const getNewSupplyDesc = () => {
     const descArr = state.newSupply.sup_desc;
-    console.log(descArr);
     const descStr = `${descArr[0]} ${descArr[1]}, ${descArr[2]} ${descArr[3]}, ${descArr[4]} ${descArr[5]}`;
-    // const descStr = "";
     return descStr;
   };
 
@@ -450,12 +422,10 @@ function Items({ history, ...props }) {
   };
 
   const toggleItemTag = (itemIndex) => {
-    console.log(state.itemTagList[itemIndex]);
     const updatedItemTags = [...state.itemTagList];
     updatedItemTags[itemIndex].active
       ? (updatedItemTags[itemIndex].active = 0)
       : (updatedItemTags[itemIndex].active = 1);
-    console.log(updatedItemTags);
     dispatch({ type: "GET_ITEM_TAG_LIST", payload: updatedItemTags });
   };
 
@@ -480,55 +450,103 @@ function Items({ history, ...props }) {
   };
 
   const getUniqueBrands = () => {
-    axios.get(`${API_URL}get_brands_list`).then((response) => {
-      const brands = response.data.result;
-      dispatch({ type: "GET_UNIQUE_BRANDS", payload: brands });
-    });
+    axios
+      .get(`${API_URL}get_brands_list`)
+      .then((response) => {
+        const brands = response.data.result;
+        dispatch({ type: "GET_UNIQUE_BRANDS", payload: brands });
+      })
+      .catch((err) => {
+        if (err.response) {
+          console.log(err.response);
+        }
+        console.log(err);
+      });
   };
 
   const getUniqueItems = () => {
-    axios.get(`${API_URL}get_items_list`).then((response) => {
-      const items = response.data.result;
-      dispatch({ type: "GET_UNIQUE_ITEMS", payload: items });
-    });
+    axios
+      .get(`${API_URL}get_items_list`)
+      .then((response) => {
+        const items = response.data.result;
+        dispatch({ type: "GET_UNIQUE_ITEMS", payload: items });
+      })
+      .catch((err) => {
+        if (err.response) {
+          console.log(err.response);
+        }
+        console.log(err);
+      });
   };
 
   const getSupplyUnits = () => {
-    axios.get(`${API_URL}get_units_list`).then((response) => {
-      const units = response.data.result;
-      dispatch({ type: "GET_SUPPLY_UNITS", payload: units });
-    });
+    axios
+      .get(`${API_URL}get_units_list`)
+      .then((response) => {
+        const units = response.data.result;
+        dispatch({ type: "GET_SUPPLY_UNITS", payload: units });
+      })
+      .catch((err) => {
+        if (err.response) {
+          console.log(err.response);
+        }
+        console.log(err);
+      });
   };
 
   const getSuuplyNonSpecificUnits = () => {
-    axios.get(`${API_URL}get_non_specific_unit_list`).then((response) => {
-      const nonSpecificUnits = response.data.result;
-      dispatch({
-        type: "GET_SUPPLY_NON_SPECIFIC_UNITS",
-        payload: nonSpecificUnits,
+    axios
+      .get(`${API_URL}get_non_specific_unit_list`)
+      .then((response) => {
+        const nonSpecificUnits = response.data.result;
+        dispatch({
+          type: "GET_SUPPLY_NON_SPECIFIC_UNITS",
+          payload: nonSpecificUnits,
+        });
+      })
+      .catch((err) => {
+        if (err.response) {
+          console.log(err.response);
+        }
+        console.log(err);
       });
-    });
   };
 
   const getItemTags = () => {
-    axios.get(`${API_URL}get_tags_list`).then((response) => {
-      const tagRes = response.data.result;
-      const tagsList = tagRes.map((tag) => {
-        const tagItem = {
-          tag_name: tag.tags,
-          active: state.newItem.item_tags.includes(tag.tags) ? 1 : 0,
-        };
-        return tagItem;
+    axios
+      .get(`${API_URL}get_tags_list`)
+      .then((response) => {
+        const tagRes = response.data.result;
+        const tagsList = tagRes.map((tag) => {
+          const tagItem = {
+            tag_name: tag.tags,
+            active: state.newItem.item_tags.includes(tag.tags) ? 1 : 0,
+          };
+          return tagItem;
+        });
+        dispatch({ type: "GET_ITEM_TAG_LIST", payload: tagsList });
+      })
+      .catch((err) => {
+        if (err.response) {
+          console.log(err.response);
+        }
+        console.log(err);
       });
-      dispatch({ type: "GET_ITEM_TAG_LIST", payload: tagsList });
-    });
   };
 
   const getItemTypes = () => {
-    axios.get(`${API_URL}get_types_list`).then((response) => {
-      const typesList = response.data.result;
-      dispatch({ type: "GET_ITEM_TYPE_LIST", payload: typesList });
-    });
+    axios
+      .get(`${API_URL}get_types_list`)
+      .then((response) => {
+        const typesList = response.data.result;
+        dispatch({ type: "GET_ITEM_TYPE_LIST", payload: typesList });
+      })
+      .catch((err) => {
+        if (err.response) {
+          console.log(err.response);
+        }
+        console.log(err);
+      });
   };
 
   const postNewSupply = () => {
@@ -554,11 +572,19 @@ function Items({ history, ...props }) {
       }
     }
 
-    axios.post(`${API_URL}add_supply`, supplyFormData).then((response) => {
-      if (response.status === 200) {
-        toggleAddSupply();
-      }
-    });
+    axios
+      .post(`${API_URL}add_supply`, supplyFormData)
+      .then((response) => {
+        if (response.status === 200) {
+          toggleAddSupply();
+        }
+      })
+      .catch((err) => {
+        if (err.response) {
+          console.log(err.response);
+        }
+        console.log(err);
+      });
   };
 
   const postNewBrand = () => {
@@ -568,12 +594,20 @@ function Items({ history, ...props }) {
       brandFormData.append(field, state.newBrand[field]);
     }
 
-    axios.post(`${API_URL}add_brand`, brandFormData).then((response) => {
-      if (response.status === 200) {
-        dispatch({ type: "EDIT_NEW_BRAND", payload: initialState.newBrand });
-        toggleAddBrand();
-      }
-    });
+    axios
+      .post(`${API_URL}add_brand`, brandFormData)
+      .then((response) => {
+        if (response.status === 200) {
+          dispatch({ type: "EDIT_NEW_BRAND", payload: initialState.newBrand });
+          toggleAddBrand();
+        }
+      })
+      .catch((err) => {
+        if (err.response) {
+          console.log(err.response);
+        }
+        console.log(err);
+      });
   };
 
   const postNewItem = () => {
@@ -583,12 +617,20 @@ function Items({ history, ...props }) {
       itemFormData.append(field, state.newItem[field]);
     }
 
-    axios.post(`${API_URL}add_items`, itemFormData).then((response) => {
-      if (response.status === 200) {
-        dispatch({ type: "EDIT_NEW_ITEM", payload: initialState.newItem });
-        toggleAddItem();
-      }
-    });
+    axios
+      .post(`${API_URL}add_items`, itemFormData)
+      .then((response) => {
+        if (response.status === 200) {
+          dispatch({ type: "EDIT_NEW_ITEM", payload: initialState.newItem });
+          toggleAddItem();
+        }
+      })
+      .catch((err) => {
+        if (err.response) {
+          console.log(err.response);
+        }
+        console.log(err);
+      });
   };
 
   const filterItems = () => {
@@ -660,7 +702,6 @@ function Items({ history, ...props }) {
 
   return (
     <div>
-      {console.log(state)}
       <AdminNavBar currentPage={"items"} />
       <Container fluid className={styles.container}>
         <Row

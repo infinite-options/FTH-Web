@@ -1,25 +1,10 @@
-import { useEffect, useReducer, useState, useRef, useMemo } from "react";
+import { useEffect, useReducer } from "react";
 import axios from "axios";
 import { API_URL } from "../../../reducers/constants";
 import { Container, Row, Col, Form, Button, Modal } from "react-bootstrap";
-import {
-  Table,
-  TableContainer,
-  TableHead,
-  TableSortLabel,
-  TableBody,
-  TableRow,
-  TableCell,
-  Popover,
-} from "@material-ui/core";
-import { style } from "@material-ui/system";
-import { makeStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router";
 import AdminNavBar from "../AdminNavBar";
-import { act } from "react-dom/test-utils";
-import { formatTime, sortedArray } from "../../../reducers/helperFuncs";
 import styles from "./businessProfile.module.css";
-
 import { ReactComponent as FacebookIcon } from "../../../images/facebookIconNoBorder.svg";
 import { ReactComponent as TwitterIcon } from "../../../images/twitterIconNoBorder.svg";
 import { ReactComponent as InstagramIcon } from "../../../images/instagramIconNoBorder.svg";
@@ -240,9 +225,6 @@ function BusinessProfile({ history, ...props }) {
       [day]: [startTime, endTime],
     };
 
-    console.log(newHours);
-
-    // hours[day][arrayIndex] = newTime;
     editBusiness("business_accepting_hours", newHours);
   };
 
@@ -251,66 +233,26 @@ function BusinessProfile({ history, ...props }) {
   };
 
   const saveBusinessData = () => {
-    // TODO - Modify data passed into endpoint
-
     const businessData = {
       ...state.editedBusinessProfileInfo,
-      // business_uid: "200-000048",
-      // business_name: "FTH",
-      // business_type: "Testing 2",
-      // business_desc: "Vegan Delivery Service",
-      // business_contact_first_name: "Anu",
-      // business_contact_last_name: "Sandhu",
-      // business_phone_num: "(512) 555-1234",
-      // business_phone_num2: "(512) 555-1200",
-      // business_email: "anu@ptyd.com",
       business_hours: {
         Friday: ["00:00:00", "23:59:00"],
         Monday: ["00:00:00", "23:59:00"],
       },
-      // business_accepting_hours: {
-      //   Friday: ["09:00:00", "23:59:59"],
-      //   Monday: ["09:00:00", "23:59:59"],
-      //   Sunday: ["09:00:00", "23:59:59"],
-      //   Tuesday: ["09:00:00", "23:59:59"],
-      //   Saturday: ["09:00:00", "21:00:00"],
-      //   Thursday: ["09:00:00", "23:59:59"],
-      //   Wednesday: ["09:00:00", "23:00:00"],
-      // },
       business_delivery_hours: {
         Friday: ["09:00:00", "23:59:59"],
       },
-      // business_address: "360 Cowden Road",
-      // business_unit: "",
-      // business_city: "Hollister",
-      // business_state: "CA",
-      // business_zip: "95135",
       can_cancel: String(state.editedBusinessProfileInfo.can_cancel),
       delivery: "0",
+      business_image: "",
       reusable: String(state.editedBusinessProfileInfo.reusable),
-      // business_image:
-      // "https://servingnow.s3-us-west-1.amazonaws.com/kitchen_imgs/landing-logo.png",
-      // business_status: "",
-      // business_facebook_url: "",
-      // business_instagram_url: "",
-      // business_twitter_url: "",
-      // business_website_url: "",
-      limit_per_person: "5",
-      // item_types: {
-      //   fruits: 1,
-      //   vegetables: 1,
-      //   meals: 1,
-      //   desserts: 1,
-      //   beverages: 1,
-      //   dairy: 0,
-      //   snacks: 0,
-      //   cannedFoods: 0,
-      // },
+      limit_per_person: String(
+        state.editedBusinessProfileInfo.limit_per_person
+      ),
     };
 
     let businessDataStatus = null;
     let imageUploadStatus = null;
-    let businessID = state.selectedBusinessID;
     axios
       .post(`${API_URL}business_details_update/Post`, businessData)
       .then((res) => {
@@ -318,7 +260,7 @@ function BusinessProfile({ history, ...props }) {
         if (state.selectedFile) {
           const imageFormData = new FormData();
           imageFormData.append("bus_photo", state.selectedFile);
-          imageFormData.append("uid", businessID);
+          imageFormData.append("uid", state.businessProfileInfo.business_uid);
 
           return axios.post(`${API_URL}business_image_upload`, imageFormData);
         }
@@ -338,10 +280,6 @@ function BusinessProfile({ history, ...props }) {
           (businessDataStatus === 200 && imageUploadStatus === 200) ||
           imageUploadStatus === null
         ) {
-          dispatch({
-            type: "SET_SHOW_BUSINESS_DETAILS",
-            payload: { showEditBusinessDetails: false, businessEditMode: "" },
-          });
           toggleEditProfile();
           getBusinessData();
         }
@@ -468,6 +406,26 @@ function BusinessProfile({ history, ...props }) {
                     )}
                     onChange={(event) =>
                       editBusiness("business_desc", event.target.value)
+                    }
+                  />
+                </Form.Group>
+                <Form.Group
+                  style={{
+                    width: "80%",
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                  }}
+                >
+                  <Form.Label>Item Limit</Form.Label>
+                  <Form.Control
+                    as="input"
+                    placeholder="Enter Item Limit"
+                    value={getBusinessProfileInfo(
+                      state.editedBusinessProfileInfo,
+                      "limit_per_person"
+                    )}
+                    onChange={(event) =>
+                      editBusiness("limit_per_person", event.target.value)
                     }
                   />
                 </Form.Group>
@@ -673,7 +631,6 @@ function BusinessProfile({ history, ...props }) {
                       marginRight: "auto",
                     }}
                   >
-                    {console.log(state.editedBusinessProfileInfo.can_cancel)}
                     <Form.Label>Cancellation</Form.Label>
                     <br />
                     <input
@@ -1451,16 +1408,13 @@ function BusinessProfile({ history, ...props }) {
                   padding: "0px",
                   border: "1px solid #E7404A",
                 }}
-                // onClick={() =>
-                //   // TODO - Reset edited business data
-                //   dispatch({
-                //     type: "SET_SHOW_BUSINESS_DETAILS",
-                //     payload: {
-                //       showEditBusinessDetails: false,
-                //       businessEditMode: "",
-                //     },
-                //   })
-                // }
+                onClick={() => {
+                  toggleEditProfile();
+                  dispatch({
+                    type: "SET_EDITED_BUSINESS_PROFILE_INFO",
+                    payload: state.businessProfileInfo,
+                  });
+                }}
               >
                 Cancel
               </Button>
@@ -1555,6 +1509,23 @@ function BusinessProfile({ history, ...props }) {
                     {getBusinessProfileInfo(
                       state.businessProfileInfo,
                       "business_desc"
+                    )}
+                  </div>
+                </Form.Group>
+                <Form.Group
+                  style={{
+                    width: "80%",
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                  }}
+                >
+                  <Form.Label style={{ color: "#E7404A", fontWeight: "600" }}>
+                    Item Limit
+                  </Form.Label>
+                  <div>
+                    {getBusinessProfileInfo(
+                      state.businessProfileInfo,
+                      "limit_per_person"
                     )}
                   </div>
                 </Form.Group>
