@@ -40,6 +40,7 @@
   height: 54px;
   text-align: left;
   white-space: nowrap;
+  /* border: 1px solid lime; */
 }
 
 .text {
