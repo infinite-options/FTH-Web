@@ -1,8 +1,48 @@
-import React from "react";
+import React, { useState } from "react";
+import { propTypes } from "react-bootstrap/esm/Image";
+import { useHistory } from "react-router";
 
 import styles from "../ServingNow/ClientForm.module.css";
 
-export default function ClientForm() {
+export default function ClientForm(props) {
+  const history = useHistory();
+
+  const [clientName, setClientName] = useState('');
+  const [SSN_last4, set_SSN_last4] = useState('');
+  const [DOB, setDOB] = useState('');
+  const [address, setAddress] = useState('');
+  const [city, setCity] = useState('');
+  const [county, setCounty] = useState('');
+  const [state, setState] = useState('');
+  const [zip, setZip] = useState('');
+  const [cellPhone, setCellPhone] = useState('');
+  const [homePhone, setHomePhone] = useState('');
+
+  const [hh_member_name, set_hh_member_name] = useState('');
+  const [hh_member_age, set_hh_member_age] = useState('');
+  const [hh_member_relation, set_hh_member_relation] = useState('');
+  const [household, setHousehold] = useState([]);
+
+  const nextPage = () => {
+    history.push({
+      pathname: '/clientform',
+      registration: props.location.registration,
+      client_form: {
+        clientName,
+        SSN_last4,
+        DOB,
+        address,
+        city,
+        county,
+        state,
+        zip,
+        cellPhone,
+        homePhone,
+        household
+      }
+    });
+  }
+
   return (
     <div>
 
@@ -32,6 +72,10 @@ export default function ClientForm() {
             style={{marginBottom: "0px", border: "0px", width: "600px"}}
             type='text'
             placeholder='Client Name'
+            onChange={e => {
+              setClientName(e.target.value)
+            }}
+            value={clientName}
           />
           </span>
       </div>
@@ -42,6 +86,10 @@ export default function ClientForm() {
             style={{marginBottom: "0px", border: "0px", width: "600px"}}
             type='text'
             placeholder='Last 4 digits of Social Security'
+            onChange={e => {
+              set_SSN_last4(e.target.value)
+            }}
+            value={SSN_last4}
           />
           </span>
       </div>
@@ -52,6 +100,10 @@ export default function ClientForm() {
             style={{marginBottom: "0px", border: "0px", width: "600px"}}
             type='text'
             placeholder='DOB'
+            onChange={e => {
+              setDOB(e.target.value)
+            }}
+            value={DOB}
           />
           </span>
       </div>
@@ -62,6 +114,10 @@ export default function ClientForm() {
             style={{marginBottom: "0px", border: "0px", width: "600px"}}
             type='text'
             placeholder='Current Address'
+            onChange={e => {
+              setAddress(e.target.value)
+            }}
+            value={address}
           />
           </span>
       </div>
@@ -72,6 +128,10 @@ export default function ClientForm() {
             style={{marginBottom: "0px", border: "0px", width: "200px"}}
             type='text'
             placeholder='City'
+            onChange={e => {
+              setCity(e.target.value)
+            }}
+            value={city}
           />
           </span>
       </div>
@@ -82,6 +142,10 @@ export default function ClientForm() {
             style={{marginBottom: "0px", border: "0px", width: "200px"}}
             type='text'
             placeholder='County'
+            onChange={e => {
+              setCounty(e.target.value)
+            }}
+            value={county}
           />
           </span>
       </div>
@@ -92,6 +156,10 @@ export default function ClientForm() {
             style={{marginBottom: "0px", border: "0px", width: "200px"}}
             type='text'
             placeholder='State'
+            onChange={e => {
+              setState(e.target.value)
+            }}
+            value={state}
           />
           </span>
       </div>
@@ -102,6 +170,10 @@ export default function ClientForm() {
             style={{marginBottom: "0px", border: "0px", width: "200px"}}
             type='text'
             placeholder='Zip Code'
+            onChange={e => {
+              setZip(e.target.value)
+            }}
+            value={zip}
           />
           </span>
       </div>
@@ -112,6 +184,10 @@ export default function ClientForm() {
             style={{marginBottom: "0px", border: "0px", width: "600px"}}
             type='text'
             placeholder='Phone (home)'
+            onChange={e => {
+              setHomePhone(e.target.value)
+            }}
+            value={homePhone}
           />
           </span>
       </div>
@@ -122,6 +198,10 @@ export default function ClientForm() {
             style={{marginBottom: "0px", border: "0px", width: "600px"}}
             type='text'
             placeholder='Phone (cell)'
+            onChange={e => {
+              setCellPhone(e.target.value)
+            }}
+            value={cellPhone}
           />
           </span>
       </div>
@@ -170,9 +250,17 @@ export default function ClientForm() {
       </div>
 
       <div className={styles.submitButton}>
-          <a href="createpassword">
-          <button style={{color: "#e7404a", background: "white", border: "none"}}> <b>Submit Form</b> </button>
-          </a>
+          {/* <a href="createpassword"> */}
+          <button 
+            style={{
+              color: "#e7404a", 
+              background: "white", 
+              border: "none"
+            }}
+          > 
+            <b>Submit Form</b> 
+          </button>
+          {/* </a> */}
       </div>
 
     </div>

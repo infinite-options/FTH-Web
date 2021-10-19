@@ -7,6 +7,18 @@
   left: 0px;
   z-index: -1;
 } */
+
+.banner {
+  background-color: #e7404a;
+  color: white;
+  width: 100vw;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  padding-left: 20%;
+  font-size: 24px;
+}
+
 .rectangle1 {
   /* position: absolute; */
   width: 1920px;
@@ -33,6 +45,7 @@
   width: 350px;
   height: 560px;
   top: 190px;
+  /* right: calc(50% - 360px); */
   /* bottom: 212px; */
   left: 895px;
 }

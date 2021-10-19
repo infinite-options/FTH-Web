@@ -205,26 +205,36 @@ function Items({ history, ...props }) {
         .split("; ")
         .find((row) => row.startsWith("customer_uid"))
         .split("=")[1];
-      axios
-        .get(`${API_URL}Profile/${customer_uid}`)
-        .then((response) => {
-          const role = response.data.result[0].role.toLowerCase();
-          if (role !== "admin" && role !== "customer") {
-            // console.log("mounting")
-            // console.log(state.mounted);
-            dispatch({ type: "MOUNT" });
-          } else {
-            history.push("/meal-plan");
-          }
-        })
-        .catch((err) => {
-          if (err.response) {
-            // eslint-disable-next-line no-console
-            console.log(err.response);
-          }
-          // eslint-disable-next-line no-console
-          console.log(err);
-        });
+      console.log("(mount) customer_uid: ", customer_uid);
+      const role = localStorage.getItem('role');
+      if (role !== "admin" && role !== "customer") {
+        dispatch({ type: "MOUNT" });
+      } else {
+        history.push("/meal-plan");
+      }
+
+      // axios
+      //   .get(`${API_URL}Profile/${customer_uid}`)
+      //   .then((response) => {
+      //     console.log("Profile res: ", response);
+      //     const role = response.data.result[0].role.toLowerCase();
+      //     console.log("role: ", role);
+          // if (role !== "admin" && role !== "customer") {
+          //   // console.log("mounting")
+          //   // console.log(state.mounted);
+          //   dispatch({ type: "MOUNT" });
+          // } else {
+          //   history.push("/meal-plan");
+          // }
+      //   })
+      //   .catch((err) => {
+      //     if (err.response) {
+      //       // eslint-disable-next-line no-console
+      //       console.log(err.response);
+      //     }
+      //     // eslint-disable-next-line no-console
+      //     console.log(err);
+      //   });
     } else {
       // Reroute to log in page
       history.push("/");
@@ -374,9 +384,23 @@ function Items({ history, ...props }) {
     return state.uniqueBrands.filter((brand) => brand.brand_uid === id)[0]
       .brand_name;
   };
+  const getBrandByName = (id) => {
+    console.log("gbbn id: ", id);
+    let brand = state.uniqueBrands.filter((brand) => brand.brand_name === id)[0]
+      .brand_name
+    console.log("gbbn brand: ", brand);
+    return brand;
+  };
   const getItemNameByID = (id) => {
     return state.uniqueItems.filter((item) => item.item_uid === id)[0]
       .item_name;
+  };
+  const getItemByName = (id) => {
+    console.log("gibn id: ", id);
+    let product = state.uniqueItems.filter((item) => item.item_name === id)[0]
+      .item_name
+    console.log("gibn brand: ", product);
+    return product;
   };
 
   const sortSupply = (field) => {
@@ -395,7 +419,9 @@ function Items({ history, ...props }) {
     const newItemDesc = [...state.newSupply.sup_desc];
 
     if (field === "sup_brand_uid") newItemDesc[0] = getBrandNameByID(value);
+    // if (field === "sup_brand_uid") newItemDesc[0] = getBrandByName(value);
     else if (field === "sup_item_uid") newItemDesc[1] = getItemNameByID(value);
+    // else if (field === "sup_item_uid") newItemDesc[1] = getItemByName(value);
     else if (field === "sup_num") newItemDesc[2] = value;
     else if (field === "sup_measure") newItemDesc[3] = value;
     else if (field === "detailed_num") newItemDesc[4] = value;
@@ -452,9 +478,11 @@ function Items({ history, ...props }) {
   };
 
   const getUniqueBrands = () => {
+    console.log("in getUniqueBrands");
     axios
       .get(`${API_URL}get_brands_list`)
       .then((response) => {
+        console.log("gub res: ", response);
         const brands = response.data.result;
         dispatch({ type: "GET_UNIQUE_BRANDS", payload: brands });
       })
@@ -467,9 +495,11 @@ function Items({ history, ...props }) {
   };
 
   const getUniqueItems = () => {
+    console.log("in getUniqueItems");
     axios
       .get(`${API_URL}get_items_list`)
       .then((response) => {
+        console.log("gui res: ", response);
         const items = response.data.result;
         dispatch({ type: "GET_UNIQUE_ITEMS", payload: items });
       })
@@ -574,6 +604,13 @@ function Items({ history, ...props }) {
       }
     }
 
+    // console.log("posting new supply: ", supplyFormData.values());
+    // for (var value of supplyFormData.values()) {
+    //   console.log("new supply: ", value);
+    // }
+    for(var pair of supplyFormData.entries()) {
+      console.log("entry: ", pair[0]+ ', '+ pair[1]);
+    }
     axios
       .post(`${API_URL}add_supply`, supplyFormData)
       .then((response) => {
@@ -636,6 +673,7 @@ function Items({ history, ...props }) {
   };
 
   const filterItems = () => {
+    console.log("filterItems items: ", state.items);
     return state.items
       .filter((item) => {
         if (state.itemBrandSearch === "") {

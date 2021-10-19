@@ -15,8 +15,10 @@ import visibility from '../Assets/visibility.svg';
 
 
 // class CreatePassword extends Component {
-function CreatePassword() {
+function CreatePassword(props) {
   const history = useHistory();
+
+  console.log("CreatePassword props: ", props);
 
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -125,9 +127,6 @@ function CreatePassword() {
   return (
     <>
       <div className={styles.banner}/>
-
-      {/* <img src={visibility} alt="" class="visibility1"/> */}
-      {/* <img src={visibility} alt="" class="visibility2"/> */}
 
       <div className={styles.pw_background}>
         <div

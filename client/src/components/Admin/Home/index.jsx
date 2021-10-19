@@ -9,6 +9,10 @@ function Home({history, ...props}) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    console.log("(mount) in admin home");
+    const storedUser = localStorage.getItem('role');
+    // const parsedUser = storedUser);
+    console.log("user: ", storedUser);
     if (
       document.cookie
         .split(";")

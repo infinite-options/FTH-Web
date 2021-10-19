@@ -131,6 +131,11 @@ const initialState = {
     field: "",
     direction: "asc",
   },
+  showAddItem: null,
+  // newItemName: '',
+  // newItemType: '',
+  // newItemDesc: '',
+  // newItemTags: ''
 };
 
 // styles used to customize material table
@@ -138,6 +143,15 @@ const useStyles = makeStyles({
   dropdownPopover: {
     borderRadius: "20px",
     background: "#ffe3e5",
+    // padding: '0'
+    // border: '1px solid blue'
+  },
+  addItemPopover: {
+    borderRadius: "20px",
+    border: '1px solid #E7404A'
+    // background: "#ffe3e5",
+    // padding: '0'
+    // border: '1px solid blue'
   },
   tableRow: {
     "&:hover": {
@@ -188,6 +202,11 @@ function reducer(state, action) {
       return {
         ...state,
         dropdownAnchorEl: action.payload,
+      };
+    case "SET_SHOW_ADD_ITEM":
+      return {
+        ...state,
+        showAddItem: action.payload,
       };
     case "FETCH_ALL_BUSINESS_DATA":
       return {
@@ -257,6 +276,11 @@ function EditMeal({ history, ...props }) {
   const classes = useStyles();
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  const [setNewItemName, newItemName] = useState('');
+  const [setNewItemType, newItemType] = useState('');
+  const [setNewItemDesc, newItemDesc] = useState('');
+  const [setNewItemTags, newItemTags] = useState('');
+
   const carouselRef = useRef();
 
   // Check for log in
@@ -271,27 +295,37 @@ function EditMeal({ history, ...props }) {
         .split("; ")
         .find((row) => row.startsWith("customer_uid"))
         .split("=")[1];
-      axios
-        .get(`${API_URL}Profile/${customer_uid}`)
-        .then((response) => {
-          const role = response.data.result[0].role.toLowerCase();
-          if (role === "admin") {
-            // console.log("mounting")
-            // console.log(state.mounted);
-            dispatch({ type: "MOUNT" });
-            // console.log("dispatch MOUNT");
-          } else {
-            history.push("/meal-plan");
-          }
-        })
-        .catch((err) => {
-          if (err.response) {
-            // eslint-disable-next-line no-console
-            console.log(err.response);
-          }
-          // eslint-disable-next-line no-console
-          console.log(err);
-        });
+
+      const role = localStorage.getItem('role');
+      if (role === "admin") {
+        // console.log("mounting")
+        // console.log(state.mounted);
+        dispatch({ type: "MOUNT" });
+        // console.log("dispatch MOUNT");
+      } else {
+        history.push("/meal-plan");
+      }
+      // axios
+      //   .get(`${API_URL}Profile/${customer_uid}`)
+      //   .then((response) => {
+      //     const role = response.data.result[0].role.toLowerCase();
+          // if (role === "admin") {
+          //   // console.log("mounting")
+          //   // console.log(state.mounted);
+          //   dispatch({ type: "MOUNT" });
+          //   // console.log("dispatch MOUNT");
+          // } else {
+          //   history.push("/meal-plan");
+          // }
+      //   })
+      //   .catch((err) => {
+      //     if (err.response) {
+      //       // eslint-disable-next-line no-console
+      //       console.log(err.response);
+      //     }
+      //     // eslint-disable-next-line no-console
+      //     console.log(err);
+      //   });
     } else {
       // Reroute to log in page
       history.push("/");
@@ -689,12 +723,24 @@ function EditMeal({ history, ...props }) {
   };
 
   const toggleBusinessDropdown = (event) => {
+    console.log("toggleBusinessDropdown event: ", event);
     if (state.dropdownAnchorEl === null) {
       dispatch({ type: "SET_DROPDOWN_ANCHOR", payload: event.currentTarget });
     } else {
       dispatch({ type: "SET_DROPDOWN_ANCHOR", payload: null });
     }
+    console.log("dropdownAnchorEl: ", state.dropdownAnchorEl);
   };
+
+  const toggleAddItem = (event) => {
+    console.log("toggleAddItem event: ", event);
+    if (state.showAddItem === null) {
+      dispatch({ type: "SET_SHOW_ADD_ITEM", payload: event.currentTarget });
+    } else {
+      dispatch({ type: "SET_SHOW_ADD_ITEM", payload: null });
+    }
+    console.log("showAddItem: ", state.showAddItem);
+  }
 
   const changeItemStatus = (item, index) => {
     const allItems = [...state.foodBankItems];
@@ -983,7 +1029,11 @@ function EditMeal({ history, ...props }) {
                           : styles.restaurantImgHidden
                       }
                     />
-                    <div style={{ marginLeft: "10px" }}>
+                    <div 
+                      style={{ 
+                        marginLeft: "10px" 
+                      }}
+                    >
                       <div className={styles.dropdownContainer}>
                         <div>{getSelectedBusinessData("business_name")}</div>
                         <button
@@ -996,6 +1046,10 @@ function EditMeal({ history, ...props }) {
                           onClose={toggleBusinessDropdown}
                           anchorReference="anchorPosition"
                           anchorPosition={{ top: 175, left: 720 }}
+                          // anchorPosition={{ 
+                          //   top: 0, 
+                          //   left: 0
+                          // }}
                           anchorOrigin={{
                             vertical: "bottom",
                             horizontal: "center",
@@ -1255,6 +1309,87 @@ function EditMeal({ history, ...props }) {
                             </TableContainer>
                           </div>
                         </Popover>
+
+                        <Popover
+                          open={state.showAddItem ? true : false}
+                          anchorEl={state.showAddItem}
+                          onClose={toggleAddItem}
+                          anchorReference="anchorPosition"
+                          anchorPosition={{ top: 175, left: 720 }}
+                          // anchorPosition={{ 
+                          //   top: 0, 
+                          //   left: 0
+                          // }}
+                          anchorOrigin={{
+                            vertical: "bottom",
+                            horizontal: "center",
+                          }}
+                          transformOrigin={{
+                            vertical: "top",
+                            horizontal: "center",
+                          }}
+                          classes={{ paper: classes.addItemPopover }}
+                        >
+                          <div
+                            style={{
+                              margin: '20px 30px',
+                              // border: '1px dashed',
+                              width: '400px',
+                              height: '500px'
+                            }}
+                          >
+                            <h3 
+                              style={{ 
+                                fontSize: '24px',
+                                marginBottom: '30px'
+                              }}
+                            >
+                              <b>Item</b>
+                            </h3>
+                            <div className={styles.addItem_input_wrapper}>
+                              Item Name
+                              <input 
+                                className={styles.addItem_input}
+                                onChange={e => setNewItemName(e.target.value)}
+                                value={newItemName}
+                              />
+                            </div>
+                            <div className={styles.addItem_input_wrapper}>
+                              Item Description
+                              <input 
+                                className={styles.addItem_input}
+                                onChange={e => setNewItemName(e.target.value)}
+                                value={newItemName}
+                              />
+                            </div>
+                            <div className={styles.addItem_tags_wrapper}>
+                              Add Item Tags +
+                              {/* <input className={styles.addItem_input}/> */}
+                            </div>
+                            <div className={styles.addItem_input_wrapper}>
+                              Type of Food
+                              <input 
+                                className={styles.addItem_input}
+                                onChange={e => setNewItemName(e.target.value)}
+                                value={newItemName}
+                              />
+                            </div>
+                            <div 
+                              style={{ marginTop: '50px' }}
+                              className={styles.addItem_btn_wrapper}
+                            >
+                              <button className={styles.addItem_btn}>
+                                Add Item
+                              </button>
+                            </div>
+                            <div className={styles.addItem_btn_wrapper}>
+                              <button className={styles.addItem_cancel_btn}>
+                                Cancel
+                              </button>
+                            </div>
+                          </div>
+                        </Popover>
+
                       </div>
 
                       <div
@@ -1545,8 +1680,13 @@ function EditMeal({ history, ...props }) {
                 </Col>
                 <Col id="addItem">
                   <div
-                    style={{ textAlign: "right" }}
+                    style={{ 
+                      textAlign: "right", 
+                      cursor: 'pointer',
+                      // border: '1px dashed'
+                    }}
                     className={styles.redLabelBold}
+                    onClick={toggleAddItem}
                   >
                     Add Item +
                   </div>

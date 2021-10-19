@@ -50,27 +50,36 @@ function Analytics({ history, ...props }) {
         .split("; ")
         .find((row) => row.startsWith("customer_uid"))
         .split("=")[1];
-      axios
-        .get(`${API_URL}Profile/${customer_uid}`)
-        .then((response) => {
-          const role = response.data.result[0].role.toLowerCase();
-          if (role !== "admin" && role !== "customer") {
-            // console.log("mounting")
-            // console.log(state.mounted);
-            dispatch({ type: "MOUNT" });
-            // console.log("dispatch MOUNT");
-          } else {
-            history.push("/meal-plan");
-          }
-        })
-        .catch((err) => {
-          if (err.response) {
-            // eslint-disable-next-line no-console
-            console.log(err.response);
-          }
-          // eslint-disable-next-line no-console
-          console.log(err);
-        });
+      const role = localStorage.getItem('role');
+      console.log("role: ", role);
+      if (role !== "admin" && role !== "customer") {
+        dispatch({ type: "MOUNT" });
+      } else {
+        history.push("/meal-plan");
+      }
+      // axios
+      //   .get(`${API_URL}Profile/${customer_uid}`)
+      //   .then((response) => {
+      //     console.log("profile res: ", response);
+      //     const role = response.data.result[0].role.toLowerCase();
+      //     console.log("role: ", role);
+      //     if (role !== "admin" && role !== "customer") {
+      //       console.log("mounting")
+      //       // console.log(state.mounted);
+      //       dispatch({ type: "MOUNT" });
+      //       // console.log("dispatch MOUNT");
+      //     } else {
+      //       history.push("/meal-plan");
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     if (err.response) {
+      //       // eslint-disable-next-line no-console
+      //       console.log(err.response);
+      //     }
+      //     // eslint-disable-next-line no-console
+      //     console.log(err);
+      //   });
     } else {
       // Reroute to log in page
       history.push("/");

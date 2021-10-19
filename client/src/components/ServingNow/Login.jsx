@@ -86,6 +86,7 @@ export default function Login() {
   const successLogin = (page) => {
     history.push(page);
   };
+
   const verifyLoginInfo = (e) => {
     // Attempt to login
     // Get salt for account
@@ -96,6 +97,7 @@ export default function Login() {
         // }
       })
       .then((res) => {
+        console.log("accountsalt res: ", res);
         // console.log(emailValue, passwordValue);
         let saltObject = res;
         if (saltObject.data.code === 200) {
@@ -149,6 +151,8 @@ export default function Login() {
                     //TODO: tell to please use Google/ Facebook login
                     console.log(res);
                     if (res.data.code === 200) {
+
+
                       setError("");
                       console.log("Login success");
                       let customerInfo = res.data.result[0];
@@ -158,16 +162,20 @@ export default function Login() {
                       let newAccountType = customerInfo.role.toLowerCase();
                       switch (newAccountType) {
                         case "admin":
-                          history.push("/admin");
+                          localStorage.setItem('role', 'admin');
+                          history.push("/admin-v2");
                           break;
                         case "farmer":
-                          history.push("/admin");
+                          localStorage.setItem('role', 'farmer');
+                          history.push("/admin-v2");
                           break;
                         case "customer":
+                          localStorage.setItem('role', 'customer');
                           history.push("/home");
                           break;
                         // Farmer roles are moving towared business Id string
                         default:
+                          localStorage.setItem('role', newAccountType);
                           history.push("/admin-v2");
                           break;
                       }
