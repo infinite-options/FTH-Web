@@ -24,6 +24,7 @@ import { ReactComponent as LeftArrow } from "../../../images/LeftArrowRed.svg";
 import { ReactComponent as RightArrow } from "../../../images/RightArrowRed.svg";
 import ToggleSwitch from "./toggleSwitch.jsx";
 import { ReactComponent as ModalCloseBtn } from "../../../images/ModalCloseRed.svg";
+import AddDonation from '../Donations/AddDonation';
 
 const responsive = {
   superLargeDesktop: {
@@ -51,6 +52,7 @@ const initialState = {
   carouselLoaded: false,
   allDates: [],
   selectedDate: "",
+  showAddDonation: false,
 };
 
 function reducer(state, action) {
@@ -77,6 +79,12 @@ function reducer(state, action) {
         ...state,
         carouselLoaded: true,
       };
+    case "TOGGLE_ADD_DONATION": {
+      return {
+        ...state,
+        showAddDonation: !state.showAddDonation,
+      };
+    }
     default:
       return state;
   }
@@ -205,6 +213,10 @@ function Inventory({ history, ...props }) {
     dispatch({ type: "CHANGE_DATE", payload: newDate });
   };
 
+  const toggleShowAddDonation = () => {
+    dispatch({ type: "TOGGLE_ADD_DONATION" });
+  };
+
   if (!state.mounted) {
     return null;
   }
@@ -236,7 +248,10 @@ function Inventory({ history, ...props }) {
               </Col>
               <Col></Col>
               <Col md="auto">
-                <button className={styles.headerButtonWhite}>
+                <button 
+                  className={styles.headerButtonWhite}
+                  onClick={() => toggleShowAddDonation()}
+                >
                   Add Donation +
                 </button>
               </Col>
@@ -555,6 +570,13 @@ function Inventory({ history, ...props }) {
           </Col>
         </Row>
       </Container>
+
+      {state.showAddDonation && (
+        <AddDonation
+          toggleShowAddDonation={toggleShowAddDonation}
+        />
+      )}
+
     </div>
   );
 }

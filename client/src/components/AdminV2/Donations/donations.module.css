@@ -46,3 +46,135 @@
   box-shadow: 0px 3px 6px #00000029;
   font-weight: bold;
 }
+
+.ad_body_left {
+  border-right: 1px solid #E7404A;
+  width: 50%;
+  padding-right: 40px;
+}
+
+.ad_body_right {
+  border-left: 1px solid #E7404A;
+  padding-left: 40px;
+  width: 50%;
+}
+
+.ad_section_container{
+  /* border: 1px dashed; */
+  display: flex;
+  align-items: center;
+  /* min-height: 40px; */
+  margin-bottom: 20px;
+}
+
+.ad_section_label_wrapper {
+  width: 35%;
+  /* position: relative; */
+  /* border: 1px solid green; */
+}
+
+.ad_section_label {
+  color: #e7404a;
+}
+
+.ad_section_photo_wrapper {
+  width: 65%;
+  display: inline-block;
+  /* border: 1px solid green; */
+  position: relative;
+}
+
+.ad_section_input_wrapper {
+  width: 65%;
+  display: flex;
+  /* border: 1px solid green; */
+  position: relative;
+}
+
+.ad_section_input {
+  border: 1px solid #e7404a;
+  height: 30px;
+  width: calc(100% - 40px);
+}
+.ad_section_input:focus {
+  outline: none;
+}
+
+.ad_section_dropdown {
+  border: 1px solid #e7404a;
+  /* height: 60px; */
+  min-height: 30px;
+  background: url("../../../images/RedDropdown.svg") no-repeat;
+  background-position: right 5px top 5px;
+  width: calc(100% - 40px);
+  cursor: pointer;
+  padding-right: 30px;
+  overflow: visible;
+  /* text-align: left; */
+}
+.ad_section_dropdown:focus {
+  outline: none;
+}
+
+.ad_whiteButton {
+  width: 220px;
+  padding: 10px;
+  margin: 10px;
+  color: #E7404A;
+  background-color: white;
+  border: 1px solid;
+  border-radius: 20px;
+  box-shadow: 0px 3px 6px #00000029;
+  font-weight: bold;
+}
+.ad_redButton {
+  width: 220px;
+  padding: 10px;
+  margin: 10px;
+  background-color: #E7404A;
+  color: white;
+  border: 1px solid;
+  border-radius: 20px;
+  box-shadow: 0px 3px 6px #00000029;
+  font-weight: bold;
+}
+
+/* .ad_plus_wrapper {
+
+} */
+.ad_plus {
+  /* max-height: ; */
+  color: #E7404A;
+  font-size: 30px;
+  padding: 0 5px;
+  cursor: pointer;
+  overflow: visible;
+  position: absolute;
+  right: 4px;
+  top: -4px;
+  background-color: rgb(0,0,0,0);
+  transform: rotate(90deg);
+  border-radius: 50%;
+  border-color: rgb(0,0,0,0);
+}
+
+.ad_option {
+  /* border: 1px solid lime; */
+  padding-right: 20px;
+}
+
+.ad_section_image {
+  height: 150px;
+  width: 150px;
+  margin-bottom: 10px;
+}
+
+.closeBtn {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  cursor: pointer;
+}
+.closeBtn:hover {
+  opacity: 0.5;
+}

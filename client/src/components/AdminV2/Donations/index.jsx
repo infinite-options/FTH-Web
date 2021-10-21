@@ -20,6 +20,7 @@ import { act } from "react-dom/test-utils";
 import { formatTime, sortedArray } from "../../../reducers/helperFuncs";
 import styles from "./donations.module.css";
 import { ReactComponent as ModalCloseBtn } from "../../../images/ModalCloseRed.svg";
+import AddDonation from './AddDonation';
 
 const initialState = {
   mounted: false,
@@ -296,7 +297,8 @@ function Donations({ history, ...props }) {
           </Col>
         </Row>
       </Container>
-      {state.showAddDonation && (
+
+      {/* {state.showAddDonation && (
         <div
           style={{
             height: "100%",
@@ -310,6 +312,7 @@ function Donations({ history, ...props }) {
             backgroundColor: "rgba(255, 255, 255, 0.8)",
           }}
         >
+          {console.log("showAddDonation: ", state.showAddDonation)}
           <div
             style={{
               position: "relative",
@@ -360,7 +363,13 @@ function Donations({ history, ...props }) {
             </div>
           </div>
         </div>
+      )} */}
+      {state.showAddDonation && (
+        <AddDonation
+          toggleShowAddDonation={toggleShowAddDonation}
+        />
       )}
+
     </div>
   );
 }

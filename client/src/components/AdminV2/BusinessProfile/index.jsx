@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from "react";
+import { useState, useEffect, useReducer } from "react";
 import axios from "axios";
 import { API_URL } from "../../../reducers/constants";
 import { Container, Row, Col, Form, Button, Modal } from "react-bootstrap";
@@ -56,6 +56,7 @@ function reducer(state, action) {
 
 function BusinessProfile({ history, ...props }) {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [business_uid, set_business_uid] = useState('');
 
   // Check for log in
   useEffect(() => {
@@ -71,6 +72,7 @@ function BusinessProfile({ history, ...props }) {
         .split("=")[1];
       const role = localStorage.getItem('role');
       if (role !== "admin" && role !== "customer") {
+        set_business_uid(role);
         dispatch({ type: "MOUNT" });
       } else {
         history.push("/meal-plan");
@@ -135,7 +137,7 @@ function BusinessProfile({ history, ...props }) {
   const getBusinessData = () => {
     axios
       .post(`${API_URL}business_details_update/Get`, {
-        business_uid: "200-000006",
+        business_uid: business_uid,
       })
       .then((response) => {
         console.log("(bdu) res: ", response);

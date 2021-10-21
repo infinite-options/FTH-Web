@@ -9,35 +9,14 @@ import hamburger from "../../../images/hamburger.png";
 import forkClose from "../../../images/forkClose.png";
 
 const LINK_WIDTH = {
-  menu: "7%",
-  orders: "8%",
-  ingredients_n_units: "16%",
-  businesses_n_meals: "16%",
-  customers: "12%",
+  orders: "10%",
+  donations: "12%",
+  inventory: "11%",
+  items: "10%",
+  customers: "11%",
+  analytics: "13%",
   notifications: "14%",
-  coupons: "9%",
-  zones: "8%",
-  analytics: "10%",
-
-  // menu: '11%',
-  // orders: '11%',
-  // ingredients_n_units: '11%',
-  // businesses_n_meals: '11%',
-  // customers: '11%',
-  // notifications: '11%',
-  // coupons: '11%',
-  // zones: '11%',
-  // analytics: '11%'
-
-  // menu: '9%',
-  // orders: '9%',
-  // ingredients_n_units: '16%',
-  // businesses_n_meals: '16%',
-  // customers: '11%',
-  // notifications: '11%',
-  // coupons: '9%',
-  // zones: '9%',
-  // analytics: '9%'
+  business_profile: "18%",
 };
 
 function NavBar(props) {
@@ -198,10 +177,10 @@ function NavBar(props) {
                 props.currentPage === "donations"
                   ? {
                       color: "black",
-                      width: LINK_WIDTH.menu,
+                      width: LINK_WIDTH.donations,
                     }
                   : {
-                      width: LINK_WIDTH.menu,
+                      width: LINK_WIDTH.donations,
                     }
               }
             >
@@ -215,10 +194,10 @@ function NavBar(props) {
                 props.currentPage === "inventory"
                   ? {
                       color: "black",
-                      width: LINK_WIDTH.businesses_n_meals,
+                      width: LINK_WIDTH.inventory,
                     }
                   : {
-                      width: LINK_WIDTH.businesses_n_meals,
+                      width: LINK_WIDTH.inventory,
                     }
               }
             >
@@ -249,10 +228,10 @@ function NavBar(props) {
                 props.currentPage === "items"
                   ? {
                       color: "black",
-                      width: LINK_WIDTH.customers,
+                      width: LINK_WIDTH.items,
                     }
                   : {
-                      width: LINK_WIDTH.customers,
+                      width: LINK_WIDTH.items,
                     }
               }
             >
@@ -333,10 +312,10 @@ function NavBar(props) {
                 props.currentPage === "business-profile"
                   ? {
                       color: "black",
-                      width: LINK_WIDTH.notifications,
+                      width: LINK_WIDTH.business_profile,
                     }
                   : {
-                      width: LINK_WIDTH.notifications,
+                      width: LINK_WIDTH.business_profile,
                     }
               }
             >

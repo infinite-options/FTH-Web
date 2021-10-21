@@ -730,6 +730,7 @@ function Items({ history, ...props }) {
   };
 
   const getSupplyModalData = () => {
+    console.log("in getSupplyModalData");
     getSupplyUnits();
     getSuuplyNonSpecificUnits();
     getUniqueBrands();

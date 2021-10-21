@@ -163,11 +163,11 @@ export default function Login() {
                       switch (newAccountType) {
                         case "admin":
                           localStorage.setItem('role', 'admin');
-                          history.push("/admin-v2");
+                          history.push("/admin");
                           break;
                         case "farmer":
                           localStorage.setItem('role', 'farmer');
-                          history.push("/admin-v2");
+                          history.push("/admin");
                           break;
                         case "customer":
                           localStorage.setItem('role', 'customer');
