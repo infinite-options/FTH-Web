@@ -20,7 +20,7 @@ import { act } from "react-dom/test-utils";
 import { formatTime, sortedArray } from "../../../reducers/helperFuncs";
 import styles from "./donations.module.css";
 import { ReactComponent as ModalCloseBtn } from "../../../images/ModalCloseRed.svg";
-import AddDonation from './AddDonation';
+import AddDonation from '../Modals/AddDonation';
 
 const initialState = {
   mounted: false,

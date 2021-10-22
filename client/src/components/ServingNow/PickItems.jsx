@@ -8,6 +8,7 @@ import foodBankPic from '../Assets/foodBankPic.png';
 import apples from '../Assets/apple.png';
 import component from '../Assets/component.png';
 import shoppingcart from '../Assets/shoppingcart.svg';
+import { API_URL } from "../../reducers/constants";
 
 import { useHistory } from "react-router";
 
@@ -29,7 +30,7 @@ function PickItems() {
 
         if(cart.length === 0) {
             axios
-                .post('https://c1zwsl05s5.execute-api.us-west-1.amazonaws.com/dev/api/v2/getItems',
+                .post(API_URL + 'getItems',
                     {
                         types: [],
                         ids: ["200-000042"]
