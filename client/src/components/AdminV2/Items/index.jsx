@@ -17,6 +17,9 @@ import { sortedArray } from "../../../reducers/helperFuncs";
 import styles from "./items.module.css";
 import { ReactComponent as ModalCloseBtn } from "../../../images/ModalCloseRed.svg";
 import AddSupply from '../Modals/AddSupply';
+import AddBrand from '../Modals/AddBrand';
+import AddItem from '../Modals/AddItem';
+import AddTags from '../Modals/AddTags';
 
 const google = window.google;
 
@@ -370,6 +373,7 @@ function Items({ history, ...props }) {
     } else {
     }
 
+    console.log("in toggle add brand");
     dispatch({ type: "TOGGLE_ADD_BRAND" });
     dispatch({ type: "TOGGLE_ADD_SUPPLY" });
   };
@@ -1057,26 +1061,36 @@ function Items({ history, ...props }) {
         </Row>
       </Container>
       {state.showAddSupply && (
-        <div
-          style={{
-            height: "100%",
-            width: "100%",
-            zIndex: "101",
-            left: "0",
-            top: "0",
-            // overflow: "auto",
-            position: "fixed",
-            display: "grid",
-            backgroundColor: "rgba(255, 255, 255, 0.8)",
-          }}
-        >
-          <AddSupply
-            toggleAddSupply={toggleAddSupply}
-          />
-        </div>
+        <AddSupply
+          toggleAddSupply={toggleAddSupply}
+          toggleAddBrand={toggleAddBrand}
+          toggleAddItem={toggleAddItem}
+          toggleAddItemTags={toggleAddItemTags}
+          showAddSupply={state.showAddSupply}
+        />
       )}
+      {state.showAddBrand && (
+        <AddBrand
+          toggleAddBrand={toggleAddBrand}
+          showAddBrand={state.showAddBrand}
+        />
+      )}
+      {state.showAddItem && (
+        <AddItem
+          toggleAddItem={toggleAddItem}
+          toggleAddItemTags={toggleAddItemTags}
+          showAddItemTags={state.showAddItemTags}
+          showAddItem={state.showAddItem}
+        />
+      )}
+      {/* {state.showAddItemTags && (
+        <AddTags
+          toggleAddItemTags={toggleAddItemTags}
+          showAddItemTags={state.showAddItemTags}
+        />
+      )} */}
       {/* {state.showAddBrand && ( */}
-      <div
+      {/* <div
         style={{
           height: "100%",
           width: "100%",
@@ -1288,9 +1302,9 @@ function Items({ history, ...props }) {
           </div>
         </div>
         {addressAutocomplete()}
-      </div>
+      </div> */}
       {/* )} */}
-      {state.showAddItem && (
+      {/* {state.showAddItem && (
         <div
           style={{
             height: "100%",
@@ -1505,7 +1519,7 @@ function Items({ history, ...props }) {
             </div>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 }
