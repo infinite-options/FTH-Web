@@ -103,6 +103,7 @@
   color: #e7404a;
   width: 40px;
   text-align: center;
+  cursor: pointer;
 }
 
 .modalCol {

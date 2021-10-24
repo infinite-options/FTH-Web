@@ -20,7 +20,8 @@ const AddDonation = (props) => {
   // maps uids to values
   const [itemMap, setItemMap] = useState(null);
   const [brandMap, setBrandMap] = useState(null);
-  const [supplyMap, setSupplyMap] = useState(null);
+  const [packUpcMap, setPackUpcMap] = useState(null);
+  const [packReceivedMap, setPackReceivedMap] = useState(null);
 
 	// user input data
 	const [packageUPC, setPackageUPC] = useState(null);
@@ -78,11 +79,14 @@ const AddDonation = (props) => {
 			.then((response) => {
 				console.log("supply res: ", response);
         let fetched_supply = response.data.result;
-        const supply_map = new Map();
+        const pr_map = new Map();
+        const upc_map = new Map();
         fetched_supply.forEach((fetched_supply) => {
-          supply_map.set(fetched_supply.sup_desc, fetched_supply);
+          pr_map.set(fetched_supply.sup_desc, fetched_supply);
+          upc_map.set(fetched_supply.package_upc, fetched_supply);
         });
-        setSupplyMap(supply_map);
+        setPackReceivedMap(pr_map);
+        setPackUpcMap(upc_map);
 				setSupply(fetched_supply);
 			})
 			.catch((err) => {
@@ -170,6 +174,21 @@ const AddDonation = (props) => {
     return donationOptions;
   }
 
+  const handleChangeUPC = (input) => {
+    console.log("in handleChangeUPC");
+    setPackageUPC(input);
+    console.log("(hc_upc) input: ", input)
+    let upc_found = packUpcMap.get(input);
+    console.log("(hc_upc) upc found? ", upc_found);
+    if(upc_found && input !== '') {
+      setBrandName(upc_found.brand_name);
+      setItemName(upc_found.item_name);
+      setPackageReceived(upc_found.sup_desc);
+      setPhotoURL(upc_found.item_photo);
+    }
+    // return '';
+  }
+
   // package received dropdown
   const filterSupplies = () => {
     console.log("(FS) brand: ", brandName);
@@ -214,41 +233,15 @@ const AddDonation = (props) => {
   // handles receive item button click
   const receiveItem = () => {
 
-    // console.log("(RI) items: ", items);
-    // console.log("(RI) item_map: ", itemMap);
     let mappedItem = itemMap.get(itemName);
     let mappedBrand = brandMap.get(brandName);
-    let mappedSupply = supplyMap.get(packageReceived);
+    let mappedSupply = packReceivedMap.get(packageReceived);
     console.log("(RI) mappedItem: ", mappedItem);
     console.log("(RI) mappedBrand: ", mappedBrand);
     console.log("(RI) mappedSupply: ", mappedSupply);
-
     console.log("(RI) business uid: ", businessUID);
 
-    // let receive_data = {
-    //   packageUPC,
-    //   brandName,
-    //   itemName,
-    //   packageReceived,
-    //   photoURL,
-    //   donationType,
-    //   qtyReceived,
-    //   receiveDate,
-    //   availableDate,
-    //   expDate
-    // };
     let receive_data = {
-      // packageUPC,
-      // brandName,
-      // itemName,
-      // packageReceived,
-      // photoURL,
-      // donationType,
-      // qtyReceived,
-      // receiveDate,
-      // availableDate,
-      // expDate
-
       receive_supply_uid: mappedSupply.supply_uid,
       receive_business_uid: businessUID, 
       donation_type: donationType,
@@ -256,10 +249,7 @@ const AddDonation = (props) => {
       receive_date: receiveDate,
       available_date: availableDate, 
       exp_date: expDate
-      
     };
-
-
 
     console.log("receive_data: ", receive_data);
 
@@ -338,7 +328,8 @@ const AddDonation = (props) => {
 									<input 
                     className={styles.ad_section_input} 
                     value={packageUPC}
-                    onChange={e => setPackageUPC(e.target.value)}
+                    // onChange={e => setPackageUPC(e.target.value)}
+                    onChange={e => handleChangeUPC(e.target.value)}
                   />
 								</div>
 							</div>
@@ -404,6 +395,7 @@ const AddDonation = (props) => {
                       console.log("found2: ", found[0].package_upc);
                       setPackageUPC(found[0].package_upc);
                       setPackageReceived(event.target.value)
+                      setPhotoURL(found[0].item_photo);
                     }}
 										className={styles.ad_section_dropdown}
 									>
@@ -425,13 +417,13 @@ const AddDonation = (props) => {
 										className={styles.ad_section_image}
 										src={photoURL}
 									/>
-									<input
+									{/* <input
 										type="file"
 										name="upload_file"
 										onChange={(e) => {
 											setPhotoURL(URL.createObjectURL(e.target.files[0]));
 										}}
-									/>
+									/> */}
 								</div>
 							</div>
 						</div>
