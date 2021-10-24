@@ -110,8 +110,8 @@ const AddItem = (props) => {
         >
           <div style={{ textAlign: "right", padding: "10px" }}>
             <ModalCloseBtn
-              style={{ cursor: "pointer" }}
               onClick={() => props.toggleAddItem()}
+              className={styles.closeBtn}
             />
           </div>
           <div
@@ -150,7 +150,8 @@ const AddItem = (props) => {
                 </div>
                 <div className={styles.modalContainerHorizontal}>
                   <div
-                    className={styles.modalFormLabel}
+                    // className={styles.modalFormLabel}
+                    className={styles.modalFormLink}
                     onClick={() => {
                       props.toggleAddItemTags();
                     }}
@@ -222,6 +223,7 @@ const AddItem = (props) => {
           toggleAddItemTags={props.toggleAddItemTags}
           showAddItemTags={props.showAddItemTags}
           editNewItem={editNewItem}
+          newItem={newItem}
         />
       )}
       </>

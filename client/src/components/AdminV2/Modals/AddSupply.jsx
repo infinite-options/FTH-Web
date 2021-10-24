@@ -304,7 +304,7 @@ const AddSupply = (props) => {
       >
         <div style={{ textAlign: "right", padding: "10px" }}>
           <ModalCloseBtn
-            style={{ cursor: "pointer" }}
+            className={styles.closeBtn}
             onClick={() => {
               props.toggleAddSupply();
             }}

@@ -98,6 +98,20 @@
   line-height: 40px;
 }
 
+.modalFormLink {
+  color: #e7404a;
+  line-height: 40px;
+  cursor: pointer;
+}
+.modalFormLink:hover {
+  text-decoration: underline;
+}
+
+.closeBtn:hover {
+  cursor: pointer;
+  opacity: 0.5;
+}
+
 .modalPlusBtn {
   font-size: 30px;
   color: #e7404a;

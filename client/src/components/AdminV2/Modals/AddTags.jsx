@@ -1,10 +1,39 @@
 import styles from "../Items/items.module.css";
 import { Container, Row, Col, Modal } from "react-bootstrap";
 import { useEffect, useReducer, useState, useRef } from "react";
+import axios from "axios";
+import { API_URL } from "../../../reducers/constants";
 
 function AddTags(props) {
 
   const [itemTagList, setItemTagList] = useState([]);
+
+  useEffect(() => {
+    getItemTags();
+  }, []);
+
+  const getItemTags = () => {
+    axios
+      .get(`${API_URL}get_tags_list`)
+      .then((response) => {
+        const tagRes = response.data.result;
+        const tagsList = tagRes.map((tag) => {
+          const tagItem = {
+            tag_name: tag.tags,
+            active: props.newItem.item_tags.includes(tag.tags) ? 1 : 0,
+          };
+          return tagItem;
+        });
+        // dispatch({ type: "GET_ITEM_TAG_LIST", payload: tagsList });
+        setItemTagList(tagsList);
+      })
+      .catch((err) => {
+        if (err.response) {
+          console.log(err.response);
+        }
+        console.log(err);
+      });
+  };
 
   const saveItemTags = () => {
     // get all item tags that are active and add to newItem.item_tags
