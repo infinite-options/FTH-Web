@@ -3,6 +3,10 @@ import axios from "axios";
 import { API_URL } from "../../../reducers/constants";
 import styles from "../Donations/donations.module.css";
 import { ReactComponent as ModalCloseBtn } from "../../../images/ModalCloseRed.svg";
+import AddSupply from '../Modals/AddSupply';
+import AddBrand from '../Modals/AddBrand';
+import AddItem from '../Modals/AddItem';
+import AddTags from '../Modals/AddTags';
 
 const AddDonation = (props) => {
 
@@ -34,6 +38,11 @@ const AddDonation = (props) => {
 	const [receiveDate, setReceiveDate] = useState(null);
 	const [availableDate, setAvailableDate] = useState(null);
 	const [expDate, setExpDate] = useState(null);
+
+  const [showAddSupply, setShowAddSupply] = useState(false);
+  const [showAddBrand, setShowAddBrand] = useState(false);
+  const [showAddItem, setShowAddItem] = useState(false);
+  const [showAddItemTags, setShowAddItemTags] = useState(false);
 
   // fetch all data on initial page load
 	useEffect(() => {
@@ -265,7 +274,59 @@ const AddDonation = (props) => {
         }
         console.log(err);
       });
-}
+  }
+
+  const toggleAddBrand = () => {
+    // if (state.showAddBrand) {
+    //   getSupplyModalData();
+      // dispatch({ type: "EDIT_NEW_BRAND", payload: initialState.newBrand });
+    // } else {
+    // }
+
+    console.log("in toggle add brand");
+    // dispatch({ type: "TOGGLE_ADD_BRAND" });
+    setShowAddBrand(!showAddBrand);
+    // dispatch({ type: "TOGGLE_ADD_SUPPLY" });
+    // setShowAddSupply(!showAddSupply);
+  };
+
+  const toggleAddItem = () => {
+    // if (showAddItem) {
+    //   getSupplyModalData();
+    //   itemTagList.forEach((itemTag) => {
+    //     itemTag.active = 0;
+    //   });
+    //   // dispatch({ type: "EDIT_NEW_ITEM", payload: initialState.newItem });
+    // } else {
+    //   getItemTypes();
+    // }
+
+    // dispatch({ type: "TOGGLE_ADD_ITEM" });
+    setShowAddItem(!showAddItem);
+    // dispatch({ type: "TOGGLE_ADD_SUPPLY" });
+    setShowAddSupply(!showAddSupply);
+  };
+
+  const toggleAddItemTags = () => {
+    // if (!showAddItemTags) {
+    //   getItemTags();
+    // }
+    // dispatch({ type: "TOGGLE_ADD_ITEM_TAGS" });
+    setShowAddItemTags(!showAddItemTags);
+  };
+
+  const toggleAddSupply = () => {
+    // if (!state.showAddSupply) {
+    //   getSupplyModalData();
+    // } else {
+    //   getSupplyItems();
+    //   dispatch({ type: "EDIT_NEW_SUPPLY", payload: initialState.newSupply });
+    //   state.selectedFile = null;
+    // }
+
+    // dispatch({ type: "TOGGLE_ADD_SUPPLY" });
+    setShowAddSupply(!showAddSupply);
+  };
 
   // displays modal after all data fetched
 	const displayModal = () => {
@@ -350,6 +411,7 @@ const AddDonation = (props) => {
 									</select>
 									<button 
 										className={styles.ad_plus}
+                    onClick={toggleAddBrand}
 									>
 										+
 									</button>
@@ -372,6 +434,7 @@ const AddDonation = (props) => {
 									</select>
 									<button 
 										className={styles.ad_plus}
+                    onClick={toggleAddItem}
 									>
 										+
 									</button>
@@ -403,6 +466,7 @@ const AddDonation = (props) => {
 									</select>
 									<button 
 										className={styles.ad_plus}
+                    onClick={toggleAddSupply}
 									>
 										+
 									</button>
@@ -550,23 +614,48 @@ const AddDonation = (props) => {
 
   // render component
   return (
-    <div
-			style={{
-				height: "100%",
-				width: "100%",
-				zIndex: "101",
-				left: "0",
-				top: "0",
-				overflow: "auto",
-				position: "fixed",
-				display: 'flex',
-				justifyContent: 'center',
-				alignItems: 'center',
-				backgroundColor: "rgba(255, 255, 255, 0.8)"
-			}}
-		>
-			{dataFetched ? displayModal() : "LOADING..."}
-		</div>
+    <>
+      <div
+        style={{
+          height: "100%",
+          width: "100%",
+          zIndex: "101",
+          left: "0",
+          top: "0",
+          overflow: "auto",
+          position: "fixed",
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: "rgba(255, 255, 255, 0.8)"
+        }}
+      >
+        {dataFetched ? displayModal() : "LOADING..."}
+      </div>
+      {showAddSupply && (
+        <AddSupply
+          toggleAddSupply={toggleAddSupply}
+          toggleAddBrand={toggleAddBrand}
+          toggleAddItem={toggleAddItem}
+          toggleAddItemTags={toggleAddItemTags}
+          showAddSupply={showAddSupply}
+        />
+      )}
+      {showAddBrand && (
+        <AddBrand
+          toggleAddBrand={toggleAddBrand}
+          showAddBrand={showAddBrand}
+        />
+      )}
+      {showAddItem && (
+        <AddItem
+          toggleAddItem={toggleAddItem}
+          toggleAddItemTags={toggleAddItemTags}
+          showAddItemTags={showAddItemTags}
+          showAddItem={showAddItem}
+        />
+      )}
+    </>
   );
 };
 
