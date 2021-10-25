@@ -6,39 +6,39 @@ import { API_URL } from "../../../reducers/constants";
 
 function AddTags(props) {
 
-  const [itemTagList, setItemTagList] = useState([]);
+  // const [itemTagList, setItemTagList] = useState([]);
 
-  useEffect(() => {
-    getItemTags();
-  }, []);
+  // useEffect(() => {
+  //   getItemTags();
+  // }, []);
 
-  const getItemTags = () => {
-    axios
-      .get(`${API_URL}get_tags_list`)
-      .then((response) => {
-        const tagRes = response.data.result;
-        const tagsList = tagRes.map((tag) => {
-          const tagItem = {
-            tag_name: tag.tags,
-            active: props.newItem.item_tags.includes(tag.tags) ? 1 : 0,
-          };
-          return tagItem;
-        });
-        // dispatch({ type: "GET_ITEM_TAG_LIST", payload: tagsList });
-        setItemTagList(tagsList);
-      })
-      .catch((err) => {
-        if (err.response) {
-          console.log(err.response);
-        }
-        console.log(err);
-      });
-  };
+  // const getItemTags = () => {
+  //   axios
+  //     .get(`${API_URL}get_tags_list`)
+  //     .then((response) => {
+  //       const tagRes = response.data.result;
+  //       const tagsList = tagRes.map((tag) => {
+  //         const tagItem = {
+  //           tag_name: tag.tags,
+  //           active: props.newItem.item_tags.includes(tag.tags) ? 1 : 0,
+  //         };
+  //         return tagItem;
+  //       });
+  //       // dispatch({ type: "GET_ITEM_TAG_LIST", payload: tagsList });
+  //       setItemTagList(tagsList);
+  //     })
+  //     .catch((err) => {
+  //       if (err.response) {
+  //         console.log(err.response);
+  //       }
+  //       console.log(err);
+  //     });
+  // };
 
   const saveItemTags = () => {
     // get all item tags that are active and add to newItem.item_tags
     const activeItemTags = [];
-    itemTagList.forEach((itemTag) => {
+    props.itemTagList.forEach((itemTag) => {
       if (itemTag.active === 1) {
         activeItemTags.push(itemTag.tag_name);
       }
@@ -100,13 +100,15 @@ function AddTags(props) {
               </Modal.Title>
               <Modal.Body>
                 <div style={{ maxWidth: "300px" }}>
-                  {itemTagList &&
-                    itemTagList.map((item, index) => {
+                  {props.itemTagList &&
+                    props.itemTagList.map((item, index) => {
+                      console.log("mapping: ", index, ": ", item);
+                      console.log("item active? ", item.active);
                       return (
                         <div
                           key={index}
                           className={
-                            item.active
+                            item.active === 1
                               ? styles.itemTagSelected
                               : styles.itemTagNotSelected
                           }

@@ -44,27 +44,28 @@ const AddDonation = (props) => {
   const [showAddItem, setShowAddItem] = useState(false);
   const [showAddItemTags, setShowAddItemTags] = useState(false);
 
-  // fetch all data on initial page load
-	useEffect(() => {
-    setBusinessUID(localStorage.getItem('role'));
-		axios
-			.get(`${API_URL}get_brands_list`)
-			.then((response) => {
-				console.log("brands res: ", response);
+  const getBrands = () => {
+    axios
+      .get(`${API_URL}get_brands_list`)
+      .then((response) => {
+        console.log("brands res: ", response);
         let fetched_brands = response.data.result;
         const brand_map = new Map();
         fetched_brands.forEach((fetched_brand) => {
           brand_map.set(fetched_brand.brand_name, fetched_brand);
         });
         setBrandMap(brand_map);
-				setBrands(fetched_brands);
-			})
-			.catch((err) => {
-				if (err.response) {
-					console.log(err.response);
-				}
-				console.log(err);
-			});
+        setBrands(fetched_brands);
+      })
+      .catch((err) => {
+        if (err.response) {
+          console.log(err.response);
+        }
+        console.log(err);
+      });
+  }
+
+  const getItems = () => {
     axios
 			.get(`${API_URL}get_items_list`)
 			.then((response) => {
@@ -83,6 +84,9 @@ const AddDonation = (props) => {
 				}
 				console.log(err);
 			});
+  }
+
+  const getSupply = () => {
     axios
 			.get(`${API_URL}supply_items`)
 			.then((response) => {
@@ -104,6 +108,9 @@ const AddDonation = (props) => {
 				}
 				console.log(err);
 			});
+  }
+
+  const getDonations = () => {
     axios
 			.get(`${API_URL}get_receive_list`)
 			.then((response) => {
@@ -131,6 +138,15 @@ const AddDonation = (props) => {
 				}
 				console.log(err);
 			});
+  }
+
+  // fetch all data on initial page load
+	useEffect(() => {
+    setBusinessUID(localStorage.getItem('role'));
+		getBrands();
+    getItems();
+    getSupply();
+    getDonations();
 	}, []);
 
   // once all data loaded, display modal (otherwise, display "LOADING...")
@@ -140,8 +156,20 @@ const AddDonation = (props) => {
       items !== null && 
       supply !== null && 
       donationTypes !== null
-    ) { setDataFetched(true) }
+    ) { 
+      console.log("data fetched");
+      setDataFetched(true);
+    } else {
+      console.log("data not fetched");
+    }
   }, [brands, items, supply, donationTypes]);
+
+  // refresh data when added to database
+  // useEffect(() => {
+  //   if(refreshing === false) {
+
+  //   }
+  // }, [refreshing]);
 
   // brand name dropdown
   const brandOptions = () => {
@@ -276,46 +304,29 @@ const AddDonation = (props) => {
       });
   }
 
-  const toggleAddBrand = () => {
-    // if (state.showAddBrand) {
-    //   getSupplyModalData();
-      // dispatch({ type: "EDIT_NEW_BRAND", payload: initialState.newBrand });
-    // } else {
-    // }
-
-    console.log("in toggle add brand");
-    // dispatch({ type: "TOGGLE_ADD_BRAND" });
+  const toggleAddBrand = (refresh_brands) => {
     setShowAddBrand(!showAddBrand);
-    // dispatch({ type: "TOGGLE_ADD_SUPPLY" });
-    // setShowAddSupply(!showAddSupply);
+    if(refresh_brands === true){
+      setDataFetched(false);
+      getBrands();
+    }
+    setShowAddSupply(!showAddSupply);
   };
 
-  const toggleAddItem = () => {
-    // if (showAddItem) {
-    //   getSupplyModalData();
-    //   itemTagList.forEach((itemTag) => {
-    //     itemTag.active = 0;
-    //   });
-    //   // dispatch({ type: "EDIT_NEW_ITEM", payload: initialState.newItem });
-    // } else {
-    //   getItemTypes();
-    // }
-
-    // dispatch({ type: "TOGGLE_ADD_ITEM" });
+  const toggleAddItem = (refresh_items) => {
     setShowAddItem(!showAddItem);
-    // dispatch({ type: "TOGGLE_ADD_SUPPLY" });
+    if(refresh_items === true){
+      setDataFetched(false);
+      getItems();
+    }
     setShowAddSupply(!showAddSupply);
   };
 
   const toggleAddItemTags = () => {
-    // if (!showAddItemTags) {
-    //   getItemTags();
-    // }
-    // dispatch({ type: "TOGGLE_ADD_ITEM_TAGS" });
     setShowAddItemTags(!showAddItemTags);
   };
 
-  const toggleAddSupply = () => {
+  const toggleAddSupply = (refresh_supply) => {
     // if (!state.showAddSupply) {
     //   getSupplyModalData();
     // } else {
@@ -325,6 +336,10 @@ const AddDonation = (props) => {
     // }
 
     // dispatch({ type: "TOGGLE_ADD_SUPPLY" });
+    if(refresh_supply === true){
+      setDataFetched(false);
+      getSupply();
+    }
     setShowAddSupply(!showAddSupply);
   };
 

@@ -130,7 +130,7 @@ function AddBrand(props) {
             brand_state: "",
             brand_zip: "",
           });
-          props.toggleAddBrand();
+          props.toggleAddBrand(true);
         }
       })
       .catch((err) => {

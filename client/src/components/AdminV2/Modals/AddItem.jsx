@@ -14,43 +14,30 @@ const AddItem = (props) => {
     item_type: "",
     item_tags: [],
   });
-  const [itemTypeList, setItemTypeList] = useState([]);
+  const [itemTypeList, setItemTypeList] = useState(null);
+  const [itemTagList, setItemTagList] = useState(null);
 
   useEffect(() => {
-    // getSupplyItems();
-    getItemTypes();
-  }, []);
+    console.log("itemTagList: ", itemTagList);
+  }, [itemTagList])
 
-  const editNewItem = (field, value) => {
-    const updatedItem = {
-      ...newItem,
-      [field]: value,
-    };
-    // dispatch({ type: "EDIT_NEW_ITEM", payload: updatedItem });
-    setNewItem(updatedItem);
-  };
+  // set once all data fetched
+  const [dataFetched, setDataFetched] = useState(false);
 
-  const postNewItem = () => {
-    const itemFormData = new FormData();
-
-    for (const field of Object.keys(newItem)) {
-      itemFormData.append(field, newItem[field]);
-    }
-
+  const getItemTags = () => {
     axios
-      .post(`${API_URL}add_items`, itemFormData)
+      .get(`${API_URL}get_tags_list`)
       .then((response) => {
-        console.log("add_items res: ", response);
-        if (response.status === 200) {
-          // dispatch({ type: "EDIT_NEW_ITEM", payload: initialState.newItem });
-          setNewItem({
-            item_name: "",
-            item_desc: "",
-            item_type: "",
-            item_tags: [],
-          });
-          props.toggleAddItem();
-        }
+        const tagRes = response.data.result;
+        const tagsList = tagRes.map((tag) => {
+          const tagItem = {
+            tag_name: tag.tags,
+            active: newItem.item_tags.includes(tag.tags) ? 1 : 0,
+          };
+          return tagItem;
+        });
+        // dispatch({ type: "GET_ITEM_TAG_LIST", payload: tagsList });
+        setItemTagList(tagsList);
       })
       .catch((err) => {
         if (err.response) {
@@ -77,9 +64,68 @@ const AddItem = (props) => {
       });
   };
 
+  useEffect(() => {
+    getItemTags();
+    getItemTypes();
+  }, []);
+
+  useEffect(() => {
+    setDataFetched(true);
+  }, [itemTypeList, itemTagList]);
+
+  const editNewItem = (field, value) => {
+    const updatedItem = {
+      ...newItem,
+      [field]: value,
+    };
+    // dispatch({ type: "EDIT_NEW_ITEM", payload: updatedItem });
+    setNewItem(updatedItem);
+  };
+
+  const postNewItem = () => {
+    const itemFormData = new FormData();
+
+    for (const field of Object.keys(newItem)) {
+      console.log("appending: ", newItem);
+      itemFormData.append(field, newItem[field]);
+    }
+
+    axios
+      .post(`${API_URL}add_items`, itemFormData)
+      .then((response) => {
+        console.log("add_items res: ", response);
+        if (response.status === 200) {
+          // dispatch({ type: "EDIT_NEW_ITEM", payload: initialState.newItem });
+          setNewItem({
+            item_name: "",
+            item_desc: "",
+            item_type: "",
+            item_tags: [],
+          });
+          props.toggleAddItem(true);
+        }
+      })
+      .catch((err) => {
+        if (err.response) {
+          console.log(err.response);
+        }
+        console.log(err);
+      });
+  };
+
+  const toggleItemTag = (itemIndex) => {
+    console.log("clicked ", itemIndex);
+    const updatedItemTags = [...itemTagList];
+    updatedItemTags[itemIndex].active
+      ? (updatedItemTags[itemIndex].active = 0)
+      : (updatedItemTags[itemIndex].active = 1);
+    // dispatch({ type: "GET_ITEM_TAG_LIST", payload: updatedItemTags });
+    setItemTagList(updatedItemTags);
+  };
+
   return (
     <>
-    <div
+      <div
         style={{
           height: "100%",
           width: "100%",
@@ -91,6 +137,7 @@ const AddItem = (props) => {
           backgroundColor: "rgba(255, 255, 255, 0.8)",
         }}
       >
+        {dataFetched && (
         <div
           style={{
             position: "relative",
@@ -108,6 +155,7 @@ const AddItem = (props) => {
             maxHeight: "90%",
           }}
         >
+          {/* {console.log("redndering here")} */}
           <div style={{ textAlign: "right", padding: "10px" }}>
             <ModalCloseBtn
               onClick={() => props.toggleAddItem()}
@@ -217,16 +265,20 @@ const AddItem = (props) => {
             </Modal.Footer>
           </div>
         </div>
+      )}
       </div>
       {props.showAddItemTags && (
         <AddTags
           toggleAddItemTags={props.toggleAddItemTags}
+          toggleItemTag={toggleItemTag}
           showAddItemTags={props.showAddItemTags}
           editNewItem={editNewItem}
           newItem={newItem}
+          itemTagList={itemTagList}
+          setItemTagList={setItemTagList}
         />
       )}
-      </>
+    </>
   )
 }
   

@@ -126,7 +126,7 @@ const AddSupply = (props) => {
       .post(`${API_URL}add_supply`, supplyFormData)
       .then((response) => {
         if (response.status === 200) {
-          props.toggleAddSupply();
+          props.toggleAddSupply(true);
         }
       })
       .catch((err) => {
@@ -201,21 +201,21 @@ const AddSupply = (props) => {
       });
   };
 
-  const getItemTypes = () => {
-    axios
-      .get(`${API_URL}get_types_list`)
-      .then((response) => {
-        const typesList = response.data.result;
-        // dispatch({ type: "GET_ITEM_TYPE_LIST", payload: typesList });
-        setItemTypeList(typesList);
-      })
-      .catch((err) => {
-        if (err.response) {
-          console.log(err.response);
-        }
-        console.log(err);
-      });
-  };
+  // const getItemTypes = () => {
+  //   axios
+  //     .get(`${API_URL}get_types_list`)
+  //     .then((response) => {
+  //       const typesList = response.data.result;
+  //       // dispatch({ type: "GET_ITEM_TYPE_LIST", payload: typesList });
+  //       setItemTypeList(typesList);
+  //     })
+  //     .catch((err) => {
+  //       if (err.response) {
+  //         console.log(err.response);
+  //       }
+  //       console.log(err);
+  //     });
+  // };
 
   const getSupplyModalData = () => {
     console.log("in getSupplyModalData");
@@ -439,7 +439,9 @@ const AddSupply = (props) => {
                 type="file"
                 name="upload_file"
                 onChange={(e) => {
-                  selectedFile = e.target.files[0];
+                  // selectedFile = e.target.files[0];
+                  setSelectedFile(e.target.files[0]);
+                  console.log("selected photo: ", e.target.files[0]);
                   editNewSupply(
                     "item_photo",
                     URL.createObjectURL(e.target.files[0])

@@ -379,9 +379,9 @@ function Items({ history, ...props }) {
   };
 
   const toggleAddItemTags = () => {
-    if (!state.showAddItemTags) {
-      getItemTags();
-    }
+    // if (!state.showAddItemTags) {
+    //   getItemTags();
+    // }
     dispatch({ type: "TOGGLE_ADD_ITEM_TAGS" });
   };
 
@@ -454,25 +454,25 @@ function Items({ history, ...props }) {
     dispatch({ type: "EDIT_NEW_ITEM", payload: updatedItem });
   };
 
-  const toggleItemTag = (itemIndex) => {
-    const updatedItemTags = [...state.itemTagList];
-    updatedItemTags[itemIndex].active
-      ? (updatedItemTags[itemIndex].active = 0)
-      : (updatedItemTags[itemIndex].active = 1);
-    dispatch({ type: "GET_ITEM_TAG_LIST", payload: updatedItemTags });
-  };
+  // const toggleItemTag = (itemIndex) => {
+  //   const updatedItemTags = [...state.itemTagList];
+  //   updatedItemTags[itemIndex].active
+  //     ? (updatedItemTags[itemIndex].active = 0)
+  //     : (updatedItemTags[itemIndex].active = 1);
+  //   dispatch({ type: "GET_ITEM_TAG_LIST", payload: updatedItemTags });
+  // };
 
-  const saveItemTags = () => {
-    // get all item tags that are active and add to newItem.item_tags
-    const activeItemTags = [];
-    state.itemTagList.forEach((itemTag) => {
-      if (itemTag.active === 1) {
-        activeItemTags.push(itemTag.tag_name);
-      }
-    });
-    editNewItem("item_tags", activeItemTags);
-    toggleAddItemTags();
-  };
+  // const saveItemTags = () => {
+  //   // get all item tags that are active and add to newItem.item_tags
+  //   const activeItemTags = [];
+  //   state.itemTagList.forEach((itemTag) => {
+  //     if (itemTag.active === 1) {
+  //       activeItemTags.push(itemTag.tag_name);
+  //     }
+  //   });
+  //   editNewItem("item_tags", activeItemTags);
+  //   toggleAddItemTags();
+  // };
 
   const editNewBrand = (field, value) => {
     const updatedBrand = {
@@ -549,27 +549,27 @@ function Items({ history, ...props }) {
       });
   };
 
-  const getItemTags = () => {
-    axios
-      .get(`${API_URL}get_tags_list`)
-      .then((response) => {
-        const tagRes = response.data.result;
-        const tagsList = tagRes.map((tag) => {
-          const tagItem = {
-            tag_name: tag.tags,
-            active: state.newItem.item_tags.includes(tag.tags) ? 1 : 0,
-          };
-          return tagItem;
-        });
-        dispatch({ type: "GET_ITEM_TAG_LIST", payload: tagsList });
-      })
-      .catch((err) => {
-        if (err.response) {
-          console.log(err.response);
-        }
-        console.log(err);
-      });
-  };
+  // const getItemTags = () => {
+  //   axios
+  //     .get(`${API_URL}get_tags_list`)
+  //     .then((response) => {
+  //       const tagRes = response.data.result;
+  //       const tagsList = tagRes.map((tag) => {
+  //         const tagItem = {
+  //           tag_name: tag.tags,
+  //           active: state.newItem.item_tags.includes(tag.tags) ? 1 : 0,
+  //         };
+  //         return tagItem;
+  //       });
+  //       dispatch({ type: "GET_ITEM_TAG_LIST", payload: tagsList });
+  //     })
+  //     .catch((err) => {
+  //       if (err.response) {
+  //         console.log(err.response);
+  //       }
+  //       console.log(err);
+  //     });
+  // };
 
   const getItemTypes = () => {
     axios
@@ -586,96 +586,96 @@ function Items({ history, ...props }) {
       });
   };
 
-  const postNewSupply = () => {
-    const supplyFormData = new FormData();
+  // const postNewSupply = () => {
+  //   const supplyFormData = new FormData();
 
-    if (state.selectedFile === null) {
-      alert("invalid inputs");
-      return;
-    }
+  //   if (state.selectedFile === null) {
+  //     alert("invalid inputs");
+  //     return;
+  //   }
 
-    for (const field of Object.keys(state.newSupply)) {
-      if (field !== "sup_desc" && state.newSupply[field] === "") {
-        alert(`invalid inputs: ${field}`);
-        return;
-      }
+  //   for (const field of Object.keys(state.newSupply)) {
+  //     if (field !== "sup_desc" && state.newSupply[field] === "") {
+  //       alert(`invalid inputs: ${field}`);
+  //       return;
+  //     }
 
-      if (field === "sup_desc") {
-        supplyFormData.append(field, getNewSupplyDesc());
-      } else if (field === "item_photo") {
-        supplyFormData.append(field, state.selectedFile);
-      } else {
-        supplyFormData.append(field, state.newSupply[field]);
-      }
-    }
+  //     if (field === "sup_desc") {
+  //       supplyFormData.append(field, getNewSupplyDesc());
+  //     } else if (field === "item_photo") {
+  //       supplyFormData.append(field, state.selectedFile);
+  //     } else {
+  //       supplyFormData.append(field, state.newSupply[field]);
+  //     }
+  //   }
 
-    // console.log("posting new supply: ", supplyFormData.values());
-    // for (var value of supplyFormData.values()) {
-    //   console.log("new supply: ", value);
-    // }
-    for(var pair of supplyFormData.entries()) {
-      console.log("entry: ", pair[0]+ ', '+ pair[1]);
-    }
-    axios
-      .post(`${API_URL}add_supply`, supplyFormData)
-      .then((response) => {
-        if (response.status === 200) {
-          toggleAddSupply();
-        }
-      })
-      .catch((err) => {
-        if (err.response) {
-          console.log(err.response);
-        }
-        console.log(err);
-      });
-  };
+  //   // console.log("posting new supply: ", supplyFormData.values());
+  //   // for (var value of supplyFormData.values()) {
+  //   //   console.log("new supply: ", value);
+  //   // }
+  //   for(var pair of supplyFormData.entries()) {
+  //     console.log("entry: ", pair[0]+ ', '+ pair[1]);
+  //   }
+  //   axios
+  //     .post(`${API_URL}add_supply`, supplyFormData)
+  //     .then((response) => {
+  //       if (response.status === 200) {
+  //         toggleAddSupply();
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       if (err.response) {
+  //         console.log(err.response);
+  //       }
+  //       console.log(err);
+  //     });
+  // };
 
-  const postNewBrand = () => {
-    const brandFormData = new FormData();
+  // const postNewBrand = () => {
+  //   const brandFormData = new FormData();
 
-    for (const field of Object.keys(state.newBrand)) {
-      brandFormData.append(field, state.newBrand[field]);
-    }
+  //   for (const field of Object.keys(state.newBrand)) {
+  //     brandFormData.append(field, state.newBrand[field]);
+  //   }
 
-    axios
-      .post(`${API_URL}add_brand`, brandFormData)
-      .then((response) => {
-        if (response.status === 200) {
-          dispatch({ type: "EDIT_NEW_BRAND", payload: initialState.newBrand });
-          toggleAddBrand();
-        }
-      })
-      .catch((err) => {
-        if (err.response) {
-          console.log(err.response);
-        }
-        console.log(err);
-      });
-  };
+  //   axios
+  //     .post(`${API_URL}add_brand`, brandFormData)
+  //     .then((response) => {
+  //       if (response.status === 200) {
+  //         dispatch({ type: "EDIT_NEW_BRAND", payload: initialState.newBrand });
+  //         toggleAddBrand();
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       if (err.response) {
+  //         console.log(err.response);
+  //       }
+  //       console.log(err);
+  //     });
+  // };
 
-  const postNewItem = () => {
-    const itemFormData = new FormData();
+  // const postNewItem = () => {
+  //   const itemFormData = new FormData();
 
-    for (const field of Object.keys(state.newItem)) {
-      itemFormData.append(field, state.newItem[field]);
-    }
+  //   for (const field of Object.keys(state.newItem)) {
+  //     itemFormData.append(field, state.newItem[field]);
+  //   }
 
-    axios
-      .post(`${API_URL}add_items`, itemFormData)
-      .then((response) => {
-        if (response.status === 200) {
-          dispatch({ type: "EDIT_NEW_ITEM", payload: initialState.newItem });
-          toggleAddItem();
-        }
-      })
-      .catch((err) => {
-        if (err.response) {
-          console.log(err.response);
-        }
-        console.log(err);
-      });
-  };
+  //   axios
+  //     .post(`${API_URL}add_items`, itemFormData)
+  //     .then((response) => {
+  //       if (response.status === 200) {
+  //         dispatch({ type: "EDIT_NEW_ITEM", payload: initialState.newItem });
+  //         toggleAddItem();
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       if (err.response) {
+  //         console.log(err.response);
+  //       }
+  //       console.log(err);
+  //     });
+  // };
 
   const filterItems = () => {
     console.log("filterItems items: ", state.items);
@@ -1065,7 +1065,7 @@ function Items({ history, ...props }) {
           toggleAddSupply={toggleAddSupply}
           toggleAddBrand={toggleAddBrand}
           toggleAddItem={toggleAddItem}
-          toggleAddItemTags={toggleAddItemTags}
+          // toggleAddItemTags={toggleAddItemTags}
           showAddSupply={state.showAddSupply}
         />
       )}
