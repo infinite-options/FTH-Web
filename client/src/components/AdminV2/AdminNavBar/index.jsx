@@ -22,6 +22,21 @@ const LINK_WIDTH = {
 function NavBar(props) {
   const history = useHistory();
 
+  const [businessImage, setBusinessImage] = useState(null);
+
+  useEffect(() => {
+    console.log("LOCALSTORAGE");
+    console.log(localStorage);
+    const account = JSON.parse(localStorage.getItem('account'));
+    console.log(account);
+    // const businessImage = account.businessImage
+    setBusinessImage(account.business_image);
+  }, []);
+  
+  useEffect(() => {
+    console.log("businessImage: ", businessImage);
+  }, [businessImage]);
+
   const [showDropdown, setShowDropdown] = useState(false);
 
   const [dimensions, setDimensions] = useState({
@@ -305,7 +320,7 @@ function NavBar(props) {
             >
               Notifications
             </a>
-            <a
+            {/* <a
               href="/admin-v2/business-profile"
               className={styles.navLink}
               style={
@@ -320,7 +335,62 @@ function NavBar(props) {
               }
             >
               Business Profile
-            </a>
+            </a> */}
+            {/* <a
+              href="/admin-v2/business-profile"
+              className={styles.navLink}
+              style={
+                props.currentPage === "business-profile"
+                  ? {
+                      color: "black",
+                      width: LINK_WIDTH.business_profile,
+                    }
+                  : {
+                      width: LINK_WIDTH.business_profile,
+                    }
+              }
+            >
+              {businessImage === '' ? (
+                "Business Profile"
+              ) : (
+                <img
+                  src={businessImage}
+                />
+              )}
+            </a> */}
+            {businessImage === '' ? (
+              <a
+                href="/admin-v2/business-profile"
+                className={styles.navLink}
+                style={
+                  props.currentPage === "business-profile"
+                    ? {
+                        color: "black",
+                        width: LINK_WIDTH.business_profile,
+                      }
+                    : {
+                        width: LINK_WIDTH.business_profile,
+                      }
+                }
+              >
+                Business Profile
+              </a>
+            ) : (
+              <img
+                src={businessImage}
+                alt="couldn't load image"
+                style={{
+                  width: '70px',
+                  height: '70px',
+                  cursor: 'pointer',
+                  // border: '1px dashed',
+                  borderRadius: '50%'
+                }}
+                onClick={() => {
+                  history.push('/admin-v2/business-profile');
+                }}
+              />
+            )}
           </div>
         </div>
       ) : (

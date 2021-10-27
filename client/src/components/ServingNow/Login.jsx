@@ -40,6 +40,9 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
     width: "50%",
     marginLeft: "25%",
+    "&:disabled": {
+      opacity: '0.5'
+    }
   },
   input: {
     width: "350px",
@@ -69,6 +72,7 @@ export default function Login() {
   const [passwordError, setpasswordError] = useState();
   const [socialError, setsocialError] = useState();
   const [socialMedia, setSocialMedia] = useState("");
+  const [awaitLogin, setAwaitLogin] = useState(false);
   const classes = useStyles();
   const history = useHistory();
 
@@ -90,6 +94,7 @@ export default function Login() {
   const verifyLoginInfo = (e) => {
     // Attempt to login
     // Get salt for account
+    setAwaitLogin(true);
     axios
       .post(API_URL + "accountsalt", {
         // params: {
@@ -176,7 +181,22 @@ export default function Login() {
                         // Farmer roles are moving towared business Id string
                         default:
                           localStorage.setItem('role', newAccountType);
-                          history.push("/admin-v2");
+                          console.log("customerInfo: ", customerInfo);
+                          axios
+                            .post(`${API_URL}business_details_update/Get`, {
+                              business_uid: newAccountType,
+                            })
+                            .then((res) => {
+                              console.log("get business res: ", res);
+                              localStorage.setItem('account', JSON.stringify(res.data.result[0]));
+                              history.push('/admin-v2');
+                            })
+                            .catch(err => {
+                              console.log(err);
+                              if (err.response) {
+                                console.log("error: " + JSON.stringify(err.response));
+                              }
+                            });
                           break;
                       }
                     } else if (res.data.code === 404) {
@@ -205,6 +225,7 @@ export default function Login() {
                       console.log(err.response);
                     }
                     console.log(err);
+                    setAwaitLogin(false);
                   });
               });
             }
@@ -237,6 +258,7 @@ export default function Login() {
                   setError("unknown");
                   setErrorMessage("Login failed, try again");
                 }
+                setAwaitLogin(false);
               })
               .catch((err) => {
                 // Log error for Login endpoint
@@ -244,6 +266,7 @@ export default function Login() {
                   console.log(err.response);
                 }
                 console.log(err);
+                setAwaitLogin(false);
               });
           }
         } else if (res.data.code === 401) {
@@ -273,6 +296,7 @@ export default function Login() {
           console.log(err.response);
         }
         console.log(err);
+        setAwaitLogin(false);
       });
   };
   const handleClick = () => {
@@ -451,11 +475,33 @@ export default function Login() {
               </a>
             </Typography>
 
-            <img
+            {/* <img
               src={LoginBtn}
               onClick={verifyLoginInfo}
               className={classes.btn}
-            />
+              style={{border: '1px dashed'}}
+            /> */}
+            <button
+              onClick={verifyLoginInfo}
+              className={classes.btn}
+              disabled={awaitLogin}
+              style={{
+                backgroundImage: `url(${LoginBtn})`,
+                backgroundSize: 'contain',
+                backgroundRepeat: 'no-repeat',
+                backgroundColor: 'rgb(0,0,0,0)',
+                borderRadius: '25px',
+                borderColor: 'rgb(0,0,0,0)',
+                height: '50px',
+              }}
+            >
+              {/* <img
+                src={LoginBtn}
+                // onClick={verifyLoginInfo}
+                // className={classes.btn}
+                style={{border: '1px dashed'}}
+              /> */}
+            </button>
             <Typography
               style={{
                 textAlign: "center",
