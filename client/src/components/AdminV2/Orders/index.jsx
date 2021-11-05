@@ -22,6 +22,7 @@ import styles from "./orders.module.css";
 import Carousel from "react-multi-carousel";
 import { ReactComponent as LeftArrow } from "../../../images/LeftArrowRed.svg";
 import { ReactComponent as RightArrow } from "../../../images/RightArrowRed.svg";
+import { ReactComponent as ModalCloseBtn } from "../../../images/ModalCloseRed.svg";
 
 const responsive = {
   superLargeDesktop: {
@@ -82,6 +83,8 @@ function reducer(state, action) {
 
 function Orders({ history, ...props }) {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [orders, setOrders] = useState(null);
+  const [orderItems, setOrderItems] = useState(null);
   const carouselRef = useRef();
 
   // Check for log in
@@ -155,6 +158,20 @@ function Orders({ history, ...props }) {
         // eslint-disable-next-line no-console
         console.log(err);
       });
+    axios
+      .get(`${API_URL}get_orders`)
+      .then((response) => {
+        console.log("get_orders response: ", response.data.result);
+        setOrders(response.data.result);
+      })
+      .catch((err) => {
+        if (err.response) {
+          // eslint-disable-next-line no-console
+          console.log(err.response);
+        }
+        // eslint-disable-next-line no-console
+        console.log(err);
+      });
   }, []);
 
   const allDates = useMemo(() => {
@@ -219,8 +236,87 @@ function Orders({ history, ...props }) {
   }
 
   return (
-    <div>
+    <div style={{position: 'relative', zIndex: '0'}}>
       <AdminNavBar currentPage={"orders"} />
+      
+      {orderItems !== null && (
+        <div className={styles.itemsContainer}>
+          <div className={styles.itemsModal}>
+            <ModalCloseBtn 
+              className={styles.closeBtn}
+              onClick={() => { setOrderItems(null) }}
+            />
+            <div className={styles.itemsList}>
+              <TableContainer className={styles.tableContainer}>
+                <Table className={styles.table}>
+                  <TableHead className={styles.tableHead}>
+                    <TableRow className={styles.tableRow}>
+                      <TableCell className={styles.tableHeadCell}>
+                        <TableSortLabel className={styles.tableSortLabel}>
+                          Item UID
+                        </TableSortLabel>
+                      </TableCell>
+                      <TableCell className={styles.tableHeadCell}>
+                        <TableSortLabel className={styles.tableSortLabel}>
+                          Item Name
+                        </TableSortLabel>
+                      </TableCell>
+                      <TableCell className={styles.tableHeadCell}>
+                        <TableSortLabel className={styles.tableSortLabel}>
+                          Item Photo
+                        </TableSortLabel>
+                      </TableCell>
+                      <TableCell className={styles.tableHeadCell}>
+                        <TableSortLabel className={styles.tableSortLabel}>
+                          Description
+                        </TableSortLabel>
+                      </TableCell>
+                      <TableCell className={styles.tableHeadCell}>
+                        <TableSortLabel className={styles.tableSortLabel}>
+                          Quantity
+                        </TableSortLabel>
+                      </TableCell>
+                      <TableCell className={styles.tableHeadCell}>
+                        <TableSortLabel className={styles.tableSortLabel}>
+                          Unit
+                        </TableSortLabel>
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {console.log("orderItems: ", orderItems)}
+                    {orderItems.items && JSON.parse(orderItems.items).map((item, index) => {
+                      return (
+                        <TableRow key={index}>
+                          <TableCell>{item.item_uid}</TableCell>
+                          <TableCell>{item.name}</TableCell>
+                          <TableCell>
+                            {item.img && (
+                              <img
+                                src={item.img}
+                                style={{ 
+                                  width: "50px", 
+                                  height: "50px", 
+                                  borderRadius: '5px',
+                                  border: '1px solid #e7404a'
+                                }}
+                              />
+                            )}
+                          </TableCell>
+                          <TableCell>{item.description}</TableCell>
+                          <TableCell>{item.qty}</TableCell>
+                          <TableCell>{item.unit}</TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </div>
+          </div>
+        </div>
+      )}
+
       <Container fluid className={styles.container}>
         <Row
           id="header"
@@ -332,7 +428,7 @@ function Orders({ history, ...props }) {
                               fontSize: "15px",
                             }}
                           >
-                            Package UPC
+                            Purchase UID
                           </TableSortLabel>
                         </TableCell>
                         <TableCell
@@ -351,7 +447,7 @@ function Orders({ history, ...props }) {
                               fontSize: "15px",
                             }}
                           >
-                            Distribution Inventory
+                            Business UID
                           </TableSortLabel>
                         </TableCell>
                         <TableCell
@@ -370,7 +466,7 @@ function Orders({ history, ...props }) {
                               fontSize: "15px",
                             }}
                           >
-                            Name
+                            Customer UID
                           </TableSortLabel>
                         </TableCell>
                         <TableCell
@@ -389,7 +485,7 @@ function Orders({ history, ...props }) {
                               fontSize: "15px",
                             }}
                           >
-                            Distribution Unit
+                            Purchase Date
                           </TableSortLabel>
                         </TableCell>
                         <TableCell
@@ -408,7 +504,7 @@ function Orders({ history, ...props }) {
                               fontSize: "15px",
                             }}
                           >
-                            Item Picture
+                            Customer Name
                           </TableSortLabel>
                         </TableCell>
                         <TableCell
@@ -427,7 +523,7 @@ function Orders({ history, ...props }) {
                               fontSize: "15px",
                             }}
                           >
-                            Item
+                            Delivery Address
                           </TableSortLabel>
                         </TableCell>
                         <TableCell
@@ -446,12 +542,35 @@ function Orders({ history, ...props }) {
                               fontSize: "15px",
                             }}
                           >
-                            No. of Orders
+                            Items
                           </TableSortLabel>
                         </TableCell>
                       </TableRow>
                     </TableHead>
-                    <TableBody> {/* TABLE BODY GOES HERFE */}</TableBody>
+                    <TableBody>
+                      {orders && orders.map((order, index) => {
+                        return (
+                          <TableRow key={index}>
+                            <TableCell>{order.purchase_uid}</TableCell>
+                            <TableCell>{order.pur_business_uid}</TableCell>
+                            <TableCell>{order.pur_customer_uid}</TableCell>
+                            <TableCell>{order.purchase_date}</TableCell>
+                            <TableCell>{order.delivery_first_name + " " + order.delivery_last_name}</TableCell>
+                            <TableCell>{order.delivery_address + ", " + order.delivery_city + ", " + order.delivery_state}</TableCell>
+                            <TableCell>
+                              <button
+                                class={styles.itemsLink}
+                                onClick={() => {
+                                  setOrderItems(order);
+                                }}
+                              >
+                                See Items
+                              </button>
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
+                    </TableBody>
                   </Table>
                 </TableContainer>
               </Col>

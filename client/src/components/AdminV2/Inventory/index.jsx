@@ -93,6 +93,7 @@ function reducer(state, action) {
 function Inventory({ history, ...props }) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const carouselRef = useRef();
+  const [inventory, setInventory] = useState(null);
 
   // Check for log in
   useEffect(() => {
@@ -112,27 +113,22 @@ function Inventory({ history, ...props }) {
       } else {
         history.push("/meal-plan");
       }
-      // axios
-      //   .get(`${API_URL}Profile/${customer_uid}`)
-      //   .then((response) => {
-      //     const role = response.data.result[0].role.toLowerCase();
-      //     if (role !== "admin" && role !== "customer") {
-      //       // console.log("mounting")
-      //       // console.log(state.mounted);
-      //       dispatch({ type: "MOUNT" });
-      //       // console.log("dispatch MOUNT");
-      //     } else {
-      //       history.push("/meal-plan");
-      //     }
-      //   })
-      //   .catch((err) => {
-      //     if (err.response) {
-      //       // eslint-disable-next-line no-console
-      //       console.log(err.response);
-      //     }
-      //     // eslint-disable-next-line no-console
-      //     console.log(err);
-      //   });
+
+      axios
+        .get(`${API_URL}getItems?business_uid=${role}`)
+        .then((res) => {
+          console.log("getItems res: ", res);
+          setInventory(res.data.result);
+        })
+        .catch((err) => {
+          if (err.response) {
+            // eslint-disable-next-line no-console
+            console.log(err.response);
+          }
+          // eslint-disable-next-line no-console
+          console.log(err);
+        });
+
     } else {
       // Reroute to log in page
       history.push("/");
@@ -500,7 +496,7 @@ function Inventory({ history, ...props }) {
                               fontSize: "15px",
                             }}
                           >
-                            Item Pciture
+                            Item Picture
                           </TableSortLabel>
                         </TableCell>
                         <TableCell
@@ -562,7 +558,47 @@ function Inventory({ history, ...props }) {
                         </TableCell>
                       </TableRow>
                     </TableHead>
-                    <TableBody> {/* TABLE BODY GOES HERFE */}</TableBody>
+                    <TableBody>
+                      {inventory &&
+                        inventory.map((item, index) => {
+                          return (
+                            <TableRow key={index}>
+                              <TableCell>{item.sup_desc}</TableCell>
+                              <TableCell>
+                                {item.item_photo && (
+                                  <img
+                                    src={item.item_photo}
+                                    style={{ width: "50px", height: "50px" }}
+                                  />
+                                )}
+                              </TableCell>
+                              <TableCell></TableCell>
+                              <TableCell>{item.item_type}</TableCell>
+                              <TableCell>{item.qty_received}</TableCell>
+                              <TableCell>{item.item_name}</TableCell>
+                              <TableCell></TableCell>
+                              <TableCell></TableCell>
+                              <TableCell>{item.item_desc}</TableCell>
+                              <TableCell></TableCell>
+                              <TableCell></TableCell>
+                              {/* <TableCell>{item.brand_name}</TableCell>
+                              <TableCell>{item.item_name}</TableCell>
+                              <TableCell>{item.sup_desc}</TableCell>
+                              <TableCell>
+                                {item.item_photo && (
+                                  <img
+                                    src={item.item_photo}
+                                    style={{ width: "50px", height: "50px" }}
+                                  ></img>
+                                )}
+                              </TableCell>
+                              <TableCell>{item.item_type}</TableCell>
+                              <TableCell>{`${item.sup_num} ${item.sup_measure}`}</TableCell>
+                              <TableCell>{`${item.detailed_num} ${item.detailed_measure}`}</TableCell> */}
+                            </TableRow>
+                          );
+                        })}
+                    </TableBody>
                   </Table>
                 </TableContainer>
               </Col>
