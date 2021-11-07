@@ -96,6 +96,7 @@
 .modalFormLabel {
   color: #e7404a;
   line-height: 40px;
+  /* border: 1px dashed; */
 }
 
 .modalFormLink {
@@ -175,4 +176,24 @@
   line-height: 40px;
   margin: 5px;
   cursor: pointer;
+}
+
+.modalAddressInput {
+  border: 1px solid #e7404a;
+  height: 40px;
+  padding: 10px;
+  margin: 0 0 10px 10px;
+  outline: none;
+}
+
+.modalAddressInput {
+  border: 1px solid #e7404a;
+  height: 40px;
+  padding: 10px;
+  margin-left: 10px;
+  outline: none;
+}
+
+.addressContainer {
+  display: inline-block;
 }

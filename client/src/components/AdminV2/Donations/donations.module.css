@@ -68,6 +68,7 @@
   align-items: center;
   /* min-height: 40px; */
   margin-bottom: 20px;
+  /* margin: 20px 0; */
 }
 
 .ad_section_label_wrapper {
@@ -181,3 +182,29 @@
 .closeBtn:hover {
   opacity: 0.5;
 }
+
+.ad_header {
+  font-size: 30px;
+  font-weight: bold;
+  /* border: 1px solid blue; */
+  /* margin: 0; */
+}
+
+.ad_subheader_wrapper {
+  margin-top: 30px;
+  /* border: 1px solid blue; */
+  border-bottom: 2px solid #E7404A;
+}
+
+.ad_subheader {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.ad_body {
+  /* border: 1px solid blue; */
+  display: flex;
+  width: 950px;
+  /* border-bottom: 2px solid #E7404A; */
+}
+

@@ -7,6 +7,8 @@ import AddSupply from '../Modals/AddSupply';
 import AddBrand from '../Modals/AddBrand';
 import AddItem from '../Modals/AddItem';
 import AddTags from '../Modals/AddTags';
+import AddDonor from '../Modals/AddDonor';
+import AddFoodBank from '../Modals/AddFoodBank';
 
 const AddDonation = (props) => {
 
@@ -17,6 +19,8 @@ const AddDonation = (props) => {
   const [items, setItems] = useState(null);
   const [supply, setSupply] = useState(null);
   const [donationTypes, setDonationTypes] = useState(null);
+  const [donors, setDonors] = useState(null);
+  const [foodBanks, setFoodBanks] = useState(null);
 
   // set once all data fetched
   const [dataFetched, setDataFetched] = useState(false);
@@ -27,7 +31,12 @@ const AddDonation = (props) => {
   const [packUpcMap, setPackUpcMap] = useState(null);
   const [packReceivedMap, setPackReceivedMap] = useState(null);
 
-	// user input data
+	// donor input data
+  // const [donorFirstName, setDonorFirstName] = useState(null);
+  // const [donorLastName, setDonorLastName] = useState(null);
+
+  // receive input data
+  // user input data
 	const [packageUPC, setPackageUPC] = useState(null);
 	const [brandName, setBrandName] = useState(null);
 	const [itemName, setItemName] = useState(null);
@@ -38,11 +47,15 @@ const AddDonation = (props) => {
 	const [receiveDate, setReceiveDate] = useState(null);
 	const [availableDate, setAvailableDate] = useState(null);
 	const [expDate, setExpDate] = useState(null);
+  const [donor, setDonor] = useState(null);
+  const [foodBank, setFoodBank] = useState(null);
 
   const [showAddSupply, setShowAddSupply] = useState(false);
   const [showAddBrand, setShowAddBrand] = useState(false);
   const [showAddItem, setShowAddItem] = useState(false);
   const [showAddItemTags, setShowAddItemTags] = useState(false);
+  const [showAddDonor, setShowAddDonor] = useState(false);
+  const [showAddFoodBank, setShowAddFoodBank] = useState(false);
 
   const getBrands = () => {
     axios
@@ -140,6 +153,36 @@ const AddDonation = (props) => {
 			});
   }
 
+  const getDonors = () => {
+    axios
+			.get(`${API_URL}customers?role=DONOR`)
+			.then((response) => {
+				console.log("donors res: ", response);
+        setDonors(response.data.result);
+			})
+			.catch((err) => {
+				if (err.response) {
+					console.log(err.response);
+				}
+				console.log(err);
+			});
+  }
+
+  const getFoodBanks = () => {
+    axios
+			.get(`${API_URL}businesses`)
+			.then((response) => {
+				console.log("food banks res: ", response);
+        setFoodBanks(response.data.result.result);
+			})
+			.catch((err) => {
+				if (err.response) {
+					console.log(err.response);
+				}
+				console.log(err);
+			});
+  }
+
   // fetch all data on initial page load
 	useEffect(() => {
     setBusinessUID(localStorage.getItem('role'));
@@ -147,6 +190,8 @@ const AddDonation = (props) => {
     getItems();
     getSupply();
     getDonations();
+    getDonors();
+    getFoodBanks();
 	}, []);
 
   // once all data loaded, display modal (otherwise, display "LOADING...")
@@ -155,14 +200,20 @@ const AddDonation = (props) => {
       brands !== null && 
       items !== null && 
       supply !== null && 
-      donationTypes !== null
+      donationTypes !== null &&
+      donors !== null &&
+      foodBanks !== null
     ) { 
       console.log("data fetched");
       setDataFetched(true);
     } else {
       console.log("data not fetched");
     }
-  }, [brands, items, supply, donationTypes]);
+  }, [
+    brands, items, 
+    supply, donationTypes, 
+    donors, foodBanks
+  ]);
 
   // refresh data when added to database
   // useEffect(() => {
@@ -209,6 +260,37 @@ const AddDonation = (props) => {
       );
     });
     return donationOptions;
+  }
+
+  // donor dropdown
+  const donorOptions = () => {
+    var donorOptions = [<option disabled selected value> -- select an option -- </option>];
+    donors.forEach((d, index) => {
+      donorOptions.push(
+        <option key={index} value={d.customer_uid}>
+          {
+            d.customer_first_name + " " + 
+            d.customer_last_name + " (" +
+            d.customer_uid.substring(4) + ")"
+          }
+        </option>
+      );
+    });
+    return donorOptions;
+  }
+
+  // food bank dropdown
+  const foodBankOptions = () => {
+    var foodBankOptions = [<option disabled selected value> -- select an option -- </option>];
+    console.log("foodBanks: ", foodBanks);
+    foodBanks.forEach((fb, index) => {
+      foodBankOptions.push(
+        <option key={index} value={fb.business_uid}>
+          {fb.business_name + " (" + fb.business_uid.substring(4) + ")"}
+        </option>
+      );
+    });
+    return foodBankOptions;
   }
 
   const handleChangeUPC = (input) => {
@@ -343,6 +425,14 @@ const AddDonation = (props) => {
     setShowAddSupply(!showAddSupply);
   };
 
+  const toggleAddDonor = () => {
+    setShowAddDonor(!showAddDonor);
+  };
+
+  const toggleAddFoodBank = () => {
+    setShowAddFoodBank(!showAddFoodBank);
+  };
+
   // displays modal after all data fetched
 	const displayModal = () => {
 		return (
@@ -359,7 +449,9 @@ const AddDonation = (props) => {
 					zIndex: "102",
 					padding: "10px 0px 10px 0px",
 					borderRadius: "20px",
-					display: 'inline-block'
+					display: 'inline-block',
+          maxHeight: 'calc(100vh - 40px)',
+          overflow: 'auto'
 				}}
 			>
 				<ModalCloseBtn
@@ -379,22 +471,70 @@ const AddDonation = (props) => {
 							height: '60px'
 						}}
 					>
-						<span
+						<h1
+              // className={styles.ad_header}
 							style={{
 								fontWeight: 'bold',
 								fontSize: '20px'
 							}}
 						>
-							Receive Table
-						</span>
+							{/* Receive Table */}
+              Add Donation
+						</h1>
 					</div>
-					<div
-						style={{
-							// border: '1px solid green',
-							width: '950px',
-							display: 'flex' 
-						}}
-					>
+
+          {/* <div className={styles.ad_subheader_wrapper}>
+            <h6 className={styles.ad_subheader}>Donor Info</h6>
+          </div>
+
+          <div className={styles.ad_body}>
+            <div className={styles.ad_body_left}>
+              <div className={styles.ad_section_container}>
+								<div className={styles.ad_section_label_wrapper}>
+									<span className={styles.ad_section_label}>Donor First Name</span>
+								</div>
+								<div className={styles.ad_section_input_wrapper}>
+									<input 
+                    className={styles.ad_section_input} 
+                    value={donorFirstName}
+                    onChange={e => setDonorFirstName(e.target.value)}
+                  />
+								</div>
+							</div>
+              <div className={styles.ad_section_container}>
+								<div className={styles.ad_section_label_wrapper}>
+									<span className={styles.ad_section_label}>Donor Last Name</span>
+								</div>
+								<div className={styles.ad_section_input_wrapper}>
+                  <input 
+                    className={styles.ad_section_input} 
+                    value={donorLastName}
+                    onChange={e => setDonorLastName(e.target.value)}
+                  />
+								</div>
+							</div>
+            </div>
+            <div className={styles.ad_body_right}>
+							<div className={styles.ad_section_container}>
+								<div className={styles.ad_section_label_wrapper}>
+									<span className={styles.ad_section_label}>Donor Address</span>
+								</div>
+								<div className={styles.ad_section_input_wrapper}>
+                  <input 
+                    className={styles.ad_section_input} 
+                    value={donorLastName}
+                    onChange={e => setDonorLastName(e.target.value)}
+                  />
+								</div>
+							</div>
+            </div>
+          </div>
+
+          <div className={styles.ad_subheader_wrapper}>
+            <h6 className={styles.ad_subheader}>Donation Info (Receive Table)</h6>
+          </div> */}
+
+					<div className={styles.ad_body}>
 						<div className={styles.ad_body_left}>
 							<div className={styles.ad_section_container}>
 								<div className={styles.ad_section_label_wrapper}>
@@ -507,6 +647,66 @@ const AddDonation = (props) => {
 							</div>
 						</div>
 						<div className={styles.ad_body_right}>
+              <div className={styles.ad_section_container}>
+								<div className={styles.ad_section_label_wrapper}>
+									<span className={styles.ad_section_label}>Donor</span>
+								</div>
+								<div className={styles.ad_section_input_wrapper}>
+									<select
+                    value={donor}
+                    onChange={e => {
+                      setDonor(e.target.value);
+                    }}
+										className={styles.ad_section_dropdown}
+									>
+                    {donorOptions()}
+									</select>
+									<button 
+										className={styles.ad_plus}
+                    onClick={toggleAddDonor}
+									>
+										+
+									</button>
+								</div>
+							</div>
+              <div className={styles.ad_section_container}>
+								<div className={styles.ad_section_label_wrapper}>
+									<span className={styles.ad_section_label}>Food Bank</span>
+								</div>
+								{/* <div className={styles.ad_section_input_wrapper}>
+									<select
+                    value={foodBank}
+                    onChange={e => {
+                      setFoodBank(e.target.value);
+                    }}
+										className={styles.ad_section_dropdown}
+									>
+                    {foodBankOptions()}
+									</select>
+									<button 
+										className={styles.ad_plus}
+                    onClick={toggleAddFoodBank}
+									>
+										+
+									</button>
+								</div> */}
+                <div className={styles.ad_section_input_wrapper}>
+                  {console.log("Business UID: ", businessUID)}
+									{businessUID !== 'ADMIN' && businessUID !== 'CUSTOMER' && businessUID !== 'DONOR' ? (
+                    <span>{businessUID}</span>
+                  ) : (
+                    <select
+                      value={foodBank}
+                      onChange={e => {
+                        setFoodBank(e.target.value);
+                      }}
+                      className={styles.ad_section_dropdown}
+                    >
+                      {foodBankOptions()}
+                    </select>
+                  )}
+								</div>
+							</div>
 							<div className={styles.ad_section_container}>
 								<div className={styles.ad_section_label_wrapper}>
 									<span className={styles.ad_section_label}>Donation Type</span>
@@ -668,6 +868,18 @@ const AddDonation = (props) => {
           toggleAddItemTags={toggleAddItemTags}
           showAddItemTags={showAddItemTags}
           showAddItem={showAddItem}
+        />
+      )}
+      {showAddDonor && (
+        <AddDonor
+          toggleAddDonor={toggleAddDonor}
+          showAddDonor={showAddDonor}
+        />
+      )}
+      {showAddFoodBank && (
+        <AddFoodBank
+          toggleAddFoodBank={toggleAddFoodBank}
+          showAddFoodBank={showAddFoodBank}
         />
       )}
     </>
