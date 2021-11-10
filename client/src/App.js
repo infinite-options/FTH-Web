@@ -50,6 +50,7 @@ import AdminDonations from "./components/AdminV2/Donations";
 import AdminInventory from "./components/AdminV2/Inventory";
 import AdminItems from "./components/AdminV2/Items";
 import AdminCustomers from "./components/AdminV2/Customers";
+import AdminDonors from "./components/AdminV2/Donors";
 import AdminAnalytics from "./components/AdminV2/Analytics";
 import AdminNotifications2 from "./components/AdminV2/Notifications";
 
@@ -160,6 +161,10 @@ function App() {
 
             <Route exact path="/admin-v2/customers">
               <AdminCustomers />
+            </Route>
+
+            <Route exact path="/admin-v2/donors">
+              <AdminDonors />
             </Route>
 
             <Route exact path="/admin-v2/google-analytics">

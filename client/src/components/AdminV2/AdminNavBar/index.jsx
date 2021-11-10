@@ -9,14 +9,15 @@ import hamburger from "../../../images/hamburger.png";
 import forkClose from "../../../images/forkClose.png";
 
 const LINK_WIDTH = {
-  orders: "10%",
-  donations: "12%",
-  inventory: "11%",
-  items: "10%",
-  customers: "11%",
-  analytics: "13%",
-  notifications: "14%",
-  business_profile: "18%",
+  orders: "9%",
+  donations: "11%",
+  inventory: "10%",
+  items: "9%",
+  customers: "10%",
+  donors: "9%",
+  analytics: "12%",
+  notifications: "13%",
+  business_profile: "16%",
 };
 
 function NavBar(props) {
@@ -268,6 +269,23 @@ function NavBar(props) {
               }
             >
               Customers
+            </a>
+
+            <a
+              href="/admin-v2/donors"
+              className={styles.navLink}
+              style={
+                props.currentPage === "donors"
+                  ? {
+                      color: "black",
+                      width: LINK_WIDTH.donors,
+                    }
+                  : {
+                      width: LINK_WIDTH.donors,
+                    }
+              }
+            >
+              Donors
             </a>
 
             {/* <a

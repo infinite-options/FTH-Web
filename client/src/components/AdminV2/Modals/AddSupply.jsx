@@ -53,6 +53,8 @@ const AddSupply = (props) => {
   const [showAddBrand, setShowAddBrand] = useState(false);
   // const [showAddSupply, setShowAddSupply] = useState(false);
 
+  const [smallestMeasure, setSmallestMeasure] = useState(null);
+
   useEffect(() => {
     getSupplyModalData();
   }, []);
@@ -141,6 +143,7 @@ const AddSupply = (props) => {
     axios
       .get(`${API_URL}get_units_list`)
       .then((response) => {
+        console.log("gul res: ", response);
         const units = response.data.result;
         setSupplyUnits(units);
       })
@@ -190,6 +193,7 @@ const AddSupply = (props) => {
     axios
       .get(`${API_URL}get_non_specific_unit_list`)
       .then((response) => {
+        console.log("gnsul res: ", response);
         const nonSpecificUnits = response.data.result;
         setSupplyNonSpecificUnits(nonSpecificUnits)
       })
@@ -267,9 +271,33 @@ const AddSupply = (props) => {
   //   setShowAddItem(!showAddItem);
   //   // setShowAddSupply(!showAddSupply);
   //   props.toggleAddSupply();
-
-
   // };
+
+  // const foodBankOptions = () => {
+  //   var foodBankOptions = [<option disabled selected value> -- select an option -- </option>];
+  //   console.log("foodBanks: ", foodBanks);
+  //   foodBanks.forEach((fb, index) => {
+  //     foodBankOptions.push(
+  //       <option key={index} value={fb.business_uid}>
+  //         {fb.business_name + " (" + fb.business_uid.substring(4) + ")"}
+  //       </option>
+  //     );
+  //   });
+  //   return foodBankOptions;
+  // }
+
+  const smallestMeasureOptions = () => {
+      let opts = [<option disabled selected value> -- </option>];
+      supplyNonSpecificUnits.forEach((unit, index) => {
+        console.log("smo unit: ", unit);
+        opts.push(
+          <option key={index} value={unit.ns_units_name}>
+            {unit.ns_units_name}
+          </option>
+        );
+      });
+      return opts;
+  }
 
   return (
     <div
@@ -294,36 +322,54 @@ const AddSupply = (props) => {
           border: "2px solid #E7404A",
           backgroundColor: "white",
           maxHeight: "90%",
-          overflow: "scroll",
+          overflow: "auto",
           width: "auto",
           zIndex: "102",
-          padding: "10px 0px 10px 0px",
+          // padding: "10px 0px 10px 0px",
           borderRadius: "20px",
-          // border: '1px solid green'
+          border: '1px solid green'
         }}
       >
-        <div style={{ textAlign: "right", padding: "10px" }}>
+        {/* <div 
+          // style={{ textAlign: "right", padding: "10px" }}
+        >
           <ModalCloseBtn
             className={styles.closeBtn}
             onClick={() => {
               props.toggleAddSupply();
             }}
           />
-        </div>
+        </div> */}
+        <ModalCloseBtn
+          className={styles.as_closeBtn}
+          onClick={() => {
+            props.toggleAddSupply();
+          }}
+        />
+        
         <div
           style={{
             border: "none",
-            paddingLeft: "15px",
+            // paddingLeft: "15px",
+            margin: '60px 20px 20px 20px',
             fontWeight: "bold",
+            border: '1px dashed',
+            // width: ''
           }}
         >
-          <Modal.Title style={{ fontWeight: "bold" }}>
-          Add Supply
-          </Modal.Title>
-          <Modal.Body>
+
+          {/* <Modal.Title style={{ fontWeight: "bold" }}>
+            Add Supply
+          </Modal.Title> */}
+          <h3 style={{ fontWeight: "bold" }}>
+            Add Supply
+          </h3>
+
+          {/* <Modal.Body> */}
+          <div style={{border: '1px solid brown', margin: '30px 0' }}>
             <div
-                className={styles.modalContainerVertical}
-                style={{ height: "530px" }}
+              className={styles.modalContainerVertical}
+              // style={{ height: "530px" }}
             >
               <div className={styles.modalContainerHorizontal}>
               <div
@@ -358,9 +404,10 @@ const AddSupply = (props) => {
                 }}
                 value={newSupply.sup_brand_uid}
               >
-                <option key={0} value="">
+                {/* <option key={0} value="">
                   Select Brand Name
-                </option>
+                </option> */}
+                <option disabled selected value> -- </option>
                 {items &&
                 uniqueBrands.map((brand, index) => {
                     return (
@@ -395,9 +442,10 @@ const AddSupply = (props) => {
                 }}
                 value={newSupply.sup_item_uid}
               >
-                <option key={0} value="">
+                {/* <option key={0} value="">
                   Select Item Name
-                </option>
+                </option> */}
+                <option disabled selected value> -- </option>
                 {items &&
                 uniqueItems.map((item, index) => {
                     return (
@@ -415,117 +463,302 @@ const AddSupply = (props) => {
               >
                 +
               </div>
-              </div>
-              <div className={styles.modalContainerHorizontal}>
+            </div>
+
+            <div style={{ marginTop: '30px' }} className={styles.modalContainerHorizontal}>
               <div
                 className={styles.modalFormLabel}
                 style={{ width: "150px" }}
               >
                 Picture
               </div>
+
+              {/* <div className={styles.ad_section_label_wrapper}>
+                <span className={styles.ad_section_label}>Picture</span>
+              </div>
+              <div className={styles.ad_section_photo_wrapper}>
+                <img
+                  className={styles.ad_section_image}
+                  src={photoURL}
+                />
+              </div> */}
+
               <div className={styles.modalContainerVertical}>
-                {newSupply.item_photo && (
+                {/* {newSupply.item_photo && (
                 <img
                   height="150px"
                   width="150px"
                   style={{border: '1px dashed'}}
                   src={newSupply.item_photo}
                 />
-                )}
-                {!newSupply.item_photo && (
-                <div style={{ height: "150px", width: "150px" }}></div>
-                )}
+                )} */}
+                {/* {newSupply.item_photo && ( */}
+                  <img
+                    height="150px"
+                    width="150px"
+                    style={{marginBottom: '10px'}}
+                    src={newSupply.item_photo}
+                  />
+                {/* )} */}
+                {/* {!newSupply.item_photo && (
+                  <div style={{ height: "150px", width: "150px" }}></div>
+                )} */}
                 <input
-                type="file"
-                name="upload_file"
-                onChange={(e) => {
-                  // selectedFile = e.target.files[0];
-                  setSelectedFile(e.target.files[0]);
-                  console.log("selected photo: ", e.target.files[0]);
-                  editNewSupply(
-                    "item_photo",
-                    URL.createObjectURL(e.target.files[0])
-                  );
-                }}
+                  type="file"
+                  name="upload_file"
+                  onChange={(e) => {
+                    // selectedFile = e.target.files[0];
+                    setSelectedFile(e.target.files[0]);
+                    console.log("selected photo: ", e.target.files[0]);
+                    editNewSupply(
+                      "item_photo",
+                      URL.createObjectURL(e.target.files[0])
+                    );
+                  }}
                 />
               </div>
               </div>
-              <div className={styles.modalContainerHorizontal}>
-              <div className={styles.modalContainerVertical}>
-                <div className={styles.modalFormLabel}>Package</div>
-                <input
-                className={styles.modalInput}
-                style={{ width: "79px", textAlign: "center" }}
-                value={newSupply.sup_num}
-                onChange={(event) =>
-                    editNewSupply("sup_num", event.target.value)
-                }
-                />
-              </div>
-              <div className={styles.modalContainerVertical}>
-                <div className={styles.modalFormLabel}>
-                (Non-Specific)
-                </div>
-                <select
-                className={styles.modalDropdown}
-                style={{ width: "79px" }}
-                onChange={(event) =>
-                    editNewSupply("sup_measure", event.target.value)
-                }
-                value={newSupply.sup_measure}
-                >
-                <option key="0" value="">
-                    -
-                </option>
-                {supplyNonSpecificUnits &&
-                  supplyNonSpecificUnits.map((unit, index) => {
-                  return (
-                    <option
-                    key={index + 1}
-                    value={unit.ns_units_name}
-                    >
-                    {unit.ns_units_name}
-                    </option>
-                  );
+
+              {/* <div className={styles.modalContainerHorizontal}>
+
+                <div >
+
+                </div> */}
+
+                {/* <div className={styles.modalContainerVertical}>
+                  <div className={styles.modalFormLabel}>Package</div>
+                  <input
+                    className={styles.modalInput}
+                    style={{ width: "79px", textAlign: "center" }}
+                    value={newSupply.sup_num}
+                    onChange={(event) =>
+                        editNewSupply("sup_num", event.target.value)
+                    }
+                  />
+                </div> */}
+
+                {/* <div className={styles.modalContainerVertical}>
+                  <div className={styles.modalFormLabel}>
+                  (Non-Specific)
+                  </div>
+                  <select
+                  className={styles.modalDropdown}
+                  style={{ width: "79px" }}
+                  onChange={(event) =>
+                      editNewSupply("sup_measure", event.target.value)
+                  }
+                  value={newSupply.sup_measure}
+                  >
+                  <option key="0" value="">
+                      -
+                  </option>
+                  {supplyNonSpecificUnits &&
+                    supplyNonSpecificUnits.map((unit, index) => {
+                    return (
+                      <option
+                      key={index + 1}
+                      value={unit.ns_units_name}
+                      >
+                      {unit.ns_units_name}
+                      </option>
+                    );
+                    })}
+                  </select>
+                </div> */}
+ 
+                {/* <div className={styles.modalContainerVertical}>
+                  <div className={styles.modalFormLabel}>Item</div>
+                  <input
+                  className={styles.modalInput}
+                  style={{ width: "79px", textAlign: "center" }}
+                  value={newSupply.detailed_num}
+                  onChange={(event) =>
+                      editNewSupply("detailed_num", event.target.value)
+                  }
+                  />
+                </div> */}
+
+                {/* <div className={styles.modalContainerVertical}>
+                  <div className={styles.modalFormLabel}>(Specific)</div>
+                  <select
+                  className={styles.modalDropdown}
+                  style={{ width: "79px" }}
+                  onChange={(event) =>
+                      editNewSupply("detailed_measure", event.target.value)
+                  }
+                  value={newSupply.detailed_measure}
+                  >
+                  <option key="0" value="">
+                      -
+                  </option>
+                  {supplyUnits &&
+                  supplyUnits.map((unit, index) => {
+                    return (
+                      <option key={index + 1} value={unit.recipe_unit}>
+                        {unit.recipe_unit}
+                      </option>
+                    );
                   })}
-                </select>
-              </div>
-              <div className={styles.modalContainerVertical}>
-                <div className={styles.modalFormLabel}>Item</div>
-                <input
-                className={styles.modalInput}
-                style={{ width: "79px", textAlign: "center" }}
-                value={newSupply.detailed_num}
-                onChange={(event) =>
-                    editNewSupply("detailed_num", event.target.value)
-                }
-                />
-              </div>
-              <div className={styles.modalContainerVertical}>
-                <div className={styles.modalFormLabel}>(Specific)</div>
-                <select
-                className={styles.modalDropdown}
-                style={{ width: "79px" }}
-                onChange={(event) =>
-                    editNewSupply("detailed_measure", event.target.value)
-                }
-                value={newSupply.detailed_measure}
+                  </select>
+                </div> */}
+
+              {/* </div> */}
+
+              <div style={{marginTop: '30px', width: '500px'}} className={styles.input_container}>
+                <span>What is the smallest distributable package received?</span>
+                {/* <select
+                  value={smallestMeasure}
+                  onChange={e => {
+                    setSmallestMeasure(e.target.value);
+                  }}
+                  // className={styles.ad_section_dropdown}
                 >
-                <option key="0" value="">
-                    -
-                </option>
-                {supplyUnits &&
-                supplyUnits.map((unit, index) => {
-                  return (
-                    <option key={index + 1} value={unit.recipe_unit}>
-                      {unit.recipe_unit}
-                    </option>
-                  );
-                })}
-                </select>
+                  {smallestMeasureOptions()}
+                </select> */}
+                <div className={styles.input_1stFromRight}>
+                  <span>Num</span>
+                  <select
+                    value={smallestMeasure}
+                    onChange={e => {
+                      setSmallestMeasure(e.target.value);
+                    }}
+                    className={styles.measure_dropdown}
+                  >
+                    {smallestMeasureOptions()}
+                  </select>
+                  <div className={styles.dropdownArrow}/>
+                </div>
               </div>
-            </div>
-            <div className={styles.modalContainerHorizontal}>
+
+              <div style={{marginTop: '40px'}} className={styles.input_container}>
+                <span style={{color: "black"}}>(Please enter at least one of the following equivalent measures)</span>
+              </div>
+
+              <div className={styles.input_container}>
+                <span>Each {smallestMeasure ? smallestMeasure.toLowerCase() : "<measure>"} is (volume)</span>
+                <div className={styles.input_1stFromRight}>
+                  <span>Num</span>
+                  <select
+                    value={smallestMeasure}
+                    onChange={e => {
+                      setSmallestMeasure(e.target.value);
+                    }}
+                    className={styles.measure_dropdown}
+                  >
+                    {smallestMeasureOptions()}
+                  </select>
+                  <div className={styles.dropdownArrow}/>
+                </div>
+                <div className={styles.input_2ndFromRight}>
+                  <span>Measure</span>
+                  <select
+                    value={smallestMeasure}
+                    onChange={e => {
+                      setSmallestMeasure(e.target.value);
+                    }}
+                    className={styles.measure_dropdown}
+                  >
+                    {smallestMeasureOptions()}
+                  </select>
+                  {/* <img src={"../../../images/RedDropdown.svg"} className={styles.dropdownArrow}/> */}
+                  <div className={styles.dropdownArrow}/>
+                </div>
+              </div>
+
+              <div className={styles.input_container}>
+                <span>Each {smallestMeasure ? smallestMeasure.toLowerCase() : "<measure>"}  is (mass)</span>
+                <div className={styles.input_1stFromRight}>
+                  <span>Num</span>
+                  <select
+                    value={smallestMeasure}
+                    onChange={e => {
+                      setSmallestMeasure(e.target.value);
+                    }}
+                    className={styles.measure_dropdown}
+                  >
+                    {smallestMeasureOptions()}
+                  </select>
+                  <div className={styles.dropdownArrow}/>
+                </div>
+                <div className={styles.input_2ndFromRight}>
+                  <span>Measure</span>
+                  <select
+                    value={smallestMeasure}
+                    onChange={e => {
+                      setSmallestMeasure(e.target.value);
+                    }}
+                    className={styles.measure_dropdown}
+                  >
+                    {smallestMeasureOptions()}
+                  </select>
+                  {/* <img src={"../../../images/RedDropdown.svg"} className={styles.dropdownArrow}/> */}
+                  <div className={styles.dropdownArrow}/>
+                </div>
+              </div>
+
+              <div className={styles.input_container}>
+                <span>Each {smallestMeasure ? smallestMeasure.toLowerCase() : "<measure>"}  is (length)</span>
+                <div className={styles.input_1stFromRight}>
+                  <span>Num</span>
+                  <select
+                    value={smallestMeasure}
+                    onChange={e => {
+                      setSmallestMeasure(e.target.value);
+                    }}
+                    className={styles.measure_dropdown}
+                  >
+                    {smallestMeasureOptions()}
+                  </select>
+                  <div className={styles.dropdownArrow}/>
+                </div>
+                <div className={styles.input_2ndFromRight}>
+                  <span>Measure</span>
+                  <select
+                    value={smallestMeasure}
+                    onChange={e => {
+                      setSmallestMeasure(e.target.value);
+                    }}
+                    className={styles.measure_dropdown}
+                  >
+                    {smallestMeasureOptions()}
+                  </select>
+                  {/* <img src={"../../../images/RedDropdown.svg"} className={styles.dropdownArrow}/> */}
+                  <div className={styles.dropdownArrow}/>
+                </div>
+              </div>
+
+              <div className={styles.input_container}>
+                <span>Each {smallestMeasure ? smallestMeasure.toLowerCase() : "<measure>"}  contains</span>
+                <div className={styles.input_1stFromRight}>
+                  <span>Num</span>
+                  <select
+                    value={smallestMeasure}
+                    onChange={e => {
+                      setSmallestMeasure(e.target.value);
+                    }}
+                    className={styles.measure_dropdown}
+                  >
+                    {smallestMeasureOptions()}
+                  </select>
+                  <div className={styles.dropdownArrow}/>
+                </div>
+                <div className={styles.input_2ndFromRight}>
+                  <span>Measure</span>
+                  <select
+                    value={smallestMeasure}
+                    onChange={e => {
+                      setSmallestMeasure(e.target.value);
+                    }}
+                    className={styles.measure_dropdown}
+                  >
+                    {smallestMeasureOptions()}
+                  </select>
+                  {/* <img src={"../../../images/RedDropdown.svg"} className={styles.dropdownArrow}/> */}
+                  <div className={styles.dropdownArrow}/>
+                </div>
+              </div>
+
+            {/* <div className={styles.modalContainerHorizontal}>
               <div className={styles.modalFormLabel}>
                   Package Recieved
               </div>
@@ -533,29 +766,47 @@ const AddSupply = (props) => {
                   {getNewSupplyDesc()}
               </div>
               <div></div>
-            </div>
+            </div> */}
+
           </div>
-        </Modal.Body>
-        <Modal.Footer
-          style={{
-            border: "none",
-            justifyContent: "center",
-            flexDirection: "column",
-          }}
-        >
-          <button
-            className={styles.redButton}
-            onClick={() => postNewSupply()}
+        {/* </Modal.Body> */}
+        </div>
+
+          {/* <Modal.Footer
+            style={{
+              border: "none",
+              justifyContent: "center",
+              flexDirection: "column",
+            }}
+          > */}
+          <div
+            style={{
+              // border: "1px solid teal",
+              display: 'flex',
+              justifyContent: "center",
+              flexDirection: "column",
+              margin: '20px 0'
+            }}
           >
-            Add Item
-          </button>
-          <button
-            className={styles.whiteButton}
-            onClick={() => props.toggleAddSupply()}
-          >
-            Cancel
-          </button>
-        </Modal.Footer>
+            <div className={styles.buttonWrapper}>
+              <button
+                className={styles.redButton}
+                onClick={() => postNewSupply()}
+              >
+                Add Item
+              </button>
+            </div>
+            <div className={styles.buttonWrapper}>
+              <button
+                className={styles.whiteButton}
+                onClick={() => props.toggleAddSupply()}
+              >
+                Cancel
+              </button>
+            </div>
+          {/* </Modal.Footer> */}
+          </div>
+
         </div>
       </div>
 

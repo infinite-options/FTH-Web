@@ -208,3 +208,14 @@
   /* border-bottom: 2px solid #E7404A; */
 }
 
+.receiveStatusBtn {
+  border-radius: 15px;
+  padding: 10px;
+  background-color: #E7404A;
+  color: white;
+  border: 1px solid #E7404A;
+}
+.receiveStatusBtn:hover {
+  color: #E7404A;
+  background-color: #FFE3E5;
+}

@@ -5,139 +5,155 @@ import { useEffect, useReducer, useState, useRef } from "react";
 import axios from "axios";
 import { API_URL } from "../../../reducers/constants";
 import AddTags from '../Modals/AddTags';
+import { createThisTypeNode } from "typescript";
+import fetchAddressCoordinates from '../../../utils/FetchAddressCoordinates';
 
 const AddDonor = (props) => {
 
-  const [newItem, setNewItem] = useState({
-    item_name: "",
-    item_desc: "",
-    item_type: "",
-    item_tags: [],
-  });
-  const [itemTypeList, setItemTypeList] = useState(null);
-  const [itemTagList, setItemTagList] = useState(null);
+  const [firstName, setFirstName] = useState(null);
+  const [lastName, setLastName] = useState(null);
+  const [street, setStreet] = useState(null);
+  const [unit, setUnit] = useState(null);
+  const [phone, setPhone] = useState(null);
+  const [zip, setZip] = useState(null);
+  const [city, setCity] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [state, setState] = useState(null);
 
-  useEffect(() => {
-    console.log("itemTagList: ", itemTagList);
-  }, [itemTagList])
+  const [processing, setProcessing] = useState(false);
 
   // set once all data fetched
-  const [dataFetched, setDataFetched] = useState(false);
+  // const [dataFetched, setDataFetched] = useState(false);
 
-  const getItemTags = () => {
-    axios
-      .get(`${API_URL}get_tags_list`)
-      .then((response) => {
-        const tagRes = response.data.result;
-        const tagsList = tagRes.map((tag) => {
-          const tagItem = {
-            tag_name: tag.tags,
-            active: newItem.item_tags.includes(tag.tags) ? 1 : 0,
-          };
-          return tagItem;
-        });
-        // dispatch({ type: "GET_ITEM_TAG_LIST", payload: tagsList });
-        setItemTagList(tagsList);
-      })
-      .catch((err) => {
-        if (err.response) {
-          console.log(err.response);
-        }
-        console.log(err);
-      });
-  };
+  const addNewDonor = () => {
+    setProcessing(true);
+    console.log("adding new donor...");
+        
+    fetchAddressCoordinates(
+      street,
+      city,
+      state,
+      zip,
+      (coords) => {
+        console.log("(addNewDonor) Fetched coordinates: ", coords);
 
-  const getItemTypes = () => {
-    axios
-      .get(`${API_URL}get_types_list`)
-      .then((response) => {
-        const typesList = response.data.result;
-        console.log("get_types_list res: ", typesList);
-        // dispatch({ type: "GET_ITEM_TYPE_LIST", payload: typesList });
-        setItemTypeList(typesList);
-      })
-      .catch((err) => {
-        if (err.response) {
-          console.log(err.response);
-        }
-        console.log(err);
-      });
-  };
+        // {
+        //   "customer_email": "test4@email.com",
+        //   "password": "test4@email.com",
+        //   "customer_first_name": "Rael",
+        //   "customer_last_name": "Persson",
+        //   "customer_phone_num": "1233211232",
+        //   "customer_address": "1408 Dot Ct",
+        //   "customer_unit": "",
+        //   "customer_city": "San Jose",
+        //   "customer_state": "CA",
+        //   "customer_zip": "95120",
+        //   "customer_lat": "37.2368917",
+        //   "customer_long": "-121.8872943",
+        //   "role": "DONOR",
+        //   "id_type": "email"
+        // }
+        // let object = {
+        //   email: email,
+        //   password: email,
+        //   first_name: firstName,
+        //   last_name: lastName,
+        //   phone_number: phone,
+        //   address: street,
+        //   unit: unit,
+        //   city: city,
+        //   state: state,
+        //   zip_code: zip,
+        //   latitude: coords.latitude.toString(),
+        //   longitude: coords.longitude.toString(),
+        //   referral_source: "WEB",
+        //   role: "CUSTOMER",
+        //   social: "FALSE",
+        //   social_id: "NULL",
+        //   user_access_token: "FALSE",
+        //   user_refresh_token: "FALSE",
+        //   mobile_access_token: "FALSE",
+        //   mobile_refresh_token: "FALSE",
+        // };
+        let object = {
+          customer_email: email,
+          password: email,
+          customer_first_name: firstName,
+          customer_last_name: lastName,
+          customer_phone_num: phone,
+          customer_address: street,
+          customer_unit: unit,
+          customer_city: city,
+          customer_state: state,
+          customer_zip: zip,
+          customer_lat: coords.latitude.toString(),
+          customer_long: coords.longitude.toString(),
+          referral_source: "WEB",
+          role: "DONOR",
+          id_type: "email"
+      }
 
-  useEffect(() => {
-    getItemTags();
-    getItemTypes();
-  }, []);
-
-  useEffect(() => {
-    setDataFetched(true);
-  }, [itemTypeList, itemTagList]);
-
-  const editNewItem = (field, value) => {
-    const updatedItem = {
-      ...newItem,
-      [field]: value,
-    };
-    // dispatch({ type: "EDIT_NEW_ITEM", payload: updatedItem });
-    setNewItem(updatedItem);
-  };
-
-  const postNewItem = () => {
-    const itemFormData = new FormData();
-
-    for (const field of Object.keys(newItem)) {
-      console.log("appending: ", newItem);
-      itemFormData.append(field, newItem[field]);
-    }
-
-    axios
-      .post(`${API_URL}add_items`, itemFormData)
-      .then((response) => {
-        console.log("add_items res: ", response);
-        if (response.status === 200) {
-          // dispatch({ type: "EDIT_NEW_ITEM", payload: initialState.newItem });
-          setNewItem({
-            item_name: "",
-            item_desc: "",
-            item_type: "",
-            item_tags: [],
+        axios
+          .post(API_URL + "createAccount", object)
+          .then((res) => {
+            console.log(res);
+            console.log("(addNewDonor) verifying email...");
+            axios
+              .post(API_URL + "email_verification", {email})
+              .then((res) => {
+                console.log("(addNewDonor) res: ", res);
+                if(res.status === 200){
+                  console.log("(addNewDonor) donor created");
+                  // if (typeof callback !== "undefined") {
+                  //   callback(SUCCESS, 'Account successfully created.');
+                  // }
+                  setProcessing(false);
+                  console.log("toggling addDonor");
+                  props.toggleAddDonor(true);
+                } else {
+                  // callback(FAILURE, <>
+                  //   {"Invalid email: "}
+                  //   <span style={{textDecoration: 'underline'}}>{email}</span>
+                  // </>);
+                  setProcessing(false);
+                }
+              })
+              .catch((err) => {
+                console.log(err);
+                // callback(FAILURE, "Error verifying email.");
+                setProcessing(false);
+              });
+    
+            // dispatch({
+            //   type: SUBMIT_SIGNUP,
+            // });
+          })
+          .catch((err) => {
+            console.log(err);
+            if (err.response) {
+              console.log(err.response);
+            }
+            // callback(FAILURE, 'Error creating account.');
+            setProcessing(false);
           });
-          props.toggleAddItem(true);
-        }
-      })
-      .catch((err) => {
-        if (err.response) {
-          console.log(err.response);
-        }
-        console.log(err);
-      });
-  };
-
-  const toggleItemTag = (itemIndex) => {
-    console.log("clicked ", itemIndex);
-    const updatedItemTags = [...itemTagList];
-    updatedItemTags[itemIndex].active
-      ? (updatedItemTags[itemIndex].active = 0)
-      : (updatedItemTags[itemIndex].active = 1);
-    // dispatch({ type: "GET_ITEM_TAG_LIST", payload: updatedItemTags });
-    setItemTagList(updatedItemTags);
-  };
+      }
+    );
+  }
 
   return (
-    <>
-      <div
-        style={{
-          height: "100%",
-          width: "100%",
-          zIndex: "101",
-          left: "0",
-          top: "0",
-          position: "fixed",
-          display: "grid",
-          backgroundColor: "rgba(255, 255, 255, 0.8)",
-        }}
-      >
-        {dataFetched && (
+    <div
+      style={{
+        height: "100%",
+        width: "100%",
+        zIndex: "101",
+        left: "0",
+        top: "0",
+        position: "fixed",
+        display: "grid",
+        backgroundColor: "rgba(255, 255, 255, 0.8)",
+      }}
+    >
+      {/* {dataFetched && ( */}
         <div
           style={{
             position: "relative",
@@ -176,9 +192,9 @@ const AddDonor = (props) => {
                   <div className={styles.modalFormLabel}>First Name</div>
                   <input
                     className={styles.modalInput}
-                    value={newItem.item_name}
+                    value={firstName}
                     onChange={(event) =>
-                      editNewItem("item_name", event.target.value)
+                      setFirstName(event.target.value)
                     }
                     style={{ width: "220px" }}
                   />
@@ -187,9 +203,9 @@ const AddDonor = (props) => {
                   <div className={styles.modalFormLabel}>Last Name</div>
                   <input
                     className={styles.modalInput}
-                    value={newItem.item_name}
+                    value={lastName}
                     onChange={(event) =>
-                      editNewItem("item_name", event.target.value)
+                      setLastName(event.target.value)
                     }
                     style={{ width: "220px" }}
                   />
@@ -200,9 +216,9 @@ const AddDonor = (props) => {
                   </div>
                   <input
                     className={styles.modalInput}
-                    value={newItem.item_desc}
+                    value={phone}
                     onChange={(event) =>
-                      editNewItem("item_desc", event.target.value)
+                      setPhone(event.target.value)
                     }
                     style={{ width: "220px" }}
                   />
@@ -213,9 +229,9 @@ const AddDonor = (props) => {
                   </div>
                   <input
                     className={styles.modalInput}
-                    value={newItem.item_desc}
+                    value={email}
                     onChange={(event) =>
-                      editNewItem("item_desc", event.target.value)
+                      setEmail(event.target.value)
                     }
                     style={{ width: "220px" }}
                   />
@@ -227,45 +243,45 @@ const AddDonor = (props) => {
                   <div className={styles.addressContainer}>
                     <input
                       className={styles.modalAddressInput}
-                      value={newItem.item_desc}
+                      value={street}
                       onChange={(event) =>
-                        editNewItem("item_desc", event.target.value)
+                        setStreet(event.target.value)
                       }
                       style={{ width: "360px" }}
-                      placeholder="Address Line 1"
+                      placeholder="Address Line 1 (Street)"
                     /><br/>
                     <input
                       className={styles.modalAddressInput}
-                      value={newItem.item_desc}
+                      value={unit}
                       onChange={(event) =>
-                        editNewItem("item_desc", event.target.value)
+                        setUnit(event.target.value)
                       }
                       style={{ width: "360px" }}
-                      placeholder="Address Line 2"
+                      placeholder="Address Line 2 (Unit, Apt, etc.)"
                     /><br/>
                     <input
                       className={styles.modalAddressInput}
-                      value={newItem.item_desc}
+                      value={city}
                       onChange={(event) =>
-                        editNewItem("item_desc", event.target.value)
+                        setCity(event.target.value)
                       }
                       style={{ width: "200px" }}
                       placeholder="City"
                     />
                     <input
                       className={styles.modalAddressInput}
-                      value={newItem.item_desc}
+                      value={state}
                       onChange={(event) =>
-                        editNewItem("item_desc", event.target.value)
+                        setState(event.target.value)
                       }
                       style={{ width: "60px" }}
                       placeholder="State"
                     />
                     <input
                       className={styles.modalAddressInput}
-                      value={newItem.item_desc}
+                      value={zip}
                       onChange={(event) =>
-                        editNewItem("item_desc", event.target.value)
+                        setZip(event.target.value)
                       }
                       style={{ width: "80px" }}
                       placeholder="Zipcode"
@@ -282,34 +298,23 @@ const AddDonor = (props) => {
               }}
             >
               <button
+                disabled={processing}
                 className={styles.redButton}
-                onClick={() => postNewItem()}
+                onClick={() => addNewDonor()}
               >
                 Add Donor
               </button>
               <button
                 className={styles.whiteButton}
-                onClick={() => props.toggleAddItem()}
+                onClick={() => props.toggleAddDonor()}
               >
                 Cancel
               </button>
             </Modal.Footer>
           </div>
         </div>
-      )}
-      </div>
-      {props.showAddItemTags && (
-        <AddTags
-          toggleAddItemTags={props.toggleAddItemTags}
-          toggleItemTag={toggleItemTag}
-          showAddItemTags={props.showAddItemTags}
-          editNewItem={editNewItem}
-          newItem={newItem}
-          itemTagList={itemTagList}
-          setItemTagList={setItemTagList}
-        />
-      )}
-    </>
+      {/* // )} */}
+    </div>
   )
 }
   

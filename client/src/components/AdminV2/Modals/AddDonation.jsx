@@ -10,6 +10,10 @@ import AddTags from '../Modals/AddTags';
 import AddDonor from '../Modals/AddDonor';
 import AddFoodBank from '../Modals/AddFoodBank';
 
+const RECEIVE_WAITING = 0;
+const RECEIVE_SUCCESS = -1;
+const RECEIVE_FAILURE = 1;
+
 const AddDonation = (props) => {
 
   const [businessUID, setBusinessUID] = useState(null);
@@ -31,12 +35,7 @@ const AddDonation = (props) => {
   const [packUpcMap, setPackUpcMap] = useState(null);
   const [packReceivedMap, setPackReceivedMap] = useState(null);
 
-	// donor input data
-  // const [donorFirstName, setDonorFirstName] = useState(null);
-  // const [donorLastName, setDonorLastName] = useState(null);
-
   // receive input data
-  // user input data
 	const [packageUPC, setPackageUPC] = useState(null);
 	const [brandName, setBrandName] = useState(null);
 	const [itemName, setItemName] = useState(null);
@@ -56,6 +55,8 @@ const AddDonation = (props) => {
   const [showAddItemTags, setShowAddItemTags] = useState(false);
   const [showAddDonor, setShowAddDonor] = useState(false);
   const [showAddFoodBank, setShowAddFoodBank] = useState(false);
+
+  const [receiveStatus, setReceiveStatus] = useState(null);
 
   const getBrands = () => {
     axios
@@ -341,7 +342,8 @@ const AddDonation = (props) => {
       qtyReceived === null || qtyReceived === '' ||
       receiveDate === null || receiveDate === '' ||
       availableDate === null || availableDate === '' ||
-      expDate === null || expDate === ''
+      expDate === null || expDate === '' ||
+      receiveStatus !== null
     ) {
       return true;
     } else {
@@ -351,6 +353,11 @@ const AddDonation = (props) => {
 
   // handles receive item button click
   const receiveItem = () => {
+    console.log("(RI) donor: ", donor);
+
+    setReceiveStatus(RECEIVE_WAITING);
+    // setReceiveStatus(RECEIVE_SUCCESS);
+    // setReceiveStatus(RECEIVE_FAILURE);
 
     let mappedItem = itemMap.get(itemName);
     let mappedBrand = brandMap.get(brandName);
@@ -367,7 +374,8 @@ const AddDonation = (props) => {
       qty_received: qtyReceived,
       receive_date: receiveDate,
       available_date: availableDate, 
-      exp_date: expDate
+      exp_date: expDate,
+      donor_uid: donor
     };
 
     console.log("receive_data: ", receive_data);
@@ -376,13 +384,14 @@ const AddDonation = (props) => {
       .post(API_URL + 'add_donation', receive_data)
       .then((res) => {
         console.log("(getItems) res: ", res);
-        
+        setReceiveStatus(RECEIVE_SUCCESS);
       })
       .catch((err) => {
         if (err.response) {
           console.log(err.response);
         }
         console.log(err);
+        setReceiveStatus(RECEIVE_FAILURE);
       });
   }
 
@@ -409,15 +418,6 @@ const AddDonation = (props) => {
   };
 
   const toggleAddSupply = (refresh_supply) => {
-    // if (!state.showAddSupply) {
-    //   getSupplyModalData();
-    // } else {
-    //   getSupplyItems();
-    //   dispatch({ type: "EDIT_NEW_SUPPLY", payload: initialState.newSupply });
-    //   state.selectedFile = null;
-    // }
-
-    // dispatch({ type: "TOGGLE_ADD_SUPPLY" });
     if(refresh_supply === true){
       setDataFetched(false);
       getSupply();
@@ -425,13 +425,104 @@ const AddDonation = (props) => {
     setShowAddSupply(!showAddSupply);
   };
 
-  const toggleAddDonor = () => {
+  const toggleAddDonor = (refresh_donors) => {
+    console.log("in toggleAddDonor");
+    if(refresh_donors === true){
+      console.log("in refresh_donors");
+      setDataFetched(false);
+      getDonors();
+    }
     setShowAddDonor(!showAddDonor);
   };
 
   const toggleAddFoodBank = () => {
     setShowAddFoodBank(!showAddFoodBank);
   };
+
+  const displayReceiveStatus = () => {
+    console.log("in displayReceiveStatus");
+    if(receiveStatus !== null) {
+      return (
+        <div
+          style={{
+            // border: "2px solid #E7404A",
+            // border: '1px dashed',
+            // padding: '20px',
+            height: '100vh',
+            width: '100vw',
+            position: 'fixed',
+            top: '0',
+            left: '0',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: '110',
+            backgroundColor: 'rgb(255,255,255,0.5)'
+          }}
+        >
+          {receiveStatus === RECEIVE_WAITING &&
+            <div
+              style={{
+                border: "2px solid #E7404A",
+                padding: '20px',
+                zIndex: '111',
+                backgroundColor: 'white',
+                borderRadius: '15px',
+                textAlign: 'center'
+              }}
+            >
+              <h3><strong>Receiving Donation</strong></h3><br/>
+              <span>Please wait...</span>
+            </div>
+          }
+          {receiveStatus === RECEIVE_SUCCESS &&
+            <div
+              style={{
+                border: "2px solid #E7404A",
+                padding: '20px',
+                zIndex: '111',
+                backgroundColor: 'white',
+                borderRadius: '15px',
+                textAlign: 'center'
+              }}
+            >
+              <h3><strong>Success</strong></h3>
+              <span style={{display: 'block', margin: '20px'}}>Donation received.</span>
+              <button 
+                className={styles.receiveStatusBtn}
+                onClick={() => setReceiveStatus(null)}
+              >
+                OK
+              </button>
+            </div>
+          }
+          {receiveStatus === RECEIVE_FAILURE &&
+            <div
+              style={{
+                border: "2px solid #E7404A",
+                padding: '20px',
+                zIndex: '111',
+                backgroundColor: 'white',
+                borderRadius: '15px',
+                textAlign: 'center'
+              }}
+            >
+              <h3><strong>Error</strong></h3>
+              <span style={{display: 'block', margin: '20px'}}>Failed to add donation.</span>
+              <button 
+                className={styles.receiveStatusBtn}
+                onClick={() => setReceiveStatus(null)}
+              >
+                OK
+              </button>
+            </div>
+          }
+        </div>
+      );
+    } else {
+      return null;
+    }
+  }
 
   // displays modal after all data fetched
 	const displayModal = () => {
@@ -454,6 +545,9 @@ const AddDonation = (props) => {
           overflow: 'auto'
 				}}
 			>
+
+        {displayReceiveStatus()}
+
 				<ModalCloseBtn
 					className={styles.closeBtn}
 					onClick={() => props.toggleShowAddDonation()}
@@ -482,57 +576,6 @@ const AddDonation = (props) => {
               Add Donation
 						</h1>
 					</div>
-
-          {/* <div className={styles.ad_subheader_wrapper}>
-            <h6 className={styles.ad_subheader}>Donor Info</h6>
-          </div>
-
-          <div className={styles.ad_body}>
-            <div className={styles.ad_body_left}>
-              <div className={styles.ad_section_container}>
-								<div className={styles.ad_section_label_wrapper}>
-									<span className={styles.ad_section_label}>Donor First Name</span>
-								</div>
-								<div className={styles.ad_section_input_wrapper}>
-									<input 
-                    className={styles.ad_section_input} 
-                    value={donorFirstName}
-                    onChange={e => setDonorFirstName(e.target.value)}
-                  />
-								</div>
-							</div>
-              <div className={styles.ad_section_container}>
-								<div className={styles.ad_section_label_wrapper}>
-									<span className={styles.ad_section_label}>Donor Last Name</span>
-								</div>
-								<div className={styles.ad_section_input_wrapper}>
-                  <input 
-                    className={styles.ad_section_input} 
-                    value={donorLastName}
-                    onChange={e => setDonorLastName(e.target.value)}
-                  />
-								</div>
-							</div>
-            </div>
-            <div className={styles.ad_body_right}>
-							<div className={styles.ad_section_container}>
-								<div className={styles.ad_section_label_wrapper}>
-									<span className={styles.ad_section_label}>Donor Address</span>
-								</div>
-								<div className={styles.ad_section_input_wrapper}>
-                  <input 
-                    className={styles.ad_section_input} 
-                    value={donorLastName}
-                    onChange={e => setDonorLastName(e.target.value)}
-                  />
-								</div>
-							</div>
-            </div>
-          </div>
-
-          <div className={styles.ad_subheader_wrapper}>
-            <h6 className={styles.ad_subheader}>Donation Info (Receive Table)</h6>
-          </div> */}
 
 					<div className={styles.ad_body}>
 						<div className={styles.ad_body_left}>
@@ -636,13 +679,6 @@ const AddDonation = (props) => {
 										className={styles.ad_section_image}
 										src={photoURL}
 									/>
-									{/* <input
-										type="file"
-										name="upload_file"
-										onChange={(e) => {
-											setPhotoURL(URL.createObjectURL(e.target.files[0]));
-										}}
-									/> */}
 								</div>
 							</div>
 						</div>
