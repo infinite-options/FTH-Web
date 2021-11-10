@@ -157,7 +157,7 @@
   flex-direction: column;
   justify-content: space-between;
   /* margin: 5px 0px; */
-  border: 1px solid orange;
+  /* border: 1px solid orange; */
   margin: 0;
 }
 
@@ -166,7 +166,7 @@
   flex-direction: row;
   justify-content: space-between;
   margin: 10px 0px;
-  border: 1px solid blue;
+  /* border: 1px solid blue; */
 }
 
 .input_container {
@@ -178,7 +178,7 @@
   padding: 0; */
   height: 60px;
   margin: 10px 0;
-  border: 1px solid lime;
+  /* border: 1px solid lime; */
   display: flex;
   align-items: center;
   font-weight: normal;
@@ -213,11 +213,19 @@
   border: 1px solid #e7404a;
   text-align: center;
   cursor: pointer;
-  /* background: url("../../../images/RedDropdown.svg") no-repeat;
-  background-position: right 5px top 50%; */
 }
 .measure_dropdown:focus {
   outline: 0;
+}
+
+.measure_input {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  left: 0;
+  height: 36px;
+  border: 1px solid #e7404a;
+  text-align: center;
 }
 
 .dropdownArrow {
