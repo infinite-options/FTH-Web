@@ -778,6 +778,7 @@ const AddDonation = (props) => {
                     className={styles.ad_section_input}
                     value={receiveDate}
                     onChange={e => setReceiveDate(e.target.value)}
+                    placeholder={"YYYY-MM-DD"}
                   />
 								</div>
 							</div>
@@ -790,6 +791,7 @@ const AddDonation = (props) => {
                     className={styles.ad_section_input}
                     value={availableDate}
                     onChange={e => setAvailableDate(e.target.value)}
+                    placeholder={"YYYY-MM-DD"}
                   />
 								</div>
 							</div>
@@ -802,6 +804,7 @@ const AddDonation = (props) => {
                     className={styles.ad_section_input}
                     value={expDate}
                     onChange={e => setExpDate(e.target.value)}
+                    placeholder={"YYYY-MM-DD"}
                   />
 								</div>
 							</div>

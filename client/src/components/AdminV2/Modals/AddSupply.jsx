@@ -17,41 +17,11 @@ const AddSupply = (props) => {
 
   const [packageUPC, setPackageUPC] = useState(null);
 	const [brandUID, setBrandUID] = useState(null);
-  // const [brandName, setBrandName] = useState(null);
 	const [itemUID, setItemUID] = useState(null);
 	const [itemPhoto, setItemPhoto] = useState(null);
 
   const [receiveStatus, setReceiveStatus] = useState(null);
 
-  // const [newSupply, setNewSupply] = useState({
-  //   sup_brand_uid: "",
-  //   sup_item_uid: "",
-  //   sup_desc: ["", "", "", "", "", ""],
-  //   sup_num: "",
-  //   sup_measure: "",
-  //   detailed_num: "",
-  //   detailed_measure: "",
-  //   item_photo: "",
-  //   package_upc: "",
-  // });
-  // const [newBrand, setNewBrand] = useState({
-  //   brand_name: "",
-  //   brand_contact_first_name: "",
-  //   brand_contact_last_name: "",
-  //   brand_phone_num1: "",
-  //   brand_phone_num2: "",
-  //   brand_address: "",
-  //   brand_unit: "",
-  //   brand_city: "",
-  //   brand_state: "",
-  //   brand_zip: "",
-  // });
-  // const [newItem, setNewItem] = useState({
-  //   item_name: "",
-  //   item_desc: "",
-  //   item_type: "",
-  //   item_tags: [],
-  // });
   const [selectedFile, setSelectedFile] = useState(null);
   const [supplyNonSpecificUnits, setSupplyNonSpecificUnits] = useState(null);
   const [items, setItems] = useState([]);
@@ -63,7 +33,7 @@ const AddSupply = (props) => {
   const [showAddItem, setShowAddItem] = useState(false);
   const [showAddItemTags, setShowAddItemTags] = useState(false);
   const [showAddBrand, setShowAddBrand] = useState(false);
-  // const [showAddSupply, setShowAddSupply] = useState(false);
+
   const [massUnits, setMassUnits] = useState(null);
   const [volumeUnits, setVolumeUnits] = useState(null);
   const [lengthUnits, setLengthUnits] = useState(null);
@@ -95,99 +65,6 @@ const AddSupply = (props) => {
     return uniqueItems.filter((item) => item.item_uid === id)[0]
       .item_name;
   };
-
-  // const editNewSupply = (field, value) => {
-  //   const newItemDesc = [...newSupply.sup_desc];
-
-  //   if (field === "sup_brand_uid") newItemDesc[0] = getBrandNameByID(value);
-  //   // if (field === "sup_brand_uid") newItemDesc[0] = getBrandByName(value);
-  //   else if (field === "sup_item_uid") newItemDesc[1] = getItemNameByID(value);
-  //   // else if (field === "sup_item_uid") newItemDesc[1] = getItemByName(value);
-  //   else if (field === "sup_num") newItemDesc[2] = value;
-  //   else if (field === "sup_measure") newItemDesc[3] = value;
-  //   else if (field === "detailed_num") newItemDesc[4] = value;
-  //   else if (field === "detailed_measure") newItemDesc[5] = value;
-
-  //   const updatedSupply = {
-  //     ...newSupply,
-  //     sup_desc: newItemDesc,
-  //     [field]: value,
-  //   };
-  //   setNewSupply(updatedSupply);
-  // };
-
-  // const getNewSupplyDesc = () => {
-  //   const descArr = newSupply.sup_desc;
-  //   const descStr = `${descArr[0]} ${descArr[1]}, ${descArr[2]} ${descArr[3]}, ${descArr[4]} ${descArr[5]}`;
-  //   return descStr;
-  // };
-
-  // const postNewSupply = () => {
-  //   const supplyFormData = new FormData();
-
-  //   if (selectedFile === null) {
-  //     alert("invalid inputs");
-  //     return;
-  //   }
-
-  //   for (const field of Object.keys(newSupply)) {
-  //     if (field !== "sup_desc" && newSupply[field] === "") {
-  //       alert(`invalid inputs: ${field}`);
-  //       return;
-  //     }
-
-  //     if (field === "sup_desc") {
-  //       supplyFormData.append(field, getNewSupplyDesc());
-  //     } else if (field === "item_photo") {
-  //       supplyFormData.append(field, selectedFile);
-  //     } else {
-  //       supplyFormData.append(field, newSupply[field]);
-  //     }
-  //   }
-
-  //   // console.log("posting new supply: ", supplyFormData.values());
-  //   // for (var value of supplyFormData.values()) {
-  //   //   console.log("new supply: ", value);
-  //   // }
-  //   for(var pair of supplyFormData.entries()) {
-  //     console.log("entry: ", pair[0]+ ', '+ pair[1]);
-  //   }
-    // axios
-    //   .post(`${API_URL}add_supply`, supplyFormData)
-    //   .then((response) => {
-    //     if (response.status === 200) {
-    //       props.toggleAddSupply(true);
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     if (err.response) {
-    //       console.log(err.response);
-    //     }
-    //     console.log(err);
-    //   });
-  // };
-
-  // const [newSupply, setNewSupply] = useState({
-  //   sup_brand_uid: "",
-  //   sup_item_uid: "",
-  //   sup_desc: ["", "", "", "", "", ""],
-  //   sup_num: "",
-  //   sup_measure: "",
-  //   detailed_num: "",
-  //   detailed_measure: "",
-  //   item_photo: "",
-  //   package_upc: "",
-  // });
-
-        // sup_brand_uid: brandUID,
-      // sup_item_uid: itemUID,
-      // sup_desc: "",
-      // sup_type: "Package",
-      // sup_num: "",
-      // sup_measure = request.form.get('sup_measure')
-      // sup_unit = "Package"
-      // detailed_num = request.form.get('detailed_num')
-      // detailed_measure = data.get('detailed_measure')
 
   const formatSupplyDescription = (brand_uid, item_uid, measure) => {
     if(brand_uid === null || item_uid === null || measure === null) {return '<error>'}
@@ -401,22 +278,6 @@ const AddSupply = (props) => {
     }
   }
 
-  // const getItemTypes = () => {
-  //   axios
-  //     .get(`${API_URL}get_types_list`)
-  //     .then((response) => {
-  //       const typesList = response.data.result;
-  //       // dispatch({ type: "GET_ITEM_TYPE_LIST", payload: typesList });
-  //       setItemTypeList(typesList);
-  //     })
-  //     .catch((err) => {
-  //       if (err.response) {
-  //         console.log(err.response);
-  //       }
-  //       console.log(err);
-  //     });
-  // };
-
   const getSupplyModalData = () => {
     console.log("in getSupplyModalData");
     getSupplyUnits();
@@ -438,63 +299,6 @@ const AddSupply = (props) => {
     volumeUnits, lengthUnits, eachUnits, massUnits,
     supplyNonSpecificUnits, uniqueBrands, uniqueItems
   ]);
-
-  // const toggleAddBrand = () => {
-  //   if (showAddBrand) {
-  //     getSupplyModalData();
-  //     // setNewBrand({
-  //     //   brand_name: "",
-  //     //   brand_contact_first_name: "",
-  //     //   brand_contact_last_name: "",
-  //     //   brand_phone_num1: "",
-  //     //   brand_phone_num2: "",
-  //     //   brand_address: "",
-  //     //   brand_unit: "",
-  //     //   brand_city: "",
-  //     //   brand_state: "",
-  //     //   brand_zip: "",
-  //     // });
-  //   } else {
-  //   }
-
-  //   setShowAddBrand(!showAddBrand);
-  //   // setShowAddSupply(!showAddSupply);
-  //   props.toggleAddSupply();
-  // };
-
-  // const toggleAddItem = () => {
-  //   if (showAddItem) {
-  //     getSupplyModalData();
-  //     itemTagList.forEach((itemTag) => {
-  //       itemTag.active = 0;
-  //     });
-  //     setNewItem({
-  //       item_name: "",
-  //       item_desc: "",
-  //       item_type: "",
-  //       item_tags: [],
-  //     });
-  //   } else {
-  //     getItemTypes();
-  //   }
-
-  //   setShowAddItem(!showAddItem);
-  //   // setShowAddSupply(!showAddSupply);
-  //   props.toggleAddSupply();
-  // };
-
-  // const foodBankOptions = () => {
-  //   var foodBankOptions = [<option disabled selected value> -- select an option -- </option>];
-  //   console.log("foodBanks: ", foodBanks);
-  //   foodBanks.forEach((fb, index) => {
-  //     foodBankOptions.push(
-  //       <option key={index} value={fb.business_uid}>
-  //         {fb.business_name + " (" + fb.business_uid.substring(4) + ")"}
-  //       </option>
-  //     );
-  //   });
-  //   return foodBankOptions;
-  // }
 
   const smallestMeasureOptions = () => {
     let opts = [<option disabled selected value> -- </option>];

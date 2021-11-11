@@ -103,6 +103,9 @@
 .ad_section_input:focus {
   outline: none;
 }
+.ad_section_input::placeholder {
+  opacity: 0.5;
+}
 
 .ad_section_dropdown {
   border: 1px solid #e7404a;

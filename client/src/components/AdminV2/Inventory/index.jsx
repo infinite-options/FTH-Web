@@ -93,7 +93,145 @@ function reducer(state, action) {
 function Inventory({ history, ...props }) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const carouselRef = useRef();
+
+  const [massUnits, setMassUnits] = useState(null);
+  const [volumeUnits, setVolumeUnits] = useState(null);
+  const [lengthUnits, setLengthUnits] = useState(null);
+  const [eachUnits, setEachUnits] = useState(null);
+  const [conversionUnits, setConversionUnits] = useState([]);
+
+  const [items, setItems] = useState(null);
+  const [units, setUnits] = useState(null);
   const [inventory, setInventory] = useState(null);
+
+  const getItems = (business_uid) => {
+    axios
+      .get(`${API_URL}getItems?receive_business_uid=${business_uid}`)
+      .then((res) => {
+        console.log("getItems res: ", res);
+        // setInventory(res.data.result);
+        setItems(res.data.result);
+      })
+      .catch((err) => {
+        if (err.response) {
+          // eslint-disable-next-line no-console
+          console.log(err.response);
+        }
+        // eslint-disable-next-line no-console
+        console.log(err);
+      });
+  }
+
+  const getSupplyUnits = () => {
+    axios
+      .get(`${API_URL}get_units_list`)
+      .then((response) => {
+        console.log("gul res: ", response);
+        const units = response.data.result;
+        setConversionUnits(units);
+        let tempMassUnits = [];
+        let tempVolumeUnits = [];
+        let tempLengthUnits = [];
+        let tempEachUnits = [];
+        units.forEach((unit) => {
+          if(unit.type === "mass") {
+            tempMassUnits.push(unit);
+          } else if (unit.type === "volume") {
+            tempVolumeUnits.push(unit);
+          } else if (unit.type === "length") {
+            tempLengthUnits.push(unit);
+          } else if (unit.type === "each") {
+            tempEachUnits.push(unit);
+          }
+        });
+        setMassUnits(tempMassUnits);
+        setVolumeUnits(tempVolumeUnits);
+        setLengthUnits(tempLengthUnits);
+        setEachUnits(tempEachUnits);
+      })
+      .catch((err) => {
+        if (err.response) {
+          console.log(err.response);
+        }
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    if(
+      items !== null &&
+      massUnits !== null &&
+      volumeUnits !== null &&
+      lengthUnits !== null &&
+      eachUnits !== null
+    ) {
+      // console.log("setting inventory...");
+      // console.log("items: ", items);
+      let tempInventory = [];
+      items.forEach((item) => {
+        // console.log("\nitem: ", item);
+        let itemCopy = {...item};
+        let distribution_units = [];
+        // console.log("itemCopy: ", itemCopy);
+        // console.log("item final: ", itemCopy);
+
+        if(itemCopy.volume_measure !== null && itemCopy.volume_num !== null) {
+          distribution_units.push({
+            type: "Volume", 
+            measure: itemCopy.volume_measure,
+            qty: itemCopy.volume_num
+          });
+          if(distribution_units.length === 1) {
+            itemCopy.distribution_unit = "Volume";
+          }
+        }
+
+        if(itemCopy.mass_measure !== null && itemCopy.mass_num !== null) {
+          distribution_units.push({
+            type: "Mass", 
+            measure: itemCopy.mass_measure,
+            qty: itemCopy.mass_num
+          });
+          if(distribution_units.length === 1) {
+            itemCopy.distribution_unit = "Mass";
+          }
+        }
+
+        if(itemCopy.each_measure !== null && itemCopy.each_num !== null) {
+          distribution_units.push({
+            type: "Each", 
+            measure: itemCopy.each_measure,
+            qty: itemCopy.each_num
+          });
+          if(distribution_units.length === 1) {
+            itemCopy.distribution_unit = "Each";
+          }
+        }
+
+        if(itemCopy.length_measure !== null && itemCopy.length_num !== null) {
+          distribution_units.push({
+            type: "Length", 
+            measure: itemCopy.length_measure,
+            qty: itemCopy.length_num
+          });
+          if(distribution_units.length === 1) {
+            itemCopy.distribution_unit = "Length";
+          }
+        }
+
+        itemCopy.distribution_units = distribution_units;
+
+        // only push to inventory if package has valid data in measures column
+        if(distribution_units.length > 0) {
+          tempInventory.push(itemCopy)
+        }
+
+      });
+      // console.log("\nfinal inventory: ", tempInventory);
+
+      setInventory(tempInventory);
+    }
+  }, [items, massUnits, volumeUnits, lengthUnits, eachUnits]);
 
   // Check for log in
   useEffect(() => {
@@ -114,20 +252,23 @@ function Inventory({ history, ...props }) {
         history.push("/meal-plan");
       }
 
-      axios
-        .get(`${API_URL}getItems?business_uid=${role}`)
-        .then((res) => {
-          console.log("getItems res: ", res);
-          setInventory(res.data.result);
-        })
-        .catch((err) => {
-          if (err.response) {
-            // eslint-disable-next-line no-console
-            console.log(err.response);
-          }
-          // eslint-disable-next-line no-console
-          console.log(err);
-        });
+      getItems(role);
+      getSupplyUnits();
+
+      // axios
+      //   .get(`${API_URL}getItems?receive_business_uid=${role}`)
+      //   .then((res) => {
+      //     console.log("getItems res: ", res);
+      //     setInventory(res.data.result);
+      //   })
+      //   .catch((err) => {
+      //     if (err.response) {
+      //       // eslint-disable-next-line no-console
+      //       console.log(err.response);
+      //     }
+      //     // eslint-disable-next-line no-console
+      //     console.log(err);
+      //   });
 
     } else {
       // Reroute to log in page
@@ -228,8 +369,122 @@ function Inventory({ history, ...props }) {
     dispatch({ type: "LOAD_CAROUSEL" });
   }
 
+  const unitOptions = (item) => {
+    // console.log("(unitOptions) uid: ", uid);
+    // console.log("(unitOptions) inventory: ", inventory);
+    // var unitOptions = [<option disabled selected value> -- select an option -- </option>];
+    let unitDropdown = [];
+    item.distribution_units.forEach((dist, index) => {
+      unitDropdown.push(
+        <option key={index} value={dist.type}>
+          {dist.type}
+        </option>
+      );
+    });
+    // return brandOptions;
+    return unitDropdown;
+  }
+
+  const setDistributionUnit = (unit, uid) => {
+    let newInventory = [...inventory];
+    // console.log("(sdu) uid: ", uid);
+    // console.log("(sdu) unit: ", unit);
+    let itemIndex = inventory.findIndex((inv) => {
+      // console.log("dist: ", dist);
+      return inv.supply_uid === uid;
+    });
+    // console.log("item index: ", itemIndex);
+    let itemCopy = {...inventory[itemIndex]};
+    // console.log("item copy: ", itemCopy);
+    itemCopy.distribution_unit = unit;
+    newInventory[itemIndex] = itemCopy;
+    setInventory(newInventory);
+  }
+
+  const displayUnitNum = (item) => {
+    // console.log("(dun) item: ", item);
+    let unit = item.distribution_units.find((dist) => {
+      // console.log("dist: ", dist);
+      return dist.type === item.distribution_unit;
+    })
+    // console.log("unit: ", unit);
+    return unit.qty;
+  }
+
+  const displayUnitMeasure = (item) => {
+    // console.log("(dum) item: ", item);
+    let unit = item.distribution_units.find((dist) => {
+      // console.log("dist: ", dist);
+      return dist.type === item.distribution_unit;
+    })
+    // console.log("unit: ", unit);
+    return unit.measure;
+  }
+
+  const calculateDistInv = (item) => {
+    // {displayUnitNum(item)}
+    //                           </TableCell>
+    //                           <TableCell>
+    //                             {displayUnitMeasure(item)}
+    console.log("\n(cdi) package qty: ", item.qty_received);
+    console.log("(cdi) conversion units: ", conversionUnits);
+    console.log("(cdi) unit num: ", displayUnitNum(item));
+    console.log("(cdi) unit measure: ", displayUnitMeasure(item));
+
+    return 1;
+  }
+
+  const massOptions = () => {
+    let opts = [<option disabled selected value> -- </option>];
+    massUnits.forEach((unit, index) => {
+      opts.push(
+        <option key={index} value={unit.recipe_unit}>
+          {unit.recipe_unit}
+        </option>
+      );
+    });
+    return opts;
+  }
+
+  const volumeOptions = () => {
+    let opts = [<option disabled selected value> -- </option>];
+    volumeUnits.forEach((unit, index) => {
+      opts.push(
+        <option key={index} value={unit.recipe_unit}>
+          {unit.recipe_unit}
+        </option>
+      );
+    });
+    return opts;
+  }
+
+  const lengthOptions = () => {
+    let opts = [<option disabled selected value> -- </option>];
+    lengthUnits.forEach((unit, index) => {
+      opts.push(
+        <option key={index} value={unit.recipe_unit}>
+          {unit.recipe_unit}
+        </option>
+      );
+    });
+    return opts;
+  }
+
+  const eachOptions = () => {
+    let opts = [<option disabled selected value> -- </option>];
+    eachUnits.forEach((unit, index) => {
+      opts.push(
+        <option key={index} value={unit.recipe_unit}>
+          {unit.recipe_unit}
+        </option>
+      );
+    });
+    return opts;
+  }
+
   return (
     <div>
+      {console.log("(render) inventory: ", inventory)}
       <AdminNavBar currentPage={"inventory"} />
       <Container fluid className={styles.container}>
         <Row
@@ -363,6 +618,25 @@ function Inventory({ history, ...props }) {
                               fontSize: "15px",
                             }}
                           >
+                            Supply UID
+                          </TableSortLabel>
+                        </TableCell>
+                        <TableCell
+                          style={{
+                            color: "#E7404A",
+                            border: "none",
+                            textAlign: "center",
+                            fontSize: "15px",
+                          }}
+                        >
+                          <TableSortLabel
+                            style={{
+                              color: "#E7404A",
+                              border: "none",
+                              textAlign: "center",
+                              fontSize: "15px",
+                            }}
+                          >
                             Package
                           </TableSortLabel>
                         </TableCell>
@@ -458,7 +732,7 @@ function Inventory({ history, ...props }) {
                               fontSize: "15px",
                             }}
                           >
-                            Name
+                            Distribution Unit
                           </TableSortLabel>
                         </TableCell>
                         <TableCell
@@ -477,7 +751,45 @@ function Inventory({ history, ...props }) {
                               fontSize: "15px",
                             }}
                           >
-                            Distribution Unit
+                            Item Qty.
+                          </TableSortLabel>
+                        </TableCell>
+                        <TableCell
+                          style={{
+                            color: "#E7404A",
+                            border: "none",
+                            textAlign: "center",
+                            fontSize: "15px",
+                          }}
+                        >
+                          <TableSortLabel
+                            style={{
+                              color: "#E7404A",
+                              border: "none",
+                              textAlign: "center",
+                              fontSize: "15px",
+                            }}
+                          >
+                            Item Measure
+                          </TableSortLabel>
+                        </TableCell>
+                        <TableCell
+                          style={{
+                            color: "#E7404A",
+                            border: "none",
+                            textAlign: "center",
+                            fontSize: "15px",
+                          }}
+                        >
+                          <TableSortLabel
+                            style={{
+                              color: "#E7404A",
+                              border: "none",
+                              textAlign: "center",
+                              fontSize: "15px",
+                            }}
+                          >
+                            Name
                           </TableSortLabel>
                         </TableCell>
                         <TableCell
@@ -515,45 +827,7 @@ function Inventory({ history, ...props }) {
                               fontSize: "15px",
                             }}
                           >
-                            Item
-                          </TableSortLabel>
-                        </TableCell>
-                        <TableCell
-                          style={{
-                            color: "#E7404A",
-                            border: "none",
-                            textAlign: "center",
-                            fontSize: "15px",
-                          }}
-                        >
-                          <TableSortLabel
-                            style={{
-                              color: "#E7404A",
-                              border: "none",
-                              textAlign: "center",
-                              fontSize: "15px",
-                            }}
-                          >
                             Distribution Inventory
-                          </TableSortLabel>
-                        </TableCell>
-                        <TableCell
-                          style={{
-                            color: "#E7404A",
-                            border: "none",
-                            textAlign: "center",
-                            fontSize: "15px",
-                          }}
-                        >
-                          <TableSortLabel
-                            style={{
-                              color: "#E7404A",
-                              border: "none",
-                              textAlign: "center",
-                              fontSize: "15px",
-                            }}
-                          >
-                            Actions
                           </TableSortLabel>
                         </TableCell>
                       </TableRow>
@@ -563,6 +837,7 @@ function Inventory({ history, ...props }) {
                         inventory.map((item, index) => {
                           return (
                             <TableRow key={index}>
+                              <TableCell>{item.supply_uid}</TableCell>
                               <TableCell>{item.sup_desc}</TableCell>
                               <TableCell>
                                 {item.item_photo && (
@@ -574,13 +849,69 @@ function Inventory({ history, ...props }) {
                               </TableCell>
                               <TableCell></TableCell>
                               <TableCell>{item.item_type}</TableCell>
-                              <TableCell>{item.qty_received}</TableCell>
-                              <TableCell>{item.item_name}</TableCell>
-                              <TableCell></TableCell>
-                              <TableCell></TableCell>
+                              <TableCell className={styles.tableCell}>
+                                <span
+                                  style={{
+                                    fontWeight: 'bold',
+                                    fontSize: '30px'
+                                  }}
+                                >
+                                  {item.qty_received}
+                                </span>
+                              </TableCell>
+                              <TableCell
+                                style={{
+                                  // color: "#E7404A",
+                                  // border: "1px solid green",
+                                  // position: 'relative'
+                                  // textAlign: "center",
+                                  // fontSize: "15px",
+                                  // display: 'flex'
+                                  // padding: '0'
+                                }}
+                              >
+                                <div 
+                                  style={{
+                                    position: 'relative',
+                                    // display: 'table',
+                                    // alignItems: 'center',
+                                    // height: '100%',
+                                    width: '100%',
+                                    // border: '1px dashed'
+                                  }}
+                                >
+                                  <select
+                                    value={item.distribution_unit}
+                                    onChange={e => {
+                                      // setSmallestMeasure(e.target.value);
+                                      console.log("dist unit: ", e.target.value);
+                                      setDistributionUnit(e.target.value, item.supply_uid);
+                                    }}
+                                    className={styles.unit_dropdown}
+                                  >
+                                    {unitOptions(item)}
+                                  </select>
+                                  <div className={styles.dropdownArrow}/>
+                                </div>
+                              </TableCell>
+                              <TableCell>
+                                {displayUnitNum(item)}
+                              </TableCell>
+                              <TableCell>
+                                {displayUnitMeasure(item)}
+                              </TableCell>
                               <TableCell>{item.item_desc}</TableCell>
                               <TableCell></TableCell>
-                              <TableCell></TableCell>
+                              <TableCell className={styles.tableCell}>
+                                <span
+                                  style={{
+                                    fontWeight: 'bold',
+                                    fontSize: '30px'
+                                  }}
+                                >
+                                  {calculateDistInv(item)}
+                                </span>
+                              </TableCell>
                               {/* <TableCell>{item.brand_name}</TableCell>
                               <TableCell>{item.item_name}</TableCell>
                               <TableCell>{item.sup_desc}</TableCell>
