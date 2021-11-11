@@ -9,12 +9,19 @@ import AddBrand from '../Modals/AddBrand';
 import AddItem from '../Modals/AddItem';
 import AddTags from '../Modals/AddTags';
 
+const RECEIVE_WAITING = 0;
+const RECEIVE_SUCCESS = -1;
+const RECEIVE_FAILURE = 1;
+
 const AddSupply = (props) => {
 
   const [packageUPC, setPackageUPC] = useState(null);
 	const [brandUID, setBrandUID] = useState(null);
+  // const [brandName, setBrandName] = useState(null);
 	const [itemUID, setItemUID] = useState(null);
 	const [itemPhoto, setItemPhoto] = useState(null);
+
+  const [receiveStatus, setReceiveStatus] = useState(null);
 
   // const [newSupply, setNewSupply] = useState({
   //   sup_brand_uid: "",
@@ -79,14 +86,15 @@ const AddSupply = (props) => {
     getSupplyModalData();
   }, []);
 
-  // const getBrandNameByID = (id) => {
-  //   return uniqueBrands.filter((brand) => brand.brand_uid === id)[0]
-  //     .brand_name;
-  // };
-  // const getItemNameByID = (id) => {
-  //   return uniqueItems.filter((item) => item.item_uid === id)[0]
-  //     .item_name;
-  // };
+  const getBrandNameByID = (id) => {
+    return uniqueBrands.filter((brand) => brand.brand_uid === id)[0]
+      .brand_name;
+  };
+
+  const getItemNameByID = (id) => {
+    return uniqueItems.filter((item) => item.item_uid === id)[0]
+      .item_name;
+  };
 
   // const editNewSupply = (field, value) => {
   //   const newItemDesc = [...newSupply.sup_desc];
@@ -181,25 +189,70 @@ const AddSupply = (props) => {
       // detailed_num = request.form.get('detailed_num')
       // detailed_measure = data.get('detailed_measure')
 
+  const formatSupplyDescription = (brand_uid, item_uid, measure) => {
+    if(brand_uid === null || item_uid === null || measure === null) {return '<error>'}
+    let formattedStr = measure + " of " + getBrandNameByID(brandUID) + " " + getItemNameByID(itemUID) + " (";
+    let measures = 0;
+    if(
+      volumeNum !== null &&
+      volumeMeasure !== null
+    ) {
+      formattedStr = formattedStr + volumeNum + " " + volumeMeasure;
+      measures++;
+    }
+    if (
+      massNum !== null &&
+      massMeasure !== null
+    ) {
+      if(measures > 0) {
+        formattedStr = formattedStr + ", " + massNum + " " + massMeasure;
+      } else {
+        formattedStr = formattedStr + massNum + " " + massMeasure;
+      }
+      measures++;
+    }
+    if (
+      lengthNum !== null &&
+      lengthMeasure !== null
+    ) {
+      if(measures > 0) {
+        formattedStr = formattedStr + ", " + lengthNum + " " + lengthMeasure;
+      } else {
+        formattedStr = formattedStr + lengthNum + " " + lengthMeasure;
+      }
+      measures++;
+    }
+    if (
+      eachNum !== null &&
+      eachMeasure !== null
+    ) {
+      if(measures > 0) {
+        formattedStr = formattedStr + ", " + eachNum + " " + eachMeasure;
+      } else {
+        formattedStr = formattedStr + eachNum + " " + eachMeasure;
+      }
+      measures++;
+    }
+    formattedStr += ")"
+    return formattedStr;
+  }
+
   const postNewSupply = () => {
-    // let supplyFormData = {
-    //   package_upc: packageUPC,
-      // sup_brand_uid: brandUID,
-      // sup_item_uid: itemUID,
-      // sup_measure: smallestMeasure,
-      // mass_num: massNum,
-      // mass_measure: massMeasure,
-      // volume_num: volumeNum,
-      // volume_measure: volumeMeasure,
-      // length_num: lengthNum,
-      // leangth_measure: lengthMeasure,
-      // each_num: eachNum,
-      // each_measure: eachMeasure
-    // }
+    console.log("clicked add item: ", smallestMeasure);
+    // console.log("desc: ", formatSupplyDescription());
+    let sup_desc = formatSupplyDescription(
+      brandUID,
+      itemUID,
+      smallestMeasure
+    );
+    console.log("supply description: ", sup_desc);
+    
+    setReceiveStatus(RECEIVE_WAITING);
     const supplyFormData = new FormData();
     supplyFormData.append('package_upc', packageUPC);
     supplyFormData.append('sup_brand_uid', brandUID);
     supplyFormData.append('sup_item_uid', itemUID);
+    supplyFormData.append('sup_desc', sup_desc);
     supplyFormData.append('sup_measure', smallestMeasure);
     if(massNum !== null) supplyFormData.append('mass_num', massNum);
     if(massMeasure !== null) supplyFormData.append('mass_measure', massMeasure);
@@ -215,13 +268,16 @@ const AddSupply = (props) => {
       .then((response) => {
         if (response.status === 200) {
           props.toggleAddSupply(true);
+          setReceiveStatus(null);
         }
+        setReceiveStatus(null);
       })
       .catch((err) => {
         if (err.response) {
           console.log(err.response);
         }
         console.log(err);
+        setReceiveStatus(null);
       });
   }
 
@@ -309,6 +365,41 @@ const AddSupply = (props) => {
         console.log(err);
       });
   };
+
+  const disableReceiveSupply = () => {
+    if(
+      receiveStatus !== null || selectedFile === null ||
+      brandUID === null || itemUID === null || 
+      packageUPC === null || packageUPC === '' ||
+      smallestMeasure === null ||
+      (
+        (
+          volumeNum === null || 
+          volumeMeasure === null ||
+          volumeNum === ''
+        ) &&
+        (
+          massNum === null || 
+          massMeasure === null ||
+          massNum === ''
+        ) &&
+        (
+          lengthNum === null || 
+          lengthMeasure === null ||
+          lengthNum === ''
+        ) &&
+        (
+          eachNum === null || 
+          eachMeasure === null ||
+          eachNum === ''
+        )
+      )
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   // const getItemTypes = () => {
   //   axios
@@ -574,6 +665,11 @@ const AddSupply = (props) => {
                 <select
                   className={styles.modalDropdown}
                   style={{ width: "253px" }}
+                  // onChange={event => {
+                  //   console.log("click: ", event.target.value);
+                  //   setBrandUID(event.target.value.brand_uid);
+                  //   setBrandName(event.target.value.brand_name);
+                  // }}
                   onChange={event => setBrandUID(event.target.value)}
                   //   editNewSupply("sup_brand_uid", event.target.value);
                   // }}
@@ -947,6 +1043,7 @@ const AddSupply = (props) => {
                 <button
                   className={styles.redButton}
                   onClick={() => postNewSupply()}
+                  disabled={disableReceiveSupply()}
                 >
                   Add Item
                 </button>
