@@ -9,9 +9,9 @@ import AddBrand from '../Modals/AddBrand';
 import AddItem from '../Modals/AddItem';
 import AddTags from '../Modals/AddTags';
 
-const RECEIVE_WAITING = 0;
-const RECEIVE_SUCCESS = -1;
-const RECEIVE_FAILURE = 1;
+// const RECEIVE_WAITING = 0;
+// const RECEIVE_SUCCESS = -1;
+// const RECEIVE_FAILURE = 1;
 
 const AddSupply = (props) => {
 
@@ -20,7 +20,8 @@ const AddSupply = (props) => {
 	const [itemUID, setItemUID] = useState(null);
 	const [itemPhoto, setItemPhoto] = useState(null);
 
-  const [receiveStatus, setReceiveStatus] = useState(null);
+  // const [receiveStatus, setReceiveStatus] = useState(null);
+  const [postsPending, setPostsPending] = useState(0);
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [supplyNonSpecificUnits, setSupplyNonSpecificUnits] = useState(null);
@@ -124,37 +125,133 @@ const AddSupply = (props) => {
     );
     console.log("supply description: ", sup_desc);
     
-    setReceiveStatus(RECEIVE_WAITING);
+    // setReceiveStatus(RECEIVE_WAITING);
     const supplyFormData = new FormData();
     supplyFormData.append('package_upc', packageUPC);
     supplyFormData.append('sup_brand_uid', brandUID);
     supplyFormData.append('sup_item_uid', itemUID);
     supplyFormData.append('sup_desc', sup_desc);
     supplyFormData.append('sup_measure', smallestMeasure);
-    if(massNum !== null) supplyFormData.append('mass_num', massNum);
-    if(massMeasure !== null) supplyFormData.append('mass_measure', massMeasure);
-    if(volumeNum !== null) supplyFormData.append('volume_num', volumeNum);
-    if(volumeMeasure !== null) supplyFormData.append('volume_measure', volumeMeasure);
-    if(lengthNum !== null) supplyFormData.append('length_num', lengthNum);
-    if(lengthMeasure !== null) supplyFormData.append('length_measure', lengthMeasure);
-    if(eachNum !== null) supplyFormData.append('each_num', eachNum);
-    if(eachMeasure !== null) supplyFormData.append('each_measure', eachMeasure);
+    // if(massNum !== null) supplyFormData.append('mass_num', massNum);
+    // if(massMeasure !== null) supplyFormData.append('mass_measure', massMeasure);
+    // if(volumeNum !== null) supplyFormData.append('volume_num', volumeNum);
+    // if(volumeMeasure !== null) supplyFormData.append('volume_measure', volumeMeasure);
+    // if(lengthNum !== null) supplyFormData.append('length_num', lengthNum);
+    // if(lengthMeasure !== null) supplyFormData.append('length_measure', lengthMeasure);
+    // if(eachNum !== null) supplyFormData.append('each_num', eachNum);
+    // if(eachMeasure !== null) supplyFormData.append('each_measure', eachMeasure);
+    // if(selectedFile !== null) supplyFormData.append('item_photo', selectedFile);
+    if(massNum !== null && massMeasure !== null) {
+      supplyFormData.append('mass_num', massNum);
+      supplyFormData.append('mass_measure', massMeasure);
+
+      // const massDistForm = new FormData();
+
+      // setPostsPending(postsPending + 1);
+      // axios
+      //   .post(`${API_URL}add_distOptions`, massDistForm)
+      //   .then((response) => {
+      //     setPostsPending(postsPending - 1);
+      //   })
+      //   .catch((err) => {
+      //     if (err.response) {
+      //       console.log(err.response);
+      //     }
+      //     console.log(err);
+      //     setPostsPending(postsPending - 1);
+      //   });
+    }
+
+    if(volumeNum !== null && volumeMeasure !== null) {
+      supplyFormData.append('volume_num', volumeNum);
+      supplyFormData.append('volume_measure', volumeMeasure);
+
+      // const volumeDistForm = new FormData();
+
+      // setPostsPending(postsPending + 1);
+      // axios
+      //   .post(`${API_URL}add_distOptions`, volumeDistForm)
+      //   .then((response) => {
+      //     setPostsPending(postsPending - 1);
+      //   })
+      //   .catch((err) => {
+      //     if (err.response) {
+      //       console.log(err.response);
+      //     }
+      //     console.log(err);
+      //     setPostsPending(postsPending - 1);
+      //   });
+    }
+
+    if(lengthNum !== null && lengthMeasure !== null) {
+      supplyFormData.append('length_num', lengthNum);
+      supplyFormData.append('length_measure', lengthMeasure);
+
+      // const lengthDistForm = new FormData();
+
+      // setPostsPending(postsPending + 1);
+      // axios
+      //   .post(`${API_URL}add_distOptions`, lengthDistForm)
+      //   .then((response) => {
+      //     setPostsPending(postsPending - 1);
+      //   })
+      //   .catch((err) => {
+      //     if (err.response) {
+      //       console.log(err.response);
+      //     }
+      //     console.log(err);
+      //     setPostsPending(postsPending - 1);
+      //   });
+    }
+
+    if(eachNum !== null && eachMeasure !== null) {
+      supplyFormData.append('each_num', eachNum);
+      supplyFormData.append('each_measure', eachMeasure);
+
+      // const eachDistForm = new FormData();
+
+      // dist_supply_uid = request.form.get('dist_supply_uid')
+      // dist_desc = request.form.get('dist_desc')
+      // dist_type = request.form.get('dist_type')
+      // dist_num = request.form.get('dist_num')
+      // dist_measure = request.form.get('dist_measure')
+      // dist_unit = request.form.get('dist_unit')
+      // dist_item_photo = request.files.get('dist_item_photo') if request.files.get(
+      //     'dist_item_photo') is not None else 'NULL'
+      // eachDistForm.append('dist_supply_uid', );
+
+      // setPostsPending(postsPending + 1);
+      // axios
+      //   .post(`${API_URL}add_distOptions`, eachDistForm)
+      //   .then((response) => {
+      //     setPostsPending(postsPending - 1);
+      //   })
+      //   .catch((err) => {
+      //     if (err.response) {
+      //       console.log(err.response);
+      //     }
+      //     console.log(err);
+      //     setPostsPending(postsPending - 1);
+      //   });
+    }
+
     if(selectedFile !== null) supplyFormData.append('item_photo', selectedFile);
+
+    setPostsPending(postsPending + 1);
     axios
       .post(`${API_URL}add_supply`, supplyFormData)
       .then((response) => {
         if (response.status === 200) {
           props.toggleAddSupply(true);
-          setReceiveStatus(null);
         }
-        setReceiveStatus(null);
+        setPostsPending(postsPending - 1);
       })
       .catch((err) => {
         if (err.response) {
           console.log(err.response);
         }
         console.log(err);
-        setReceiveStatus(null);
+        setPostsPending(postsPending - 1);
       });
   }
 
@@ -245,7 +342,7 @@ const AddSupply = (props) => {
 
   const disableReceiveSupply = () => {
     if(
-      receiveStatus !== null || selectedFile === null ||
+      postsPending > 0 || selectedFile === null ||
       brandUID === null || itemUID === null || 
       packageUPC === null || packageUPC === '' ||
       smallestMeasure === null ||
