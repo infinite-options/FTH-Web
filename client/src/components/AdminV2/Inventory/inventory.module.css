@@ -4,6 +4,13 @@
   margin: 0px;
 }
 
+.containerWithMargin {
+  padding: 0px 60px;
+  width: 100%;
+  margin: 0px;
+  margin-bottom: 230px;
+}
+
 .section {
   border-radius: 15px;
   border: 1px solid #e7404a;
@@ -153,6 +160,8 @@ input:checked + .slider:before {
   width: 100%;
   /* border: 1px solid green; */
   cursor: pointer;
+  height: 36px;
+  border: 1px solid #e7404a;
   /* text-align: center; */
   /* padding-right: 26px; */
   /* padding: 5px 26px 5px 5px; */
@@ -169,7 +178,7 @@ input:checked + .slider:before {
   background: url("../../../images/RedDropdown.svg") no-repeat;
   background-size: contain;
   background-color: white;
-  /* background-position: right 0px top 40%;  */
+  background-position: right 0px top 40%; 
   pointer-events: none;
   position: absolute;
   /* bottom: 1px; */
@@ -183,7 +192,7 @@ input:checked + .slider:before {
   /* width: 20px;
   height: 30px; */
   width: 16px;
-  height: 20px;
+  height: 34px;
   /* height: calc(100% - 2px); */
   /* height: 100% */
   /* background-position: right 5px top 50%; */
@@ -201,9 +210,101 @@ input:checked + .slider:before {
   background-position: right 5px top 50%; */
 }
 
+.editBtn {
+  background-image: url("../../../images/Icon material-edit.svg");
+  background-size: 100%;
+  background-position: center;
+  height: 25px;
+  width: 25px;
+  /* back */
+  background-color: rgb(0,0,0,0);
+  border: none;
+  /* border: 1px dashed; */
+}
+
 .tableCell {
   text-align: center;
 }
 /* TableCell {
   text-align: center;
 } */
+
+.editField {
+  margin: 5px;
+  /* border: 1px solid blue; */
+  text-align: center;
+  /* display: inline-block; */
+  display: block;
+}
+
+.editLabel {
+  height: 50px;
+  text-align: center;
+  color: #e7404a;
+  display: block;
+}
+
+.editInput {
+  /* height: 20px; */
+  height: 36px;
+  width: 80px;
+  border: 1px solid #e7404a;
+}
+
+.editValueWrapper {
+  /* border: 1px dashed; */
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* .editValue { */
+  /* display: inline; */
+  /* font-weight: 600; */
+  /* height: 36px; */
+  /* text-align: center; */
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
+/* } */
+.editValueBold {
+  /* display: block; */
+  /* font-weight: 600; */
+  /* height: 36px; */
+  font-size: 24px;
+  font-weight: bold;
+  /* text-align: center; */
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
+}
+
+.editImage {
+  border: 1px solid #e7404a;
+  height: 60px;
+  width: 60px;
+}
+
+.editBtnWhite {
+  background-color: white;
+  border: 1px solid #e7404a;
+  color: #e7404a;
+  padding: 10px;
+  border-radius: 20px;
+  margin: 10px 5px;
+}
+.editBtnWhite:hover {
+  opacity: 0.5;
+}
+
+.editBtnRed {
+  background-color: #e7404a;
+  border: 1px solid #e7404a;
+  color: white;
+  padding: 10px;
+  border-radius: 20px;
+  margin: 10px 5px;
+}
+.editBtnRed:hover {
+  opacity: 0.5;
+}

@@ -104,6 +104,8 @@ function Inventory({ history, ...props }) {
   const [units, setUnits] = useState(null);
   const [inventory, setInventory] = useState(null);
 
+  const [editDistItem, setEditDistItem] = useState(null);
+
   const getItems = (business_uid) => {
     axios
       .get(`${API_URL}getItems?receive_business_uid=${business_uid}`)
@@ -174,6 +176,7 @@ function Inventory({ history, ...props }) {
         let distribution_units = [];
         // console.log("itemCopy: ", itemCopy);
         // console.log("item final: ", itemCopy);
+        let defaultMeasure = "";
 
         if(itemCopy.volume_measure !== null && itemCopy.volume_num !== null) {
           distribution_units.push({
@@ -183,6 +186,7 @@ function Inventory({ history, ...props }) {
           });
           if(distribution_units.length === 1) {
             itemCopy.distribution_unit = "Volume";
+            defaultMeasure = itemCopy.volume_measure;
           }
         }
 
@@ -194,6 +198,7 @@ function Inventory({ history, ...props }) {
           });
           if(distribution_units.length === 1) {
             itemCopy.distribution_unit = "Mass";
+            defaultMeasure = itemCopy.mass_measure;
           }
         }
 
@@ -205,6 +210,7 @@ function Inventory({ history, ...props }) {
           });
           if(distribution_units.length === 1) {
             itemCopy.distribution_unit = "Each";
+            defaultMeasure = itemCopy.each_measure;
           }
         }
 
@@ -216,10 +222,13 @@ function Inventory({ history, ...props }) {
           });
           if(distribution_units.length === 1) {
             itemCopy.distribution_unit = "Length";
+            defaultMeasure = itemCopy.length_measure;
           }
         }
 
         itemCopy.distribution_units = distribution_units;
+        itemCopy.distribution_qty = 1;
+        itemCopy.distribution_measure = defaultMeasure;
 
         // only push to inventory if package has valid data in measures column
         if(distribution_units.length > 0) {
@@ -370,6 +379,7 @@ function Inventory({ history, ...props }) {
   }
 
   const unitOptions = (item) => {
+    console.log("(UO) item: ", item);
     // console.log("(unitOptions) uid: ", uid);
     // console.log("(unitOptions) inventory: ", inventory);
     // var unitOptions = [<option disabled selected value> -- select an option -- </option>];
@@ -385,10 +395,118 @@ function Inventory({ history, ...props }) {
     return unitDropdown;
   }
 
+  const measureOptions = (item) => {
+    if(item.distribution_unit.toUpperCase() === "MASS") {
+      return (
+        <div 
+          style={{
+            position: 'relative',
+            width: '100%'
+          }}
+        >
+          <select
+            value={editDistItem.distribution_measure}
+            onChange={e => {
+              // setSmallestMeasure(e.target.value);
+              console.log("dist unit: ", e.target.value);
+              setEditedMeasure(e.target.value, editDistItem.supply_uid);
+            }}
+            className={styles.unit_dropdown}
+          >
+            {massOptions(editDistItem)}
+          </select>
+          <div className={styles.dropdownArrow}/>
+        </div>
+      );
+    } else if (item.distribution_unit.toUpperCase() === "VOLUME") {
+      return (
+        <div 
+          style={{
+            position: 'relative',
+            width: '100%'
+          }}
+        >
+          <select
+            value={editDistItem.distribution_measure}
+            onChange={e => {
+              // setSmallestMeasure(e.target.value);
+              console.log("dist unit: ", e.target.value);
+              setEditedMeasure(e.target.value, editDistItem.supply_uid);
+            }}
+            className={styles.unit_dropdown}
+          >
+            {volumeOptions(editDistItem)}
+          </select>
+          <div className={styles.dropdownArrow}/>
+        </div>
+      );
+    } else if (item.distribution_unit.toUpperCase() === "EACH") {
+      return (
+        <div 
+          style={{
+            position: 'relative',
+            width: '100%'
+          }}
+        >
+          <select
+            value={editDistItem.distribution_measure}
+            onChange={e => {
+              // setSmallestMeasure(e.target.value);
+              console.log("dist unit: ", e.target.value);
+              setEditedMeasure(e.target.value, editDistItem.supply_uid);
+            }}
+            className={styles.unit_dropdown}
+          >
+            {eachOptions(editDistItem)}
+          </select>
+          <div className={styles.dropdownArrow}/>
+        </div>
+      );
+    } else if (item.distribution_unit.toUpperCase() === "LENGTH") {
+      return (
+        <div 
+          style={{
+            position: 'relative',
+            width: '100%'
+          }}
+        >
+          <select
+            value={editDistItem.distribution_measure}
+            onChange={e => {
+              // setSmallestMeasure(e.target.value);
+              console.log("dist unit: ", e.target.value);
+              setEditedMeasure(e.target.value, editDistItem.supply_uid);
+            }}
+            className={styles.unit_dropdown}
+          >
+            {lengthOptions(editDistItem)}
+          </select>
+          <div className={styles.dropdownArrow}/>
+        </div>
+      );
+    } else {
+      return (
+        <div 
+          style={{
+            position: 'relative',
+            // display: 'table',
+            // alignItems: 'center',
+            // height: '100%',
+            width: '100%',
+            // border: '1px dashed'
+          }}
+          // className={}
+        >
+          {"<ERROR>"}
+        </div>
+      );
+    }
+  }
+
   const setDistributionUnit = (unit, uid) => {
     let newInventory = [...inventory];
-    // console.log("(sdu) uid: ", uid);
-    // console.log("(sdu) unit: ", unit);
+    console.log("(sdu) uid: ", uid);
+    console.log("(sdu) unit: ", unit);
     let itemIndex = inventory.findIndex((inv) => {
       // console.log("dist: ", dist);
       return inv.supply_uid === uid;
@@ -397,7 +515,71 @@ function Inventory({ history, ...props }) {
     let itemCopy = {...inventory[itemIndex]};
     // console.log("item copy: ", itemCopy);
     itemCopy.distribution_unit = unit;
+    console.log("(sdu) new item: ", itemCopy);
     newInventory[itemIndex] = itemCopy;
+    console.log("(sdu) new inventory: ", newInventory);
+    setEditDistItem(itemCopy);
+    setInventory(newInventory);
+  }
+
+  const setDistributionMeasure = (measure, uid) => {
+    let newInventory = [...inventory];
+    console.log("(sdu) uid: ", uid);
+    console.log("(sdu) measure: ", measure);
+    let itemIndex = inventory.findIndex((inv) => {
+      // console.log("dist: ", dist);
+      return inv.supply_uid === uid;
+    });
+    // console.log("item index: ", itemIndex);
+    let itemCopy = {...inventory[itemIndex]};
+    // console.log("item copy: ", itemCopy);
+    itemCopy.distribution_measure = measure;
+    console.log("(sdu) new item: ", itemCopy);
+    newInventory[itemIndex] = itemCopy;
+    console.log("(sdu) new inventory: ", newInventory);
+    setEditDistItem(itemCopy);
+    setInventory(newInventory);
+  }
+
+  const setEditedUnit = (unit) => {
+    // console.log("(SEU) item: ", item);
+    let itemCopy = {...editDistItem};
+    itemCopy.distribution_unit = unit;
+    let unitInfo = itemCopy.distribution_units.find((du) => {
+      return du.type === unit;
+    })
+    itemCopy.distribution_qty = 1;
+    itemCopy.distribution_measure = unitInfo.measure;
+    console.log("(SEU) itemCopy: ", itemCopy);
+    setEditDistItem(itemCopy);
+  }
+
+  const setEditedMeasure = (measure) => {
+    let itemCopy = {...editDistItem};
+    itemCopy.distribution_measure = measure;
+    setEditDistItem(itemCopy);
+  }
+
+  const setEditedQty = (qty) => {
+    let itemCopy = {...editDistItem};
+    itemCopy.distribution_qty = qty;
+    setEditDistItem(itemCopy);
+  }
+
+  const saveEdits = () => {
+    let newInventory = [...inventory];
+    let itemIndex = inventory.findIndex((inv) => {
+      return inv.supply_uid === editDistItem.supply_uid;
+    });
+    let itemCopy = {...inventory[itemIndex]};
+
+    console.log("(SE) edit item: ", editDistItem);
+    itemCopy.distribution_unit = editDistItem.distribution_unit;
+    itemCopy.distribution_qty = editDistItem.distribution_qty;
+    itemCopy.distribution_measure = editDistItem.distribution_measure;
+    console.log("(SE) inv item: ", itemCopy);
+    newInventory[itemIndex] = itemCopy;
+    // setEditDistItem(itemCopy);
     setInventory(newInventory);
   }
 
@@ -422,16 +604,73 @@ function Inventory({ history, ...props }) {
   }
 
   const calculateDistInv = (item) => {
-    // {displayUnitNum(item)}
-    //                           </TableCell>
-    //                           <TableCell>
-    //                             {displayUnitMeasure(item)}
-    console.log("\n(cdi) package qty: ", item.qty_received);
+    console.log("\n(cdi) item: ", item);
     console.log("(cdi) conversion units: ", conversionUnits);
+    // let dist_inv = 0;
+    // let distUnit = "";
+    // let supplyUnit = "";
+    // if(item.distribution_unit.toUpperCase() === "VOLUME") {
+    //   distUnit = conversionUnits.find((cu) => {
+    //     return (
+    //       cu.type.toUpperCase() === item.distribution_unit.toUpperCase() && 
+    //       cu.recipe_unit.toUpperCase() === displayUnitMeasure(item).toUpperCase()
+    //     );
+    //   });
+    // } else if (item.distribution_unit.toUpperCase() === "MASS") {
+    //   distUnit = conversionUnits.find((cu) => {
+    //     return (
+    //       cu.type.toUpperCase() === item.distribution_unit.toUpperCase() && 
+    //       cu.recipe_unit.toUpperCase() === displayUnitMeasure(item).toUpperCase()
+    //     );
+    //   });
+    // } else if (item.distribution_unit.toUpperCase() === "LENGTH") {
+    //   distUnit = conversionUnits.find((cu) => {
+    //     return (
+    //       cu.type.toUpperCase() === item.distribution_unit.toUpperCase() && 
+    //       cu.recipe_unit.toUpperCase() === displayUnitMeasure(item).toUpperCase()
+    //     );
+    //   });
+    // } else if (item.distribution_unit.toUpperCase() === "EACH") {
+    //   distUnit = conversionUnits.find((cu) => {
+    //     return (
+    //       cu.type.toUpperCase() === item.distribution_unit.toUpperCase() && 
+    //       cu.recipe_unit.toUpperCase() === displayUnitMeasure(item).toUpperCase()
+    //     );
+    //   });
+    // }
+    let supplyUnit = conversionUnits.find((cu) => {
+      return (
+        cu.type.toUpperCase() === item.distribution_unit.toUpperCase() && 
+        cu.recipe_unit.toUpperCase() === displayUnitMeasure(item).toUpperCase()
+      );
+    });
+    let distUnit = conversionUnits.find((cu) => {
+      return (
+        cu.type.toUpperCase() === item.distribution_unit.toUpperCase() && 
+        cu.recipe_unit.toUpperCase() === item.distribution_measure.toUpperCase()
+      );
+    });
+    // console.log("(cdi) package qty: ", item.qty_received);
+    // console.log("(cdi) unit measure: ", displayUnitMeasure(item));
+    console.log("(cdi) dist unit: ", distUnit);
+    console.log("(cdi) supply unit: ", supplyUnit);
     console.log("(cdi) unit num: ", displayUnitNum(item));
-    console.log("(cdi) unit measure: ", displayUnitMeasure(item));
 
-    return 1;
+    let pkg_measure_qty = parseFloat(displayUnitNum(item));
+    let base_conversion = (
+      parseFloat(supplyUnit.conversion_ratio) /
+      parseFloat(distUnit.conversion_ratio)
+    );
+    let base_inv = pkg_measure_qty * base_conversion;
+    let inv_per_pkg = base_inv / parseFloat(item.distribution_qty);
+    let dist_inv = Math.floor(inv_per_pkg * parseFloat(item.qty_received));
+
+    console.log("(cdi) base conversion: ", base_conversion);
+    console.log("(cdi) inv per 1 package: ", inv_per_pkg);
+    console.log("(cdi) distribution inventory: ", dist_inv);
+    console.log("\n");
+
+    return dist_inv;
   }
 
   const massOptions = () => {
@@ -485,8 +724,129 @@ function Inventory({ history, ...props }) {
   return (
     <div>
       {console.log("(render) inventory: ", inventory)}
+
+      {editDistItem && (
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '20px',
+            right: '36px',
+            zIndex: '10',
+            border: '1px solid #e7404a',
+            borderRadius: '15px',
+            backgroundColor: '#FFE3E5',
+            height: '190px',
+            // width: '400px'
+          }}
+        >
+          <div
+            style={{
+              // border: '1px dashed',
+              display: 'flex',
+              padding: '10px',
+              position: 'relative'
+            }}
+          >
+            <div className={styles.editField}>
+              <span className={styles.editLabel}>Distribution <br/>Unit</span>
+              <div 
+                style={{
+                  position: 'relative',
+                  // display: 'table',
+                  // alignItems: 'center',
+                  // height: '100%',
+                  width: '100%',
+                  // border: '1px dashed'
+                }}
+                // className={}
+              >
+                <select
+                  value={editDistItem.distribution_unit}
+                  onChange={e => {
+                    // setSmallestMeasure(e.target.value);
+                    console.log("dist unit: ", e.target.value);
+                    setEditedUnit(e.target.value);
+                  }}
+                  className={styles.unit_dropdown}
+                >
+                  {unitOptions(editDistItem)}
+                </select>
+                <div className={styles.dropdownArrow}/>
+              </div>
+            </div>
+            <div className={styles.editField}>
+              <span className={styles.editLabel}>Item Qty.</span>
+              <input
+                className={styles.editInput}
+                onChange={e => setEditedQty(e.target.value)}
+                value={editDistItem.distribution_qty}
+              />
+            </div>
+            <div className={styles.editField}>
+              <span className={styles.editLabel}>Item <br/>Measure</span>
+              {/* <input
+                className={styles.editInput}
+              /> */}
+              {measureOptions(editDistItem)}
+            </div>
+            <div className={styles.editField}>
+              <span className={styles.editLabel}>Name</span>
+              <div className={styles.editValueWrapper}>
+                <span className={styles.editValue}>Mahatma Rice, 5 lbs</span>
+              </div>
+            </div>
+            <div className={styles.editField}>
+              <span 
+                className={styles.editLabel}
+                style={{
+                  height: '40px'
+                }}
+              >
+                Item Picture
+              </span>
+              <img
+                className={styles.editImage}
+              />
+            </div>
+            <div className={styles.editField}>
+              <span className={styles.editLabel}>Distribution <br/>Inventory</span>
+              <div className={styles.editValueWrapper}>
+                <span className={styles.editValueBold}>6</span>
+              </div>
+            </div>
+          </div>
+          <div
+            style={{
+              // border: '1px dashed',
+              position: 'absolute',
+              bottom: '0',
+              width: '100%',
+              // height: '50px',
+              display: 'flex',
+              justifyContent: 'center'
+            }}
+          >
+            <button 
+              className={styles.editBtnWhite}
+              onClick={() => {setEditDistItem(null)}}
+            >
+              Cancel
+            </button>
+            <button 
+              className={styles.editBtnRed}
+              onClick={() => {saveEdits()}}
+            >
+              Save Changes
+            </button>
+          </div>
+        </div>
+      )}
+
       <AdminNavBar currentPage={"inventory"} />
-      <Container fluid className={styles.container}>
+      <Container 
+        fluid 
+        className={editDistItem ? (styles.containerWithMargin) : (styles.container)}
+      >
         <Row
           id="header"
           className={styles.section}
@@ -830,6 +1190,25 @@ function Inventory({ history, ...props }) {
                             Distribution Inventory
                           </TableSortLabel>
                         </TableCell>
+                        <TableCell
+                          style={{
+                            color: "#E7404A",
+                            border: "none",
+                            textAlign: "center",
+                            fontSize: "15px",
+                          }}
+                        >
+                          <TableSortLabel
+                            style={{
+                              color: "#E7404A",
+                              border: "none",
+                              textAlign: "center",
+                              fontSize: "15px",
+                            }}
+                          >
+                            {/* Distribution Inventory */}
+                          </TableSortLabel>
+                        </TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -870,7 +1249,8 @@ function Inventory({ history, ...props }) {
                                   // padding: '0'
                                 }}
                               >
-                                <div 
+                                {item.distribution_unit}
+                                {/* <div 
                                   style={{
                                     position: 'relative',
                                     // display: 'table',
@@ -885,20 +1265,22 @@ function Inventory({ history, ...props }) {
                                     onChange={e => {
                                       // setSmallestMeasure(e.target.value);
                                       console.log("dist unit: ", e.target.value);
-                                      setDistributionUnit(e.target.value, item.supply_uid);
+                                      setDistribfutionUnit(e.target.value, item.supply_uid);
                                     }}
                                     className={styles.unit_dropdown}
                                   >
                                     {unitOptions(item)}
                                   </select>
                                   <div className={styles.dropdownArrow}/>
-                                </div>
+                                </div> */}
                               </TableCell>
                               <TableCell>
-                                {displayUnitNum(item)}
+                                {/* {displayUnitNum(item)} */}
+                                {item.distribution_qty}
                               </TableCell>
                               <TableCell>
-                                {displayUnitMeasure(item)}
+                                {/* {displayUnitMeasure(item)} */}
+                                {item.distribution_measure}
                               </TableCell>
                               <TableCell>{item.item_desc}</TableCell>
                               <TableCell></TableCell>
@@ -911,6 +1293,12 @@ function Inventory({ history, ...props }) {
                                 >
                                   {calculateDistInv(item)}
                                 </span>
+                              </TableCell>
+                              <TableCell>
+                                <button
+                                  className={styles.editBtn}
+                                  onClick={() => {setEditDistItem(item)}}
+                                />
                               </TableCell>
                               {/* <TableCell>{item.brand_name}</TableCell>
                               <TableCell>{item.item_name}</TableCell>
