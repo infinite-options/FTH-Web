@@ -99,6 +99,7 @@ function Inventory({ history, ...props }) {
   const [lengthUnits, setLengthUnits] = useState(null);
   const [eachUnits, setEachUnits] = useState(null);
   const [conversionUnits, setConversionUnits] = useState([]);
+  const [distributionOptions, setDistributionOptions] = useState([]);
 
   const [items, setItems] = useState(null);
   const [units, setUnits] = useState(null);
@@ -113,6 +114,24 @@ function Inventory({ history, ...props }) {
         console.log("getItems res: ", res);
         // setInventory(res.data.result);
         setItems(res.data.result);
+      })
+      .catch((err) => {
+        if (err.response) {
+          // eslint-disable-next-line no-console
+          console.log(err.response);
+        }
+        // eslint-disable-next-line no-console
+        console.log(err);
+      });
+  }
+
+  const getDistOptions = (business_uid) => {
+    axios
+      .get(`${API_URL}Distribution_Options`)
+      .then((res) => {
+        console.log("getDistOptions res: ", res);
+        // setInventory(res.data.result);
+        setDistributionOptions(res.data.result);
       })
       .catch((err) => {
         if (err.response) {
@@ -165,18 +184,22 @@ function Inventory({ history, ...props }) {
       massUnits !== null &&
       volumeUnits !== null &&
       lengthUnits !== null &&
-      eachUnits !== null
+      eachUnits !== null &&
+      distributionOptions !== null
     ) {
       // console.log("setting inventory...");
       // console.log("items: ", items);
       let tempInventory = [];
       items.forEach((item) => {
-        // console.log("\nitem: ", item);
+        console.log("\n(UE) item: ", item);
         let itemCopy = {...item};
         let distribution_units = [];
         // console.log("itemCopy: ", itemCopy);
         // console.log("item final: ", itemCopy);
         let defaultMeasure = "";
+
+        let dist_options = distributionOptions.filter(dopts => dopts.dist_supply_uid === item.supply_uid);
+        console.log("(UE) dist_options: ", dist_options);
 
         if(itemCopy.volume_measure !== null && itemCopy.volume_num !== null) {
           distribution_units.push({
@@ -229,9 +252,10 @@ function Inventory({ history, ...props }) {
         itemCopy.distribution_units = distribution_units;
         itemCopy.distribution_qty = 1;
         itemCopy.distribution_measure = defaultMeasure;
+        itemCopy.distribution_options = dist_options;
 
         // only push to inventory if package has valid data in measures column
-        if(distribution_units.length > 0) {
+        if(distribution_units.length > 0 && dist_options.length > 0) {
           tempInventory.push(itemCopy)
         }
 
@@ -240,7 +264,7 @@ function Inventory({ history, ...props }) {
 
       setInventory(tempInventory);
     }
-  }, [items, massUnits, volumeUnits, lengthUnits, eachUnits]);
+  }, [items, massUnits, volumeUnits, lengthUnits, eachUnits, distributionOptions]);
 
   // Check for log in
   useEffect(() => {
@@ -263,6 +287,7 @@ function Inventory({ history, ...props }) {
 
       getItems(role);
       getSupplyUnits();
+      getDistOptions();
 
       // axios
       //   .get(`${API_URL}getItems?receive_business_uid=${role}`)
@@ -302,7 +327,6 @@ function Inventory({ history, ...props }) {
           },
         });
       })
-
       .catch((err) => {
         if (err.response) {
           // eslint-disable-next-line no-console
@@ -567,20 +591,46 @@ function Inventory({ history, ...props }) {
   }
 
   const saveEdits = () => {
-    let newInventory = [...inventory];
-    let itemIndex = inventory.findIndex((inv) => {
-      return inv.supply_uid === editDistItem.supply_uid;
-    });
-    let itemCopy = {...inventory[itemIndex]};
+    console.log("(SE) item: ", editDistItem);
+    // let newInventory = [...inventory];
+    // let itemIndex = inventory.findIndex((inv) => {
+    //   return inv.supply_uid === editDistItem.supply_uid;
+    // });
+    // let itemCopy = {...inventory[itemIndex]};
 
-    console.log("(SE) edit item: ", editDistItem);
-    itemCopy.distribution_unit = editDistItem.distribution_unit;
-    itemCopy.distribution_qty = editDistItem.distribution_qty;
-    itemCopy.distribution_measure = editDistItem.distribution_measure;
-    console.log("(SE) inv item: ", itemCopy);
-    newInventory[itemIndex] = itemCopy;
-    // setEditDistItem(itemCopy);
-    setInventory(newInventory);
+    // console.log("(SE) edit item: ", editDistItem);
+    // itemCopy.distribution_unit = editDistItem.distribution_unit;
+    // itemCopy.distribution_qty = editDistItem.distribution_qty;
+    // itemCopy.distribution_measure = editDistItem.distribution_measure;
+    // console.log("(SE) inv item: ", itemCopy);
+    // newInventory[itemIndex] = itemCopy;
+    // // setEditDistItem(itemCopy);
+    // setInventory(newInventory);
+    // const distFormData = new FormData();
+    // // uid = request.form.get('dist_options_uid')
+    // // dist_num = request.form.get('dist_num')
+    // // dist_measure = request.form.get('dist_measure')
+    // // dist_unit = request.form.get('dist_unit')
+    // // item_photo = request.files.get('dist_item_photo') if request.files.get(
+    // distFormData.append('dist_options_uid', );
+    // distFormData.append('dist_num', );
+    // distFormData.append('dist_measure', );
+    // distFormData.append('dist_unit', editDistItem);
+    // axios
+    //   .post(`${API_URL}Distribution_Options`)
+    //   .then((res) => {
+    //     console.log("getDistOptions res: ", res);
+    //     // setInventory(res.data.result);
+    //     setDistributionOptions(res.data.result);
+    //   })
+    //   .catch((err) => {
+    //     if (err.response) {
+    //       // eslint-disable-next-line no-console
+    //       console.log(err.response);
+    //     }
+    //     // eslint-disable-next-line no-console
+    //     console.log(err);
+    //   });
   }
 
   const displayUnitNum = (item) => {

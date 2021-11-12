@@ -241,7 +241,7 @@ const AddSupply = (props) => {
     axios
       .post(`${API_URL}add_supply`, supplyFormData)
       .then((response) => {
-        if (response.status === 200) {
+        if (response.status === 200 || response.status === 201) {
           props.toggleAddSupply(true);
         }
         setPostsPending(postsPending - 1);
