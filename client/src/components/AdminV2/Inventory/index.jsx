@@ -99,7 +99,12 @@ function Inventory({ history, ...props }) {
   const [lengthUnits, setLengthUnits] = useState(null);
   const [eachUnits, setEachUnits] = useState(null);
   const [conversionUnits, setConversionUnits] = useState([]);
-  const [distributionOptions, setDistributionOptions] = useState([]);
+  const [distributionOptions, setDistributionOptions] = useState(null);
+  const [mounted, setMounted] = useState(false);
+
+  const [defaultDistOption, setDefaultDistOption] = useState(null);
+
+  // const [defaultUnit, setDefaultUnit] = useState(null);
 
   const [items, setItems] = useState(null);
   const [units, setUnits] = useState(null);
@@ -125,13 +130,17 @@ function Inventory({ history, ...props }) {
       });
   }
 
-  const getDistOptions = (business_uid) => {
+  const getDistOptions = (edited_item) => {
     axios
       .get(`${API_URL}Distribution_Options`)
       .then((res) => {
         console.log("getDistOptions res: ", res);
         // setInventory(res.data.result);
+        // if(edited_item !== null) {
+        //   refreshDistOptions(res.data.result);
+        // } else {
         setDistributionOptions(res.data.result);
+        // }
       })
       .catch((err) => {
         if (err.response) {
@@ -179,95 +188,160 @@ function Inventory({ history, ...props }) {
   };
 
   useEffect(() => {
+    // console.log("why isnt this running");
+    // console.log("stuff: ", items, massUnits, volumeUnits, lengthUnits, eachUnits, distributionOptions);
+    // if(
+    //   items !== null && massUnits !== null &&
+    //   volumeUnits !== null && lengthUnits !== null &&
+    //   eachUnits !== null && distributionOptions !== null &&
+    //   mounted === false
+    // ) {
     if(
-      items !== null &&
-      massUnits !== null &&
-      volumeUnits !== null &&
-      lengthUnits !== null &&
-      eachUnits !== null &&
-      distributionOptions !== null
+      items !== null && massUnits !== null &&
+      volumeUnits !== null && lengthUnits !== null &&
+      eachUnits !== null && distributionOptions !== null
     ) {
       // console.log("setting inventory...");
       // console.log("items: ", items);
       let tempInventory = [];
       items.forEach((item) => {
-        console.log("\n(UE) item: ", item);
+        // console.log("\n(UE) item: ", item);
         let itemCopy = {...item};
         let distribution_units = [];
-        // console.log("itemCopy: ", itemCopy);
-        // console.log("item final: ", itemCopy);
         let defaultMeasure = "";
+        let defaultType = "";
 
         let dist_options = distributionOptions.filter(dopts => dopts.dist_supply_uid === item.supply_uid);
-        console.log("(UE) dist_options: ", dist_options);
 
-        if(itemCopy.volume_measure !== null && itemCopy.volume_num !== null) {
-          distribution_units.push({
-            type: "Volume", 
-            measure: itemCopy.volume_measure,
-            qty: itemCopy.volume_num
-          });
-          if(distribution_units.length === 1) {
-            itemCopy.distribution_unit = "Volume";
-            defaultMeasure = itemCopy.volume_measure;
+        if(dist_options.length > 0){
+          console.log("\n(UE) item: ", item);
+          console.log("(UE) dist_options: ", dist_options);
+          console.log("(UE) edited item: ", editDistItem);
+
+          let defaultOpt = dist_options[0];
+
+          itemCopy.distribution_options = dist_options;
+          itemCopy.distribution_unit = defaultOpt.dist_unit;
+          itemCopy.distribution_qty = defaultOpt.dist_num;
+          itemCopy.distribution_measure = defaultOpt.dist_measure;
+
+          // set values in row to what was just edited & saved in modal
+          if (editDistItem !== null && item.supply_uid === editDistItem.supply_uid) {
+            itemCopy.distribution_options = dist_options;
+            itemCopy.distribution_unit = editDistItem.distribution_unit;
+            itemCopy.distribution_qty = editDistItem.distribution_qty;
+            itemCopy.distribution_measure = editDistItem.distribution_measure;
+            setEditDistItem(null);
           }
-        }
 
-        if(itemCopy.mass_measure !== null && itemCopy.mass_num !== null) {
-          distribution_units.push({
-            type: "Mass", 
-            measure: itemCopy.mass_measure,
-            qty: itemCopy.mass_num
-          });
-          if(distribution_units.length === 1) {
-            itemCopy.distribution_unit = "Mass";
-            defaultMeasure = itemCopy.mass_measure;
-          }
-        }
+        // if(dist_options.length > 0){
 
-        if(itemCopy.each_measure !== null && itemCopy.each_num !== null) {
-          distribution_units.push({
-            type: "Each", 
-            measure: itemCopy.each_measure,
-            qty: itemCopy.each_num
-          });
-          if(distribution_units.length === 1) {
-            itemCopy.distribution_unit = "Each";
-            defaultMeasure = itemCopy.each_measure;
-          }
-        }
+          // if(itemCopy.volume_measure !== null && itemCopy.volume_num !== null) {
+          //   distribution_units.push({
+          //     type: "Volume", 
+          //     measure: itemCopy.volume_measure,
+          //     qty: itemCopy.volume_num
+          //   });
+          //   if(distribution_units.length === 1) {
+          //     itemCopy.distribution_unit = "Volume";
+          //     defaultMeasure = itemCopy.volume_measure;
+          //     defaultType = "VOLUME"
+          //   }
+          // }
 
-        if(itemCopy.length_measure !== null && itemCopy.length_num !== null) {
-          distribution_units.push({
-            type: "Length", 
-            measure: itemCopy.length_measure,
-            qty: itemCopy.length_num
-          });
-          if(distribution_units.length === 1) {
-            itemCopy.distribution_unit = "Length";
-            defaultMeasure = itemCopy.length_measure;
-          }
-        }
+          // if(itemCopy.mass_measure !== null && itemCopy.mass_num !== null) {
+          //   distribution_units.push({
+          //     type: "Mass", 
+          //     measure: itemCopy.mass_measure,
+          //     qty: itemCopy.mass_num
+          //   });
+          //   if(distribution_units.length === 1) {
+          //     itemCopy.distribution_unit = "Mass";
+          //     defaultMeasure = itemCopy.mass_measure;
+          //     defaultType = "MASS"
+          //   }
+          // }
 
-        itemCopy.distribution_units = distribution_units;
-        itemCopy.distribution_qty = 1;
-        itemCopy.distribution_measure = defaultMeasure;
-        itemCopy.distribution_options = dist_options;
+          // if(itemCopy.each_measure !== null && itemCopy.each_num !== null) {
+          //   distribution_units.push({
+          //     type: "Each", 
+          //     measure: itemCopy.each_measure,
+          //     qty: itemCopy.each_num
+          //   });
+          //   if(distribution_units.length === 1) {
+          //     itemCopy.distribution_unit = "Each";
+          //     defaultMeasure = itemCopy.each_measure;
+          //     defaultType = "EACH"
+          //   }
+          // }
 
-        // only push to inventory if package has valid data in measures column
-        if(distribution_units.length > 0 && dist_options.length > 0) {
+          // if(itemCopy.length_measure !== null && itemCopy.length_num !== null) {
+          //   distribution_units.push({
+          //     type: "Length", 
+          //     measure: itemCopy.length_measure,
+          //     qty: itemCopy.length_num
+          //   });
+          //   if(distribution_units.length === 1) {
+          //     itemCopy.distribution_unit = "Length";
+          //     defaultMeasure = itemCopy.length_measure;
+          //     defaultType = "LENGTH"
+          //   }
+          // }
+
+          // if(defaultUnit !== null) {
+          //   defaultType = defaultUnit;
+          // }
+
+          // itemCopy.distribution_units = distribution_units;
+          // // itemCopy.distribution_qty = defaultNum;
+          // // itemCopy.distribution_measure = defaultMeasure;
+          // itemCopy.distribution_options = dist_options;
+
+          // console.log("defaultMeasure: ", defaultMeasure);
+          // let defaultOption = dist_options.find((defopt) => {
+          //   return defopt.dist_unit.toUpperCase() === defaultType.toUpperCase()
+          // })
+
+          // console.log("defaultOption: ", defaultOption);
+
+          // itemCopy.distribution_qty = defaultOption.dist_num
+          // itemCopy.distribution_measure = defaultOption.dist_measure
+
+          // only push to inventory if package has valid data in measures column
+          // if(distribution_units.length > 0) {
           tempInventory.push(itemCopy)
+          // }
+
+          console.log("\n");
+
         }
 
       });
       // console.log("\nfinal inventory: ", tempInventory);
 
       setInventory(tempInventory);
+      // setMounted(true);
     }
   }, [items, massUnits, volumeUnits, lengthUnits, eachUnits, distributionOptions]);
 
+  useEffect(() => {
+    if(inventory !== null) {
+      console.log("\n(mount) inventory: ", inventory, "\n");
+      setMounted(true);
+    }
+  }, [inventory]);
+
+  useEffect(() => {
+    // if(inventory !== null) {
+    //   console.log("\n(mount) inventory: ", inventory, "\n");
+    //   setMounted(true);
+    // }
+    console.log("\nDIST EDITED: ", editDistItem, "\n");
+  }, [editDistItem]);
+
   // Check for log in
   useEffect(() => {
+    // console.log("does this even run");
     if (
       document.cookie
         .split(";")
@@ -284,6 +358,7 @@ function Inventory({ history, ...props }) {
       } else {
         history.push("/meal-plan");
       }
+
 
       getItems(role);
       getSupplyUnits();
@@ -379,6 +454,7 @@ function Inventory({ history, ...props }) {
     }
     return 0;
   };
+
   const changeDate = (newDate) => {
     dispatch({ type: "CHANGE_DATE", payload: newDate });
   };
@@ -404,14 +480,12 @@ function Inventory({ history, ...props }) {
 
   const unitOptions = (item) => {
     console.log("(UO) item: ", item);
-    // console.log("(unitOptions) uid: ", uid);
-    // console.log("(unitOptions) inventory: ", inventory);
-    // var unitOptions = [<option disabled selected value> -- select an option -- </option>];
     let unitDropdown = [];
-    item.distribution_units.forEach((dist, index) => {
+    // item.distribution_units.forEach((dist, index) => {
+    item.distribution_options.forEach((dist, index) => {
       unitDropdown.push(
-        <option key={index} value={dist.type}>
-          {dist.type}
+        <option key={index} value={dist.dist_unit}>
+          {dist.dist_unit.toLowerCase()}
         </option>
       );
     });
@@ -569,13 +643,23 @@ function Inventory({ history, ...props }) {
     // console.log("(SEU) item: ", item);
     let itemCopy = {...editDistItem};
     itemCopy.distribution_unit = unit;
-    let unitInfo = itemCopy.distribution_units.find((du) => {
-      return du.type === unit;
+    let unitInfo = itemCopy.distribution_options.find((du) => {
+      return du.dist_unit.toUpperCase() === unit.toUpperCase();
     })
-    itemCopy.distribution_qty = 1;
-    itemCopy.distribution_measure = unitInfo.measure;
-    console.log("(SEU) itemCopy: ", itemCopy);
+    itemCopy.distribution_qty = unitInfo.dist_num;
+    itemCopy.distribution_measure = unitInfo.dist_measure;
+    console.log("\n(SEU) itemCopy: ", itemCopy);
     setEditDistItem(itemCopy);
+
+    let invCopy = [...inventory];
+    let invIndex = inventory.findIndex((invItem) => {
+      return invItem.supply_uid.toUpperCase() === itemCopy.supply_uid.toUpperCase();
+    });
+    console.log("(SEU) item in inventory: ", inventory[invIndex], "\n");
+    invCopy[invIndex] = itemCopy;
+    console.log("(SEU) inv copy: ", invCopy);
+    setInventory(invCopy);
+
   }
 
   const setEditedMeasure = (measure) => {
@@ -592,6 +676,10 @@ function Inventory({ history, ...props }) {
 
   const saveEdits = () => {
     console.log("(SE) item: ", editDistItem);
+    let oldOpt = editDistItem.distribution_options.find((dopt) => {
+      return dopt.dist_unit.toUpperCase() === editDistItem.distribution_unit.toUpperCase();
+    });
+
     // let newInventory = [...inventory];
     // let itemIndex = inventory.findIndex((inv) => {
     //   return inv.supply_uid === editDistItem.supply_uid;
@@ -606,118 +694,137 @@ function Inventory({ history, ...props }) {
     // newInventory[itemIndex] = itemCopy;
     // // setEditDistItem(itemCopy);
     // setInventory(newInventory);
-    // const distFormData = new FormData();
-    // // uid = request.form.get('dist_options_uid')
-    // // dist_num = request.form.get('dist_num')
-    // // dist_measure = request.form.get('dist_measure')
-    // // dist_unit = request.form.get('dist_unit')
-    // // item_photo = request.files.get('dist_item_photo') if request.files.get(
-    // distFormData.append('dist_options_uid', );
-    // distFormData.append('dist_num', );
-    // distFormData.append('dist_measure', );
-    // distFormData.append('dist_unit', editDistItem);
-    // axios
-    //   .post(`${API_URL}Distribution_Options`)
-    //   .then((res) => {
-    //     console.log("getDistOptions res: ", res);
-    //     // setInventory(res.data.result);
-    //     setDistributionOptions(res.data.result);
-    //   })
-    //   .catch((err) => {
-    //     if (err.response) {
-    //       // eslint-disable-next-line no-console
-    //       console.log(err.response);
-    //     }
-    //     // eslint-disable-next-line no-console
-    //     console.log(err);
-    //   });
+
+
+    const distFormData = new FormData();
+    // uid = request.form.get('dist_options_uid')
+    // dist_num = request.form.get('dist_num')
+    // dist_measure = request.form.get('dist_measure')
+    // dist_unit = request.form.get('dist_unit')
+    // item_photo = request.files.get('dist_item_photo') if request.files.get(
+    distFormData.append('dist_options_uid', oldOpt.dist_options_uid);
+    distFormData.append('dist_num', editDistItem.distribution_qty);
+    distFormData.append('dist_measure', editDistItem.distribution_measure);
+    distFormData.append('dist_unit', editDistItem.distribution_unit);
+    // setDefaultUnit(editDistItem.distribution_unit.toUpperCase());
+    axios
+      .post(`${API_URL}Distribution_Options`, distFormData)
+      .then((res) => {
+        console.log("getDistOptions res: ", res);
+        // setInventory(res.data.result);
+        // setDistributionOptions(res.data.result);
+        getDistOptions(editDistItem);
+      })
+      .catch((err) => {
+        if (err.response) {
+          // eslint-disable-next-line no-console
+          console.log(err.response);
+        }
+        // eslint-disable-next-line no-console
+        console.log(err);
+      });
   }
 
-  const displayUnitNum = (item) => {
-    // console.log("(dun) item: ", item);
-    let unit = item.distribution_units.find((dist) => {
-      // console.log("dist: ", dist);
-      return dist.type === item.distribution_unit;
-    })
-    // console.log("unit: ", unit);
-    return unit.qty;
-  }
+  // const displayUnitNum = (item) => {
+  //   console.log("\n(dun) dist options: ", item.distribution_options);
+  //   let opt = item.distribution_options.find((dist) => {
+  //     return dist.type === item.distribution_unit;
+  //   })
+  //   console.log("(dun) opt: ", opt, "\n");
+  //   return opt.dist_num;
+  // }
 
-  const displayUnitMeasure = (item) => {
-    // console.log("(dum) item: ", item);
-    let unit = item.distribution_units.find((dist) => {
-      // console.log("dist: ", dist);
-      return dist.type === item.distribution_unit;
-    })
-    // console.log("unit: ", unit);
-    return unit.measure;
-  }
+  // const displayUnitMeasure = (item) => {
+  //   console.log("\n(dum) item: ", item);
+  //   console.log("(dum) dist options: ", item.distribution_options);
+  //   let opt = item.distribution_options.find((dist) => {
+  //     return dist.type === item.distribution_unit;
+  //   })
+  //   console.log("(dum) opt: ", opt, "\n");
+  //   return opt.dist_unit;
+  // }
 
   const calculateDistInv = (item) => {
-    console.log("\n(cdi) item: ", item);
-    console.log("(cdi) conversion units: ", conversionUnits);
-    // let dist_inv = 0;
-    // let distUnit = "";
-    // let supplyUnit = "";
-    // if(item.distribution_unit.toUpperCase() === "VOLUME") {
-    //   distUnit = conversionUnits.find((cu) => {
-    //     return (
-    //       cu.type.toUpperCase() === item.distribution_unit.toUpperCase() && 
-    //       cu.recipe_unit.toUpperCase() === displayUnitMeasure(item).toUpperCase()
-    //     );
-    //   });
-    // } else if (item.distribution_unit.toUpperCase() === "MASS") {
-    //   distUnit = conversionUnits.find((cu) => {
-    //     return (
-    //       cu.type.toUpperCase() === item.distribution_unit.toUpperCase() && 
-    //       cu.recipe_unit.toUpperCase() === displayUnitMeasure(item).toUpperCase()
-    //     );
-    //   });
-    // } else if (item.distribution_unit.toUpperCase() === "LENGTH") {
-    //   distUnit = conversionUnits.find((cu) => {
-    //     return (
-    //       cu.type.toUpperCase() === item.distribution_unit.toUpperCase() && 
-    //       cu.recipe_unit.toUpperCase() === displayUnitMeasure(item).toUpperCase()
-    //     );
-    //   });
-    // } else if (item.distribution_unit.toUpperCase() === "EACH") {
-    //   distUnit = conversionUnits.find((cu) => {
-    //     return (
-    //       cu.type.toUpperCase() === item.distribution_unit.toUpperCase() && 
-    //       cu.recipe_unit.toUpperCase() === displayUnitMeasure(item).toUpperCase()
-    //     );
-    //   });
-    // }
-    let supplyUnit = conversionUnits.find((cu) => {
-      return (
-        cu.type.toUpperCase() === item.distribution_unit.toUpperCase() && 
-        cu.recipe_unit.toUpperCase() === displayUnitMeasure(item).toUpperCase()
-      );
-    });
+    console.log("\n(calc) item: ", item);
+    console.log("(calc) conversion units: ", conversionUnits);
+
+    // let supplyUnit = conversionUnits.find((cu) => {
+    //   return (
+    //     cu.type.toUpperCase() === item.distribution_unit.toUpperCase()
+    //   );
+    // });
+    // console.log("(calc) supply unit 1: ", supplyUnit);
+    let supplyUnit = "";
+    let supplyNum = 0;
+    if(item.distribution_unit.toUpperCase() === "MASS") {
+      supplyUnit = conversionUnits.find((cu) => {
+        return (
+          cu.type.toUpperCase() === "MASS" &&
+          cu.recipe_unit.toUpperCase() === item.mass_measure.toUpperCase()
+        );
+      });
+      supplyNum = item.mass_num;
+    } else if(item.distribution_unit.toUpperCase() === "VOLUME") {
+      supplyUnit = conversionUnits.find((cu) => {
+        return (
+          cu.type.toUpperCase() === "VOLUME" &&
+          cu.recipe_unit.toUpperCase() === item.volume_measure.toUpperCase()
+        );
+      });
+      supplyNum = item.volume_num;
+    } else if(item.distribution_unit.toUpperCase() === "LENGTH") {
+      supplyUnit = conversionUnits.find((cu) => {
+        return (
+          cu.type.toUpperCase() === "LENGTH" &&
+          cu.recipe_unit.toUpperCase() === item.length_measure.toUpperCase()
+        );
+      });
+      supplyNum = item.length_num;
+    } else if(item.distribution_unit.toUpperCase() === "EACH") {
+      supplyUnit = conversionUnits.find((cu) => {
+        return (
+          cu.type.toUpperCase() === "EACH" &&
+          cu.recipe_unit.toUpperCase() === item.each_measure.toUpperCase()
+        );
+      });
+      supplyNum = item.each_num;
+    }
+    console.log("(calc) supply unit: ", supplyUnit);
+
     let distUnit = conversionUnits.find((cu) => {
       return (
         cu.type.toUpperCase() === item.distribution_unit.toUpperCase() && 
         cu.recipe_unit.toUpperCase() === item.distribution_measure.toUpperCase()
       );
     });
-    // console.log("(cdi) package qty: ", item.qty_received);
-    // console.log("(cdi) unit measure: ", displayUnitMeasure(item));
-    console.log("(cdi) dist unit: ", distUnit);
-    console.log("(cdi) supply unit: ", supplyUnit);
-    console.log("(cdi) unit num: ", displayUnitNum(item));
 
-    let pkg_measure_qty = parseFloat(displayUnitNum(item));
+    console.log("(calc) dist unit: ", distUnit);
+    // console.log("(calc) supply unit: ", supplyUnit);
+    // console.log("(calc) unit num: ", displayUnitNum(item));
+
+    // let pkg_measure_qty = parseFloat(item.distribution_qty);
+    // let base_conversion = (
+    //   parseFloat(supplyUnit.conversion_ratio) /
+    //   parseFloat(distUnit.conversion_ratio)
+    // );
+    // let base_inv = pkg_measure_qty * base_conversion;
+    // let inv_per_pkg = base_inv / parseFloat(item.distribution_qty);
+    // let dist_inv = Math.floor(inv_per_pkg * parseFloat(item.qty_received));
+    // let pkg_measure_qty = parseFloat(item.distribution_qty);
     let base_conversion = (
       parseFloat(supplyUnit.conversion_ratio) /
       parseFloat(distUnit.conversion_ratio)
     );
-    let base_inv = pkg_measure_qty * base_conversion;
+    let base_inv = supplyNum * base_conversion;
     let inv_per_pkg = base_inv / parseFloat(item.distribution_qty);
     let dist_inv = Math.floor(inv_per_pkg * parseFloat(item.qty_received));
 
-    console.log("(cdi) base conversion: ", base_conversion);
-    console.log("(cdi) inv per 1 package: ", inv_per_pkg);
-    console.log("(cdi) distribution inventory: ", dist_inv);
+    // console.log("(calc) pkg qty: ", pkg_measure_qty);
+    console.log("(calc) supply num: ", supplyNum);
+    console.log("(calc) base conversion: ", base_conversion);
+    console.log("(calc) base inv: ", base_inv);
+    console.log("(calc) inv per 1 package: ", inv_per_pkg);
+    console.log("(calc) distribution inventory: ", dist_inv);
     console.log("\n");
 
     return dist_inv;
@@ -773,7 +880,7 @@ function Inventory({ history, ...props }) {
 
   return (
     <div>
-      {console.log("(render) inventory: ", inventory)}
+      {/* {console.log("(render) inventory: ", inventory)} */}
 
       {editDistItem && (
         <div
@@ -813,7 +920,6 @@ function Inventory({ history, ...props }) {
                 <select
                   value={editDistItem.distribution_unit}
                   onChange={e => {
-                    // setSmallestMeasure(e.target.value);
                     console.log("dist unit: ", e.target.value);
                     setEditedUnit(e.target.value);
                   }}
@@ -1325,11 +1431,9 @@ function Inventory({ history, ...props }) {
                                 </div> */}
                               </TableCell>
                               <TableCell>
-                                {/* {displayUnitNum(item)} */}
                                 {item.distribution_qty}
                               </TableCell>
                               <TableCell>
-                                {/* {displayUnitMeasure(item)} */}
                                 {item.distribution_measure}
                               </TableCell>
                               <TableCell>{item.item_desc}</TableCell>
