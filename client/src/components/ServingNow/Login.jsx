@@ -98,7 +98,7 @@ export default function Login() {
     axios
       .post(API_URL + "accountsalt", {
         // params: {
-        phone: phone,
+        "phone": phone,
         // }
       })
       .then((res) => {
