@@ -184,7 +184,7 @@ export default function Login() {
                           console.log("customerInfo: ", customerInfo);
                           axios
                             .post(`${API_URL}business_details_update/Get`, {
-                              business_uid: newAccountType,
+                              "business_uid": newAccountType,
                             })
                             .then((res) => {
                               console.log("get business res: ", res);

@@ -25,8 +25,8 @@ app.get('/*', function (req, res) {
 });
 
 
-var key_url = '/etc/letsencrypt/live/mealsfor.me/privkey.pem';
-var cert_url = '/etc/letsencrypt/live/mealsfor.me/cert.pem';
+var key_url = '/etc/letsencrypt/live/servingnow.me/privkey.pem';
+var cert_url = '/etc/letsencrypt/live/servingnow.me/fullchain.pem';
 
 var options = {};
 
