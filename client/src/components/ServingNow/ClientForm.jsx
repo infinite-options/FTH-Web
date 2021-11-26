@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { propTypes } from "react-bootstrap/esm/Image";
 import { useHistory } from "react-router";
 
+import axios from "axios";
+import { API_URL } from "../../reducers/constants";
+
 import styles from "../ServingNow/ClientForm.module.css";
 
 export default function ClientForm(props) {
@@ -43,6 +46,38 @@ export default function ClientForm(props) {
     });
   }
 
+  const submitForm = () => {
+    console.log('submit client form');
+    household.push({
+      age: hh_member_age,
+      name: hh_member_name,
+      relationship: hh_member_relation
+    });
+    const object = {
+      customer_uid: localStorage.getItem('customer_uid'),
+      name: clientName,
+      last4_ssn: SSN_last4,
+      dob: DOB,
+      address: address,
+      city: city,
+      county: county,
+      state: state,
+      zip: zip,
+      cell_phone: cellPhone,
+      home_phone: homePhone,
+      household_members: JSON.stringify(household)
+    };
+    console.log("POST /clientForm")
+    axios.post(API_URL + "clientForm", object)
+      .then((res) => {
+        console.log(res);
+        history.push('/home');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   return (
     <div>
 
@@ -54,7 +89,7 @@ export default function ClientForm(props) {
 
       <div className={styles.box4}> </div>
 
-      
+
 
       <div className={styles.title3}>
           <h5> <b>Client Intake Form</b></h5>
@@ -225,6 +260,10 @@ export default function ClientForm(props) {
             style={{marginBottom: "0px", border: "0px", width: "600px"}}
             type='text'
             placeholder='Name'
+            onChange={e => {
+              set_hh_member_name(e.target.value)
+            }}
+            value={hh_member_name}
           />
           </span>
       </div>
@@ -235,6 +274,10 @@ export default function ClientForm(props) {
             style={{marginBottom: "0px", border: "0px", width: "200px"}}
             type='text'
             placeholder='Age'
+            onChange={e => {
+              set_hh_member_age(e.target.value)
+            }}
+            value={hh_member_age}
           />
           </span>
       </div>
@@ -245,20 +288,25 @@ export default function ClientForm(props) {
             style={{marginBottom: "0px", border: "0px", width: "200px"}}
             type='text'
             placeholder='Relationship'
+            onChange={e => {
+              set_hh_member_relation(e.target.value)
+            }}
+            value={hh_member_relation}
           />
           </span>
       </div>
 
       <div className={styles.submitButton}>
           {/* <a href="createpassword"> */}
-          <button 
+          <button
             style={{
-              color: "#e7404a", 
-              background: "white", 
+              color: "#e7404a",
+              background: "white",
               border: "none"
             }}
-          > 
-            <b>Submit Form</b> 
+            onClick={submitForm}
+          >
+            <b>Submit Form</b>
           </button>
           {/* </a> */}
       </div>
