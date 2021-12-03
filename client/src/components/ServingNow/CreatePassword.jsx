@@ -1,5 +1,5 @@
 import React, { Component, useState } from 'react';
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router";
 
 import axios from "axios";
 import { API_URL } from "../../reducers/constants";
@@ -17,6 +17,7 @@ import visibility from '../Assets/visibility.svg';
 // class CreatePassword extends Component {
 function CreatePassword(props) {
   const history = useHistory();
+  const location = useLocation();
 
   console.log("CreatePassword props: ", props);
 
@@ -25,6 +26,27 @@ function CreatePassword(props) {
 
   const [seePW, set_seePW] = useState(false);
   const [seeConfirmPW, set_seeConfirmPW] = useState(false);
+
+  if (location.state === undefined) {
+    history.push('/');
+    return null;
+  }
+  const {
+    firstName,
+    lastName,
+    phone,
+    affiliation,
+    idType,
+    idNumber,
+    address,
+    city,
+    zip
+  } = location.state.registration;
+  const email = '';
+  const unit = '';
+  const state = '';
+  const lat = '';
+  const long = '';
 
   const handleGoogleLogin = () => {
     console.log("clicked Google");
@@ -56,72 +78,46 @@ function CreatePassword(props) {
     console.log("clicked register");
 
     // history.push('/choose-plan');
-    // let object = {
-    //   email: email,
-    //   password: password,
-    //   first_name: firstName,
-    //   last_name: lastName,
-    //   phone_number: phone,
-    //   address: street,
-    //   unit: unit,
-    //   city: city,
-    //   state: state,
-    //   zip_code: zip,
-    //   latitude: lat.toString(),
-    //   longitude: long.toString(),
-    //   referral_source: "WEB",
-    //   role: "CUSTOMER",
-    //   social: "FALSE",
-    //   social_id: "NULL",
-    //   user_access_token: "FALSE",
-    //   user_refresh_token: "FALSE",
-    //   mobile_access_token: "FALSE",
-    //   mobile_refresh_token: "FALSE",
-    // };
-    // console.log(JSON.stringify(object));
+    let object = {
+      password: password,
+      first_name: firstName,
+      last_name: lastName,
+      phone_number: phone,
+      id_type: idType,
+      id_number: idNumber,
+      address: address,
+      unit: unit,
+      city: city,
+      state: state,
+      zip_code: zip,
+      latitude: lat.toString(),
+      longitude: long.toString(),
+      referral_source: "WEB",
+      role: "CUSTOMER",
+      social: "FALSE",
+      social_id: "NULL",
+      user_access_token: "FALSE",
+      user_refresh_token: "FALSE",
+      mobile_access_token: "FALSE",
+      mobile_refresh_token: "FALSE",
+    };
+    console.log(JSON.stringify(object));
 
-    // console.log("(SPWSU) creating account...");
-    // axios
-    //   .post(API_URL + "createAccount", object)
-    //   .then((res) => {
-    //     console.log(res);
-    //     console.log("(SPWSU) verifying email...");
-    //     axios
-    //       .post(API_URL + "email_verification", {
-    //         email: object.email,
-    //       })
-    //       .then((res) => {
-    //         console.log("(EV) res: ", res);
-    //         if(res.data.code === 200){
-    //           if (typeof callback !== "undefined") {
-    //             callback(SUCCESS, 'Account successfully created.');
-    //           }
-    //         } else {
-    //           callback(FAILURE, <>
-    //             {"Invalid email: "}
-    //             <span style={{textDecoration: 'underline'}}>{email}</span>
-    //           </>);
-    //         }
-    //       })
-    //       .catch((err) => {
-    //         console.log(err);
-    //         callback(FAILURE, "Error verifying email.");
-    //       });
+    console.log("POST /createAccount3")
+    axios.post(API_URL + "createAccount3", object)
+      .then((res) => {
+        console.log(res);
+        const json = res.data;
+        if (json.code === 200) {
+          localStorage.setItem('customer_uid', json.data.customer_uid);
+          history.push('/clientform');
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
-    //     dispatch({
-    //       type: SUBMIT_SIGNUP,
-    //     });
-        
-      // })
-      // .catch((err) => {
-      //   console.log(err);
-      //   if (err.response) {
-      //     console.log(err.response);
-      //   }
-      //   callback(FAILURE, 'Error creating account.');
-      // });
 
-    
   }
 
   return (
@@ -138,7 +134,7 @@ function CreatePassword(props) {
               marginTop: '30px',
               fontSize: '20px'
             }}
-          > 
+          >
             <b>Create a password</b>
           </div>
           <div
@@ -146,7 +142,7 @@ function CreatePassword(props) {
             style={{
               marginTop: '10px'
             }}
-          > 
+          >
             <b>To securely access your account</b>
           </div>
           <div
@@ -154,12 +150,12 @@ function CreatePassword(props) {
             style={{
               marginTop: '30px'
             }}
-          > 
+          >
             <b>Sign in with Social Media</b>
           </div>
           <div
             className={styles.pw_modal_text}
-          > 
+          >
             <b>(So you don't lose your password)</b>
           </div>
 
@@ -207,7 +203,7 @@ function CreatePassword(props) {
             style={{
               margin: '35px 0 5px 0'
             }}
-          > 
+          >
             <b>Or create a password here</b>
           </div>
 
@@ -221,7 +217,7 @@ function CreatePassword(props) {
                 setPassword(e.target.value);
               }}
             />
-            <button 
+            <button
               className={styles.pw_visible_icon}
               onClick={() => {
                 set_seePW(!seePW)
@@ -242,7 +238,7 @@ function CreatePassword(props) {
                 setConfirmPassword(e.target.value);
               }}
             />
-            <button 
+            <button
               className={styles.pw_visible_icon}
               onClick={() => {
                 set_seeConfirmPW(!seeConfirmPW)
@@ -264,7 +260,7 @@ function CreatePassword(props) {
               justifyContent: 'center'
             }}
           >
-            <button 
+            <button
               className={styles.registerBtn}
               disabled={disableRegister()}
               onClick={() => {
@@ -283,7 +279,7 @@ function CreatePassword(props) {
       {/* <img src={fb} alt="" class="fb1"/> */}
       {/* <img src={visibility} alt="" class="visibility1"/> */}
       {/* <img src={visibility} alt="" class="visibility2"/> */}
-      
+
 
       {/* <div className={styles.rectangle1}> </div> */}
 
@@ -315,7 +311,7 @@ function CreatePassword(props) {
         <span class="createPasswordInput">
           <input
             style={{
-              marginBottom: "0px", 
+              marginBottom: "0px",
               // border: "0px"
             }}
             type='password'
@@ -332,7 +328,7 @@ function CreatePassword(props) {
         <span class="confirmPasswordInput">
           <input
             style={{
-              marginBottom: "0px", 
+              marginBottom: "0px",
               // border: "0px"
               border: '1px solid red'
             }}

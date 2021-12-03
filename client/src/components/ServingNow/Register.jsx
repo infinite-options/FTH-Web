@@ -19,20 +19,22 @@ function Register() {
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('');
   const [zip, setZip] = useState('');
-    
+
   const nextPage = () => {
     history.push({
-      pathname: '/clientform',
-      registration: {
-        firstName,
-        lastName,
-        phone,
-        affiliation,
-        idType,
-        idNumber,
-        address,
-        city,
-        zip
+      pathname: '/createpassword',
+      state: {
+        registration: {
+          firstName,
+          lastName,
+          phone,
+          affiliation,
+          idType,
+          idNumber,
+          address,
+          city,
+          zip
+        }
       }
     });
   }
@@ -203,15 +205,15 @@ function Register() {
 
       <div className={styles.continueButton}>
         {/* <a href="clientform"> */}
-        <button 
+        <button
           onClick={nextPage}
           style={{
-            color: "#e7404a", 
-            background: "white", 
+            color: "#e7404a",
+            background: "white",
             border: "none"
           }}
-        > 
-          <b>Continue </b> 
+        >
+          <b>Continue </b>
         </button>
         {/* </a> */}
       </div>
